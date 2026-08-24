@@ -4,114 +4,240 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7567e8">
-<title>Arabic Kids • ฝึกอ่านอักษรอาหรับ</title>
+<title>Arabic Kids • อาลิฟ • V11</title>
 <style>
 :root{--purple:#7664e8;--green:#29b980;--ink:#293452}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f7ff,#fff8fd);min-height:100vh}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f7ff,#fff8fd);min-height:100vh}
 button{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer}
-.hero{padding:24px 18px 28px;background:linear-gradient(135deg,#655de0,#8d67ed 55%,#65a9f5);color:#fff;border-radius:0 0 34px 34px;box-shadow:0 8px 25px #6b5cdb44}
-.hero-row{max-width:850px;margin:auto;display:flex;align-items:center;gap:14px}.book{font-size:45px}.title{font-size:25px;font-weight:900}.sub{font-size:14px;opacity:.9;margin-top:3px}
-.stats{max-width:850px;margin:20px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:#ffffff25;border:2px solid #ffffff45;border-radius:18px;padding:9px;text-align:center;backdrop-filter:blur(8px)}.stat b{display:block;font-size:21px}.stat small{font-size:11px}
-.wrap{max-width:850px;margin:auto;padding:18px 14px 40px}.progress{height:12px;background:#e8ebf5;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;width:8%;background:linear-gradient(90deg,#52d59e,#58a6ff);border-radius:99px}
+.hero{padding:24px 18px 28px;background:linear-gradient(135deg,#655de0,#8d67ed 55%,#65a9f5);color:#fff;border-radius:0 0 34px 34px}
+.hero-row{max-width:850px;margin:auto;display:flex;align-items:center;gap:14px}.book{font-size:45px}.title{font-size:25px;font-weight:900}.sub{font-size:14px;opacity:.9}
+.stats{max-width:850px;margin:20px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#ffffff25;border:2px solid #ffffff45;border-radius:18px;padding:9px;text-align:center}.stat b{display:block;font-size:21px}.stat small{font-size:11px}
+.wrap{max-width:850px;margin:auto;padding:18px 14px 40px}.progress{height:12px;background:#e8ebf5;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;width:8%;background:linear-gradient(90deg,#52d59e,#58a6ff);border-radius:99px}
 .step{display:flex;justify-content:space-between;align-items:center;margin:9px 2px 14px;font-weight:800;color:#66718b}.badge{background:#eafff5;color:#179568;border:2px solid #c8f0df;padding:5px 10px;border-radius:99px}
-.card{background:#fff;border:3px solid #e9e1fb;border-radius:28px;padding:20px;box-shadow:0 10px 28px #5146a214;margin-bottom:16px}
-.hint{background:linear-gradient(135deg,#effff8,#eef7ff);border:3px solid #cdeee0;border-radius:22px;padding:14px;text-align:center}.hint b{display:block;color:#19976b;font-size:20px}.hint span{display:block;color:#71809a;margin-top:5px;line-height:1.6}
-.lesson{text-align:center;padding:18px 8px 6px}.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:100px;line-height:1;color:#354a92;text-shadow:0 5px #e8ecff}.thai{font-size:45px;font-weight:900;color:#21aa78}.roman{font-size:23px;color:#7b87a2}
-.meaning{margin:15px auto 18px;max-width:620px;background:#fff7d5;border:3px solid #ffe69a;border-radius:20px;padding:12px;font-weight:800;color:#7a641f;line-height:1.6}
-.example{width:100%;border:0;border-radius:20px;background:#eaf5ff;color:#3476d9;padding:15px;font-weight:900;font-size:18px;box-shadow:inset 0 0 0 3px #cfe7ff}
-.mic-zone{text-align:center;background:linear-gradient(145deg,#fff8ff,#f1f5ff);border:3px solid #e4d9ff;border-radius:28px;padding:20px}
-.mic-title{font-size:23px;font-weight:900;color:#6842bd}.mic-sub{color:#7c86a0;margin:6px 0 15px}
-.mic{width:112px;height:112px;border-radius:50%;border:7px solid #fff;background:linear-gradient(145deg,#a66ef6,#7047df);color:#fff;font-size:48px;box-shadow:0 8px 0 #5037a0,0 14px 28px #7047df45;display:inline-grid;place-items:center}
-.mic:active{transform:translateY(5px);box-shadow:0 3px 0 #5037a0}.mic.listening{animation:pulse 1.1s infinite}
-.status{min-height:28px;margin-top:15px;font-weight:900;color:#6842bd}.status.ok{color:#159868}.status.err{color:#e05b70}
-.tip{margin-top:14px;background:#fff6d8;border:2px solid #ffe49a;border-radius:18px;padding:10px;color:#80671e;font-size:14px;line-height:1.6}
-.result{margin-top:16px;background:#fff;border:3px solid #e7defb;border-radius:25px;padding:18px;text-align:center}
-.circle{width:130px;height:130px;border-radius:50%;border:12px solid #31be84;background:#f8fffb;margin:auto;display:grid;place-items:center;font-size:35px;font-weight:900}.circle small{display:block;font-size:15px;color:#77839c}
-.result h2{color:#17986a;margin:10px 0 4px}.detail{text-align:left;background:#f8faff;border-radius:20px;padding:14px;margin-top:12px;line-height:1.9}
+.card{background:#fff;border:3px solid #e9e1fb;border-radius:28px;padding:20px;box-shadow:0 10px 28px #5146a214;margin-bottom:16px}.hint{background:linear-gradient(135deg,#effff8,#eef7ff);border:3px solid #cdeee0;border-radius:22px;padding:14px;text-align:center}.hint b{display:block;color:#19976b;font-size:20px}.hint span{display:block;color:#71809a;margin-top:5px;line-height:1.6}
+.lesson{text-align:center;padding:18px 8px 6px}.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:100px;line-height:1;color:#354a92}.thai{font-size:45px;font-weight:900;color:#21aa78}.roman{font-size:23px;color:#7b87a2}
+.meaning{margin:15px auto 18px;max-width:620px;background:#fff7d5;border:3px solid #ffe69a;border-radius:20px;padding:12px;font-weight:800;color:#7a641f;line-height:1.6}.example{width:100%;border:0;border-radius:20px;background:#eaf5ff;color:#3476d9;padding:15px;font-weight:900;font-size:18px}
+.mic-zone{text-align:center;background:linear-gradient(145deg,#fff8ff,#f1f5ff);border:3px solid #e4d9ff;border-radius:28px;padding:20px}.mic-title{font-size:23px;font-weight:900;color:#6842bd}.mic-sub{color:#7c86a0;margin:6px 0 15px}
+.mic{width:112px;height:112px;border-radius:50%;border:7px solid #fff;background:linear-gradient(145deg,#a66ef6,#7047df);color:#fff;font-size:48px;box-shadow:0 8px 0 #5037a0,0 14px 28px #7047df45;display:inline-grid;place-items:center}.mic:active{transform:translateY(5px);box-shadow:0 3px 0 #5037a0}.mic.listening{animation:pulse 1.1s infinite}
+.status{min-height:28px;margin-top:15px;font-weight:900;color:#6842bd}.status.ok{color:#159868}.status.err{color:#e05b70}.tip{margin-top:14px;background:#fff6d8;border:2px solid #ffe49a;border-radius:18px;padding:10px;color:#80671e;font-size:14px;line-height:1.6}
+.result{margin-top:16px;background:#fff;border:3px solid #e7defb;border-radius:25px;padding:18px;text-align:center}.circle{width:130px;height:130px;border-radius:50%;border:12px solid #31be84;background:#f8fffb;margin:auto;display:grid;place-items:center;font-size:35px;font-weight:900}.circle small{display:block;font-size:15px;color:#77839c}.result h2{color:#17986a;margin:10px 0 4px}.detail{text-align:left;background:#f8faff;border-radius:20px;padding:14px;margin-top:12px;line-height:1.9}
+.next{display:none;margin-top:14px;width:100%;border:0;border-radius:20px;background:linear-gradient(135deg,#28b980,#58a6ff);color:white;padding:16px;font-weight:900;font-size:19px;box-shadow:0 6px 0 #168d68}.next.show{display:block}
 .footer{padding:18px;text-align:center;color:#a3abc0;font-size:12px}
-@keyframes pulse{0%{transform:scale(1);box-shadow:0 8px 0 #5037a0,0 0 0 0 #8d67ed55}50%{transform:scale(1.06);box-shadow:0 8px 0 #5037a0,0 0 0 18px #8d67ed00}100%{transform:scale(1);box-shadow:0 8px 0 #5037a0,0 0 0 0 #8d67ed00}}
+@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 8px 0 #5037a0,0 0 0 18px #8d67ed00}}
 @media(max-width:520px){.title{font-size:21px}.book{font-size:38px}.arabic{font-size:84px}.thai{font-size:39px}.card{padding:15px}.mic{width:105px;height:105px}}
+
+.db-card{text-align:center;background:linear-gradient(135deg,#fff,#f8f5ff)}
+.db-title{font-size:22px;font-weight:900;color:#6842bd}.db-text{color:#7c86a0;margin:7px 0}.db-count{display:inline-block;background:#ecfff7;border:2px solid #c9efdf;color:#198e68;padding:7px 12px;border-radius:99px;font-weight:800}
 </style>
 </head>
 <body>
-<header class="hero"><div class="hero-row"><div class="book">📖</div><div><div class="title">ฝึกอ่านอักษรอาหรับ</div><div class="sub">พร้อมตัจวีด • Arabic Kids</div></div></div>
-<div class="stats"><div class="stat">⭐ <b id="points">0</b><small>คะแนน</small></div><div class="stat">🏆 <b>0</b><small>Streak</small></div><div class="stat">💎 <b id="correct">0</b><small>ถูกต้อง</small></div></div></header>
+<header class="hero">
+  <div class="hero-row"><div class="book">📖</div><div><div class="title">ฝึกอ่านอักษรอาหรับ</div><div class="sub">พร้อมตัจวีด • Arabic Kids</div></div></div>
+  <div class="stats">
+    <div class="stat">⭐ <b id="points">0</b><small>คะแนน</small></div>
+    <div class="stat">🏆 <b id="streak">0</b><small>Streak</small></div>
+    <div class="stat">💎 <b id="correct">0</b><small>ถูกต้อง</small></div>
+  </div>
+</header>
+
 <main class="wrap">
-<div class="progress"><i></i></div><div class="step"><span>🌟 เรียนตัวแรกกัน!</span><span class="badge">1 / 26</span></div>
-<section class="card"><div class="hint"><b>📍 ออกเสียงจากตรงไหน?</b><span>เสียงออกจากช่องว่างภายในปาก โดยไม่สัมผัสลิ้น ฟัน หรือริมฝีปาก</span></div>
-<div class="lesson"><div class="arabic">ا</div><div class="thai">อาลิฟ</div><div class="roman">Alif</div>
-<div class="meaning">🔊 ความหมาย: ไม่มีเสียงพยัญชนะโดยตัวมันเอง<br>เป็นตัวแทนของเสียงยาว อา / อะ</div>
-<button class="example" id="exampleBtn" type="button">🔊 ฟังเสียงตัวอย่าง</button></div></section>
-<section class="card mic-zone"><div class="mic-title">🎤 ฝึกพูดตาม AI</div><div class="mic-sub">กดไมค์ แล้วพูดว่า <b>“อาลิฟ”</b></div>
-<button class="mic" id="micBtn" type="button" aria-label="เริ่มพูดตาม AI">🎙️</button>
-<div class="status" id="status">พร้อมฟัง 👂</div>
-<div class="tip">💡 ครั้งแรกให้กดไมค์ แล้วเลือก <b>อนุญาต</b> เมื่อ Safari ขอใช้ไมโครโฟน</div>
-<div class="result"><div class="circle"><div><span id="score">--</span><small>/100</small></div></div><h2 id="resultTitle">พร้อมเริ่ม! 🌈</h2>
-<div class="detail"><div>🎯 คำเป้าหมาย: <b>อาลิฟ</b></div><div>🎧 สิ่งที่ระบบได้ยิน: <b id="heard">—</b></div><div>📍 สถานะไมค์: <b id="micState">ยังไม่ได้เริ่ม</b></div></div></div></section>
-<div class="footer">🧒 Arabic Kids • Tajweed Practice • <b>v10 • MIC FIX</b></div>
+  <div class="progress"><i id="progressBar"></i></div>
+  <div class="step"><span id="stepText">🌟 เรียนตัวแรกกัน!</span><span class="badge" id="stepBadge">1 / 26</span></div>
+
+  <section class="card">
+    <div class="hint">
+      <b>📍 ออกเสียงจากตรงไหน?</b>
+      <span id="hintText">เสียงออกจากช่องว่างภายในปาก โดยไม่สัมผัสลิ้น ฟัน หรือริมฝีปาก</span>
+    </div>
+
+    <div class="lesson">
+      <div class="arabic" id="arabic">ا</div>
+      <div class="thai" id="thai">อาลิฟ</div>
+      <div class="roman" id="roman">Alif</div>
+      <div class="meaning" id="meaning">🔊 ความหมาย: ไม่มีเสียงพยัญชนะโดยตัวมันเอง<br>เป็นตัวแทนของเสียงยาว อา / อะ</div>
+      <button class="example" id="exampleBtn" type="button">🔊 ฟังเสียงตัวอย่าง</button>
+    </div>
+  </section>
+
+  <section class="card mic-zone">
+    <div class="mic-title">🎤 ฝึกพูดตาม AI</div>
+    <div class="mic-sub">กดไมค์ แล้วพูดว่า <b id="speakTarget">“อาลิฟ”</b></div>
+    <button class="mic" id="micBtn" type="button" aria-label="เริ่มพูดตาม AI">🎙️</button>
+    <div class="status" id="status">พร้อมฟัง 👂</div>
+    <div class="tip">💡 ครั้งแรกให้กดไมค์ แล้วเลือก <b>อนุญาต</b> เมื่อ Safari ขอใช้ไมโครโฟน</div>
+
+    <div class="result">
+      <div class="circle"><div><span id="score">--</span><small>/100</small></div></div>
+      <h2 id="resultTitle">พร้อมเริ่ม! 🌈</h2>
+      <div class="detail">
+        <div>🎯 คำเป้าหมาย: <b id="targetDetail">อาลิฟ</b></div>
+        <div>🎧 สิ่งที่ระบบได้ยิน: <b id="heard">—</b></div>
+        <div>📍 สถานะไมค์: <b id="micState">ยังไม่ได้เริ่ม</b></div>
+      </div>
+      <button class="next" id="nextBtn" type="button">ไปบทถัดไป ➜</button>
+    </div>
+  </section>
+
+  <section class="card db-card">
+    <div class="db-title">🗃️ ฐานคำศัพท์</div>
+    <div class="db-text">คำเรียนและคะแนนจะถูกเก็บไว้ในฐานข้อมูลของเว็บ (IndexedDB) อัตโนมัติ</div>
+    <div class="db-count" id="dbCount">กำลังโหลดฐานข้อมูล…</div>
+  </section>
+
+  <div class="footer">🧒 Arabic Kids • Tajweed Practice • <b>V12 • SINGLE INDEX • DB</b></div>
 </main>
+
 <script>
 (()=>{'use strict';
+
+const DB_NAME='ArabicKidsDB', DB_VERSION=1, STORE_WORDS='words', STORE_PROGRESS='progress';
+const SEED_WORDS=[
+  {id:1,arabic:'ا',thai:'อาลิฟ',roman:'Alif',meaning:'ไม่มีเสียงพยัญชนะโดยตัวมันเอง เป็นตัวแทนของเสียงยาว อา / อะ',hint:'เสียงออกจากช่องว่างภายในปาก โดยไม่สัมผัสลิ้น ฟัน หรือริมฝีปาก',targets:['أليف','اليف','الف','alif','อาลิฟ','อาลีฟ']},
+  {id:2,arabic:'ب',thai:'บาอ์',roman:'Baa',meaning:'เสียง บ / b',hint:'เสียงออกจากริมฝีปากทั้งสองข้างประกบกัน',targets:['باء','با','baa','บาอ์','บา']}
+];
+
 const $=id=>document.getElementById(id);
-const micBtn=$('micBtn'),status=$('status'),heard=$('heard'),score=$('score'),resultTitle=$('resultTitle'),micState=$('micState'),points=$('points'),correct=$('correct'),exampleBtn=$('exampleBtn');
-let recognition=null,listening=false,pts=0;
-const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-const setStatus=(t,c='')=>{status.textContent=t;status.className='status '+c};
-function resetButton(){listening=false;micBtn.classList.remove('listening');micBtn.textContent='🎙️'}
-function setupRecognition(){
+const micBtn=$('micBtn'), status=$('status'), heard=$('heard'), score=$('score'),
+resultTitle=$('resultTitle'), micState=$('micState'), points=$('points'),
+correct=$('correct'), streak=$('streak'), exampleBtn=$('exampleBtn'), nextBtn=$('nextBtn');
+
+let recognition=null, listening=false, currentIndex=0, pts=0, correctCount=0, streakCount=0, words=[];
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(DB_NAME,DB_VERSION);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(STORE_WORDS)) db.createObjectStore(STORE_WORDS,{keyPath:'id'});
+      if(!db.objectStoreNames.contains(STORE_PROGRESS)) db.createObjectStore(STORE_PROGRESS,{keyPath:'key'});
+    };
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function dbPut(store,value){
+  const db=await openDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(store,'readwrite'); tx.objectStore(store).put(value);
+    tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+  });
+}
+async function dbGetAll(store){
+  const db=await openDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(store,'readonly'), req=tx.objectStore(store).getAll();
+    req.onsuccess=()=>resolve(req.result||[]); req.onerror=()=>reject(req.error);
+  });
+}
+async function dbGet(store,key){
+  const db=await openDB();
+  return new Promise((resolve,reject)=>{
+    const req=db.transaction(store,'readonly').objectStore(store).get(key);
+    req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+  });
+}
+async function initDB(){
+  try{
+    const existing=await dbGetAll(STORE_WORDS);
+    if(existing.length===0) for(const w of SEED_WORDS) await dbPut(STORE_WORDS,w);
+    words=(await dbGetAll(STORE_WORDS)).sort((a,b)=>a.id-b.id);
+    const p=await dbGet(STORE_PROGRESS,'user');
+    if(p){pts=p.points||0;correctCount=p.correct||0;streakCount=p.streak||0;currentIndex=Math.min(p.currentIndex||0,words.length-1);}
+    renderStats(); renderWord(); $('dbCount').textContent=`มี ${words.length} คำในฐานข้อมูล`;
+  }catch(e){
+    words=SEED_WORDS.slice(); renderWord();
+    $('dbCount').textContent='ฐานข้อมูลไม่พร้อม ใช้ข้อมูลสำรองชั่วคราว';
+  }
+}
+async function saveProgress(){
+  try{await dbPut(STORE_PROGRESS,{key:'user',points:pts,correct:correctCount,streak:streakCount,currentIndex});}catch(e){}
+}
+function renderStats(){points.textContent=pts;correct.textContent=correctCount;streak.textContent=streakCount;}
+function word(){return words[currentIndex]||SEED_WORDS[0]}
+function renderWord(){
+  const w=word();
+  $('arabic').textContent=w.arabic; $('thai').textContent=w.thai; $('roman').textContent=w.roman;
+  $('meaning').innerHTML='🔊 ความหมาย: '+w.meaning;
+  $('hintText').textContent=w.hint; $('speakTarget').textContent='“'+w.thai+'”'; $('targetDetail').textContent=w.thai;
+  $('stepText').textContent=currentIndex===0?'🌟 เรียนตัวแรกกัน!':'🌟 เรียนตัวถัดไปกัน!';
+  $('stepBadge').textContent=`${currentIndex+1} / ${Math.max(26,words.length)}`;
+  $('progressBar').style.width=`${Math.min(100,((currentIndex+1)/Math.max(26,words.length))*100)}%`;
+  resetUI();
+}
+function resetUI(){
+  score.textContent='--'; heard.textContent='—'; resultTitle.textContent='พร้อมเริ่ม! 🌈';
+  nextBtn.classList.remove('show'); micState.textContent='ยังไม่ได้เริ่ม'; setStatus('พร้อมฟัง 👂');
+}
+function setStatus(t,c=''){status.textContent=t;status.className='status '+c}
+function reset(){listening=false;micBtn.classList.remove('listening');micBtn.textContent='🎙️'}
+function norm(s){return(s||'').toLowerCase().normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[.,!?"“”']/g,'').replace(/\s+/g,'').trim()}
+function lev(a,b){
+  const d=Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));
+  for(let i=0;i<=a.length;i++)d[i][0]=i; for(let j=0;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return d[a.length][b.length]
+}
+function calc(text){
+  const t=norm(text); if(!t)return 0;
+  const targets=word().targets||[word().thai,word().roman];
+  let best=0;
+  for(const x of targets){const n=norm(x),dist=lev(t,n),sim=Math.max(0,1-dist/Math.max(t.length,n.length));best=Math.max(best,Math.round(sim*100))}
+  return best;
+}
+async function evaluate(text){
+  const t=(text||'').trim(), s=calc(t); heard.textContent=t||'ไม่พบเสียง'; score.textContent=s;
+  if(s>=80){
+    resultTitle.textContent='เก่งมาก! ถูกต้อง 🎉'; setStatus('อ่านถูกแล้ว! ไปคำถัดไปได้เลย 👍','ok');
+    pts+=s; correctCount++; streakCount++; renderStats();
+    await dbPut(STORE_PROGRESS,{key:'user',points:pts,correct:correctCount,streak:streakCount,currentIndex});
+    await dbPut(STORE_WORDS,{...word(),lastScore:s,lastHeard:t,passed:true});
+    nextBtn.classList.add('show');
+    setTimeout(goNext,900);
+  }else{
+    streakCount=0; renderStats(); await saveProgress();
+    resultTitle.textContent='ยังไม่ผ่านนะ ลองใหม่อีกครั้ง 💪';
+    setStatus('ยังไม่ตรงกับคำเป้าหมาย ลองพูดชัด ๆ อีกครั้ง','err');
+    nextBtn.classList.remove('show');
+  }
+}
+function goNext(){
+  if(currentIndex<words.length-1){currentIndex++;saveProgress();renderWord();window.scrollTo({top:0,behavior:'smooth'});}
+  else{setStatus('จบคำที่มีในฐานข้อมูลแล้ว 🎉','ok');}
+}
+function setup(){
+  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!Recognition)return false;
-  recognition=new Recognition();
-  recognition.lang='ar-SA';
-  recognition.continuous=false;
-  recognition.interimResults=true;
-  recognition.maxAlternatives=5;
+  recognition=new Recognition(); recognition.lang='ar-SA'; recognition.continuous=false; recognition.interimResults=true; recognition.maxAlternatives=5;
   recognition.onstart=()=>{listening=true;micBtn.classList.add('listening');micBtn.textContent='⏹️';micState.textContent='กำลังฟัง…';setStatus('กำลังฟัง… พูดได้เลย 👂')};
   recognition.onresult=e=>{
-    let text='';
-    for(let i=e.resultIndex;i<e.results.length;i++) text+=e.results[i][0].transcript;
-    heard.textContent=text||'กำลังฟัง…';
-    if(e.results[e.results.length-1].isFinal)evaluate(text);
+    let text=''; for(let i=e.resultIndex;i<e.results.length;i++)text+=e.results[i][0].transcript;
+    heard.textContent=text||'กำลังฟัง…'; if(e.results[e.results.length-1].isFinal)evaluate(text);
   };
   recognition.onerror=e=>{
-    resetButton();
-    const m=e.error==='not-allowed'||e.error==='service-not-allowed'?'ไมค์ถูกปฏิเสธ — เปิดการอนุญาตไมโครโฟนของเว็บไซต์ก่อนนะ 🎤':e.error==='no-speech'?'ไม่ได้ยินเสียง ลองพูดใกล้ไมค์อีกครั้ง 👂':e.error==='audio-capture'?'หาไมโครโฟนไม่พบ ตรวจสอบไมโครโฟนของเครื่องนะ 🎤':'ระบบฟังเสียงขัดข้อง ('+e.error+')';
-    setStatus(m,'err');
-    micState.textContent='ต้องตรวจสอบ';
+    reset();
+    const m=e.error==='not-allowed'||e.error==='service-not-allowed'?'ไมค์ถูกปฏิเสธ — เปิดการอนุญาตไมโครโฟนของเว็บไซต์ก่อนนะ 🎤':
+      e.error==='no-speech'?'ไม่ได้ยินเสียง ลองพูดใกล้ไมค์อีกครั้ง 👂':
+      e.error==='audio-capture'?'หาไมโครโฟนไม่พบ ตรวจสอบไมโครโฟนของเครื่องนะ 🎤':'ระบบฟังเสียงขัดข้อง ('+e.error+')';
+    setStatus(m,'err'); micState.textContent='ต้องตรวจสอบ';
   };
-  recognition.onend=()=>{if(listening){resetButton();micState.textContent='หยุดฟังแล้ว'}};
+  recognition.onend=()=>{if(listening){reset();micState.textContent='หยุดฟังแล้ว'}};
   return true;
 }
-function evaluate(text){
-  const t=(text||'').trim();
-  heard.textContent=t||'ไม่พบเสียง';
-  const s=t?85:0; score.textContent=s;
-  if(t){resultTitle.textContent='ทำได้ดี! 🌟';setStatus('ระบบได้ยินแล้ว 👍','ok');points.textContent=++pts;correct.textContent=Number(correct.textContent)+1}
-}
 function start(){
-  if(listening){try{recognition?.stop()}catch(e){}return}
-  // สำคัญบน iPhone/iPad: ต้องเริ่ม SpeechRecognition จาก user gesture โดยตรง
-  // ห้าม await getUserMedia() ก่อน recognition.start() เพราะจะทำให้ user activation หมดอายุ
-  if(!setupRecognition()){
-    setStatus('เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียงบนเว็บ ลองเปิดลิงก์ด้วย Safari ล่าสุด 📱','err');
-    micState.textContent='ไม่รองรับ';
-    return;
-  }
-  heard.textContent='กำลังเปิดไมค์…';
-  micState.textContent='กำลังขอสิทธิ์ไมค์…';
-  try{
-    recognition.start();
-  }catch(e){
-    resetButton();
-    micState.textContent='เริ่มไมค์ไม่สำเร็จ';
-    setStatus('เริ่มไมค์ไม่สำเร็จ ลองกดอีกครั้งนะ 🔄','err');
-  }
+  if(listening){try{recognition.stop()}catch(e){}return}
+  if(!setup()){setStatus('เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง ลองเปิดด้วย Safari ล่าสุด 📱','err');micState.textContent='ไม่รองรับ';return}
+  heard.textContent='กำลังเปิดไมค์…';micState.textContent='กำลังขอสิทธิ์ไมค์…';
+  try{recognition.start()}catch(e){reset();micState.textContent='เริ่มไมค์ไม่สำเร็จ';setStatus('เริ่มไมค์ไม่สำเร็จ ลองกดอีกครั้งนะ 🔄','err')}
 }
-micBtn.addEventListener('click',start,{passive:true});
+micBtn.addEventListener('click',start);
+nextBtn.addEventListener('click',goNext);
 exampleBtn.addEventListener('click',()=>{
-  if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Alif');u.lang='ar-SA';u.rate=.75;speechSynthesis.speak(u);setStatus('กำลังเปิดเสียงตัวอย่าง 🔊','ok')}
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(word().roman); u.lang='ar-SA';u.rate=.75;speechSynthesis.speak(u);
+    setStatus('กำลังเปิดเสียงตัวอย่าง 🔊','ok');
+  }
 });
+initDB();
 })();
 </script>
 </body></html>

@@ -149,6 +149,9 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
         <b>กดปุ่มแล้วพูดว่า</b>
         <div style="font-size:27px;color:#7442d8;font-weight:900;margin:5px">“อาลิฟ”</div>
         <button class="mic" id="micVisual" type="button" aria-label="กดไมโครโฟนเพื่อพูด">🎙️<span class="mic-label">กดไมค์เพื่อพูด</span></button>
+        <div id="micSupportStatus" style="margin-top:6px;font-size:12px;color:#8b93a8">
+          ไมโครโฟน: พร้อมตรวจสอบเมื่อกด
+        </div>
         <div id="listenStatus" style="margin-top:8px;color:#75809a">แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ</div>
       </div>
       <div class="scorebox">
@@ -185,7 +188,7 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
   pointer-events:none;
 }
 </style>
-<div id="appWatermark">Arabic Kids • v7 • MIC FIX</div>
+<div id="appWatermark">Arabic Kids • v8 • MIC IOS FIX</div>
 
 </body>
 <script>
@@ -385,6 +388,8 @@ function setListenUI(on){
   if(st)st.textContent=on
     ?"กำลังฟัง… พูดคำเดียวให้ชัด แล้วเว้นจังหวะ"
     :"แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ";
+  const sup=S("micSupportStatus");
+  if(sup) sup.textContent=on ? "🟢 กำลังใช้ไมโครโฟน" : "🎙️ พร้อมรับเสียง";
 }
 
 function micHint(){
@@ -478,7 +483,6 @@ function createRecognition(){
   x.onstart=()=>{
     setListenUI(true);
     micHint();
-    startAudioMeter();
     clearTimeout(listenTimer);
     listenTimer=setTimeout(()=>{try{x.stop()}catch(e){}},6500);
   };
@@ -538,11 +542,18 @@ function createRecognition(){
  * The click handler immediately changes the UI, then asks for microphone
  * permission. There is no second click/touch handler.
  */
-window.beginListening=async function(){
+window.beginListening=function(){
+  // IMPORTANT for iPhone/iPad Safari:
+  // SpeechRecognition.start() must be called directly from the user gesture.
+  // Do not await getUserMedia() before start(), because that can lose the
+  // user-activation context and make the microphone appear to do nothing.
   if(listening){
     try{if(r)r.stop()}catch(e){}
     return;
   }
+
+  const st=S("listenStatus");
+  if(st)st.textContent="⏳ กำลังเปิดไมโครโฟน…";
 
   if(!window.isSecureContext){
     showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0);
@@ -551,51 +562,32 @@ window.beginListening=async function(){
 
   if(!SpeechRec){
     showResult(false,
-      "เบราว์เซอร์นี้ไม่รองรับการฟังเสียงบนเว็บ กรุณาเปิดด้วย Safari รุ่นล่าสุด",
+      "Safari รุ่นนี้ไม่รองรับระบบฟังเสียงของเว็บ กรุณาอัปเดต iOS/Safari แล้วลองใหม่",
       0);
     return;
   }
 
-  // Immediate feedback proves the button was actually pressed.
-  const st=S("listenStatus");
-  if(st)st.textContent="⏳ กำลังขออนุญาตใช้ไมโครโฟน…";
-
   finalTranscript="";
   heardAlternatives=[];
+  clearTimeout(listenTimer);
+  clearTimeout(silenceTimer);
 
   try{
-    // This is called directly from the button's click event.
-    // iPhone will show its native microphone permission dialog if needed.
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-      mediaStream=await navigator.mediaDevices.getUserMedia({
-        audio:{
-          echoCancellation:true,
-          noiseSuppression:true,
-          autoGainControl:true
-        }
-      });
-    }
-
     r=createRecognition();
     if(!r)throw new Error("NO_RECOGNITION");
 
-    // Start only after the microphone permission has been granted.
+    // Keep this synchronous: it is intentionally NOT inside an await.
+    // Safari can then associate the microphone request with the tap.
     r.start();
-
   }catch(e){
-    stopAudioMeter();
     setListenUI(false);
-
-    const denied=e && (
-      e.name==="NotAllowedError" ||
-      e.name==="PermissionDeniedError"
-    );
-
-    showResult(false,
-      denied
-        ?"ยังไม่ได้อนุญาตไมโครโฟน — ไปที่การตั้งค่า Safari > ไมโครโฟน แล้วเลือกอนุญาต"
-        :"เปิดไมโครโฟนไม่ได้: "+(e.message||"ลองกดใหม่อีกครั้ง"),
-      0);
+    stopAudioMeter();
+    const msg=(e && e.name==="InvalidStateError")
+      ?"กำลังเปิดไมค์อยู่แล้ว ลองแตะอีกครั้ง"
+      :(e && e.name==="NotAllowedError")
+      ?"Safari ไม่อนุญาตไมโครโฟน — ไปที่การตั้งค่า > Safari > ไมโครโฟน แล้วเลือกอนุญาต"
+      :"เปิดระบบฟังเสียงไม่ได้: "+(e.message||e.name||"ลองรีเฟรชหน้าเว็บแล้วแตะใหม่");
+    showResult(false,msg,0);
   }
 };
 

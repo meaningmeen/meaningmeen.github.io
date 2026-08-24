@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ครูอาหรับ — ฝึกอ่านภาษาอาหรับ</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#162033;--muted:#6b7890;--blue:#2166df;--dark:#10182d;--ok:#16864b;--bad:#c63c3c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif}
+main{max-width:820px;margin:auto;padding:28px 18px 50px}.brand{font-weight:800;color:var(--blue);font-size:22px}.title{font-size:42px;line-height:1.15;margin:12px 0 8px;font-weight:850}.sub{font-size:20px;color:var(--muted);margin-bottom:24px}
+.card{background:var(--card);border-radius:30px;padding:28px;box-shadow:0 10px 35px #1d31550e;margin:18px 0}
+h2{font-size:28px;margin:0 0 18px}.lesson{width:100%;padding:18px 20px;border:1px solid #e5eaf2;background:white;border-radius:20px;font-size:20px;text-align:left}
+.word{background:#f7f9fc;border-radius:25px;padding:28px;text-align:center}.arabic{font-size:92px;line-height:1.1;font-family:serif}.roman{font-size:20px;color:var(--muted);margin-top:8px}.thai{font-size:40px;font-weight:800;margin-top:4px}.desc{font-size:18px;color:var(--muted)}
+.row{display:flex;gap:14px;margin-top:18px}.btn{flex:1;border:0;border-radius:20px;padding:18px;font-size:20px;font-weight:750;cursor:pointer}.sample{background:#eaf2ff;color:var(--blue)}.speak{background:var(--dark);color:white}.speak.listening{background:#bd3030}.result{margin-top:18px;background:#f7f9fc;border-radius:22px;padding:22px;text-align:center}.score{font-size:38px;font-weight:850}.heard{font-size:22px;margin-top:8px}.hint{color:var(--muted);margin-top:8px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.progress{height:12px;background:#e5e9ef;border-radius:99px;overflow:hidden;margin:14px 0 24px}.bar{height:100%;background:var(--blue);width:25%}
+@media(max-width:600px){main{padding:22px 16px}.title{font-size:35px}.arabic{font-size:76px}.thai{font-size:34px}.card{padding:22px;border-radius:26px}.row{flex-direction:column}}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">🇹🇭 ครูอาหรับ</div>
+  <div class="title">ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</div>
+  <div class="sub">ฟังเสียง → อ่านตาม → ให้ระบบตรวจคำอ่าน</div>
+
+  <div class="card">
+    <h2>เลือกบทเรียน</h2>
+    <button class="lesson" onclick="selectWord('alif')">บทที่ 1 — ตัวอักษรพื้นฐาน</button>
+  </div>
+
+  <div class="card">
+    <h2>ฝึกอ่าน</h2>
+    <div class="progress"><div class="bar"></div></div>
+    <div class="word">
+      <div class="arabic">ا</div>
+      <div class="roman">Alif</div>
+      <div class="thai">อาลิฟ</div>
+      <div class="desc">ตัวอักษร อาลิฟ</div>
+    </div>
+
+    <div class="row">
+      <button class="btn sample" onclick="playSample()">🔊 ฟังตัวอย่าง</button>
+      <button id="mic" class="btn speak" onclick="startMic()">🎤 พูดตาม</button>
+    </div>
+
+    <div id="result" class="result">
+      <div class="score">พร้อมฝึก</div>
+      <div class="hint">กด “พูดตาม” แล้วพูดว่า “อาลิฟ”</div>
+    </div>
+  </div>
+</main>
+
+<script>
+let recognition=null, listening=false;
+const target=['อาลิฟ','alif','alif','ألف','الف'];
+
+function normalize(s){
+  return (s||'').toLowerCase().replace(/[.,!?؟،]/g,'').replace(/\s+/g,' ').trim();
+}
+function playSample(){
+  const u=new SpeechSynthesisUtterance('อาลิฟ');
+  u.lang='th-TH'; u.rate=.78; speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function startMic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById('mic'), box=document.getElementById('result');
+  if(!SR){
+    box.innerHTML='<div class="score bad">เปิดไมค์ไม่ได้</div><div class="hint">เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาเปิดเว็บด้วย Safari/Chrome บน HTTPS และอนุญาตไมโครโฟน</div>';
+    return;
+  }
+  if(listening){ recognition.stop(); return; }
+  recognition=new SR();
+  recognition.lang='th-TH';
+  recognition.continuous=false;
+  recognition.interimResults=false;
+  recognition.maxAlternatives=5;
+  recognition.onstart=()=>{listening=true;btn.classList.add('listening');btn.textContent='⏹️ กำลังฟัง...';box.innerHTML='<div class="score">กำลังฟัง</div><div class="hint">พูดว่า “อาลิฟ” ชัด ๆ</div>';};
+  recognition.onresult=e=>{
+    const alts=[...e.results[0]].map(x=>normalize(x.transcript));
+    const heard=alts[0]||'';
+    const good=alts.some(x=>target.some(t=>x===normalize(t)||x.includes(normalize(t))));
+    box.innerHTML=good
+      ? '<div class="score ok">✓ ผ่าน</div><div class="heard">ระบบได้ยิน: “'+heard+'”</div><div class="hint">ออกเสียงได้ใกล้เคียงแล้ว</div>'
+      : '<div class="score bad">ยังไม่ตรง</div><div class="heard">ระบบได้ยิน: “'+(heard||'ไม่พบเสียง')+'”</div><div class="hint">ลองพูดว่า “อาลิฟ” อีกครั้ง</div>';
+  };
+  recognition.onerror=e=>{
+    let msg='ลองใหม่อีกครั้ง';
+    if(e.error==='not-allowed') msg='กรุณาอนุญาตการใช้ไมโครโฟนในการตั้งค่าเบราว์เซอร์';
+    if(e.error==='no-speech') msg='ไม่ได้ยินเสียง ลองพูดใกล้ไมโครโฟนขึ้น';
+    box.innerHTML='<div class="score bad">เกิดข้อผิดพลาด</div><div class="hint">'+msg+'</div>';
+  };
+  recognition.onend=()=>{listening=false;btn.classList.remove('listening');btn.textContent='🎤 พูดตาม';};
+  recognition.start();
+}
+function selectWord(){ alert('ตอนนี้ตัวอย่างบทเรียนแรกคือ อาลิฟ (ا) — เพิ่มบทเรียนอื่นได้ภายหลัง'); }
+</script>
+</body>
+</html>

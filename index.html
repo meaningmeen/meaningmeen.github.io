@@ -128,6 +128,59 @@ main{padding:24px 28px 45px;max-width:1420px;width:100%;margin:auto}
   <div class="footer-note">💡 เคล็ดลับ: ฟังตัวอย่างก่อน แล้วออกเสียงให้ชัด 1 ครั้ง ระบบจะให้คะแนนตามความใกล้เคียงและจะแสดงผลทันที</div>
 </main>
 </div>
+
+<script>
+(function(){
+  function ready(){
+    const q=id=>document.getElementById(id);
+    const safeAlert=msg=>{try{alert(msg)}catch(e){}};
+
+    // Ensure example button always works independently of the scoring code.
+    const ex=q("ex");
+    if(ex){
+      ex.onclick=function(){
+        const text=(window.L&&window.L[window.i||0]&&window.L[window.i||0][0])||"ا";
+        if(!("speechSynthesis" in window)){
+          safeAlert("เครื่องนี้ไม่รองรับเสียงตัวอย่าง");
+          return;
+        }
+        speechSynthesis.cancel();
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang="ar-SA"; u.rate=.6; u.volume=1;
+        setTimeout(function(){
+          const vs=speechSynthesis.getVoices();
+          const v=vs.find(x=>/^ar/i.test(x.lang))||vs.find(x=>/arab/i.test(x.name||""));
+          if(v)u.voice=v;
+          speechSynthesis.speak(u);
+        },150);
+      };
+    }
+
+    // Ensure microphone buttons are clickable even if the main JS failed.
+    const sp=q("sp"), mic=q("micVisual");
+    function micFallback(){
+      if(window.beginListening){ window.beginListening(); return; }
+      safeAlert("ระบบฟังเสียงยังไม่พร้อม กรุณาเปิดหน้าเว็บใหม่ แล้วอนุญาตไมโครโฟน");
+    }
+    if(sp)sp.onclick=micFallback;
+    if(mic)mic.onclick=micFallback;
+
+    // Make every character in the left menu clickable.
+    document.querySelectorAll(".char").forEach(el=>{
+      el.addEventListener("click",function(){
+        const n=Number(this.dataset.n);
+        if(Number.isFinite(n) && window.sel && window.draw){
+          window.i=n;
+          window.sel.value=n;
+          window.draw();
+        }
+      });
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready);
+  else ready();
+})();
+</script>
 </body>
 <script>
 const L=[
@@ -296,7 +349,7 @@ S("ex").onclick=()=>{
 // iOS Safari can populate voices only after voiceschanged.
 if("speechSynthesis" in window){
   speechSynthesis.getVoices();
-  speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged=()=>{try{speechSynthesis.getVoices()}catch(e){}};
 }
 
 
@@ -546,4 +599,57 @@ const _oldDraw=draw;
 draw=function(){_oldDraw();buildCharList();updateTopStats();};
 
 draw();
-</script></body></html>
+</script>
+<script>
+(function(){
+  function ready(){
+    const q=id=>document.getElementById(id);
+    const safeAlert=msg=>{try{alert(msg)}catch(e){}};
+
+    // Ensure example button always works independently of the scoring code.
+    const ex=q("ex");
+    if(ex){
+      ex.onclick=function(){
+        const text=(window.L&&window.L[window.i||0]&&window.L[window.i||0][0])||"ا";
+        if(!("speechSynthesis" in window)){
+          safeAlert("เครื่องนี้ไม่รองรับเสียงตัวอย่าง");
+          return;
+        }
+        speechSynthesis.cancel();
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang="ar-SA"; u.rate=.6; u.volume=1;
+        setTimeout(function(){
+          const vs=speechSynthesis.getVoices();
+          const v=vs.find(x=>/^ar/i.test(x.lang))||vs.find(x=>/arab/i.test(x.name||""));
+          if(v)u.voice=v;
+          speechSynthesis.speak(u);
+        },150);
+      };
+    }
+
+    // Ensure microphone buttons are clickable even if the main JS failed.
+    const sp=q("sp"), mic=q("micVisual");
+    function micFallback(){
+      if(window.beginListening){ window.beginListening(); return; }
+      safeAlert("ระบบฟังเสียงยังไม่พร้อม กรุณาเปิดหน้าเว็บใหม่ แล้วอนุญาตไมโครโฟน");
+    }
+    if(sp)sp.onclick=micFallback;
+    if(mic)mic.onclick=micFallback;
+
+    // Make every character in the left menu clickable.
+    document.querySelectorAll(".char").forEach(el=>{
+      el.addEventListener("click",function(){
+        const n=Number(this.dataset.n);
+        if(Number.isFinite(n) && window.sel && window.draw){
+          window.i=n;
+          window.sel.value=n;
+          window.draw();
+        }
+      });
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready);
+  else ready();
+})();
+</script>
+</body></html>

@@ -171,51 +171,6 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
 </main>
 </div>
 
-<script>
-(function(){
-  function ready(){
-    const q=id=>document.getElementById(id);
-    const safeAlert=msg=>{try{alert(msg)}catch(e){}};
-
-    // Ensure example button always works independently of the scoring code.
-    const ex=q("ex");
-    if(ex){
-      ex.onclick=function(){
-        const text=(window.L&&window.L[window.i||0]&&window.L[window.i||0][0])||"ا";
-        if(!("speechSynthesis" in window)){
-          safeAlert("เครื่องนี้ไม่รองรับเสียงตัวอย่าง");
-          return;
-        }
-        speechSynthesis.cancel();
-        const u=new SpeechSynthesisUtterance(text);
-        u.lang="ar-SA"; u.rate=.6; u.volume=1;
-        setTimeout(function(){
-          const vs=speechSynthesis.getVoices();
-          const v=vs.find(x=>/^ar/i.test(x.lang))||vs.find(x=>/arab/i.test(x.name||""));
-          if(v)u.voice=v;
-          speechSynthesis.speak(u);
-        },150);
-      };
-    }
-
-    // Do not overwrite the real microphone handler. The main script requests permission.
-    const mic=q("micVisual");
-    // Make every character in the left menu clickable.
-    document.querySelectorAll(".char").forEach(el=>{
-      el.addEventListener("click",function(){
-        const n=Number(this.dataset.n);
-        if(Number.isFinite(n) && window.sel && window.draw){
-          window.i=n;
-          window.sel.value=n;
-          window.draw();
-        }
-      });
-    });
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready);
-  else ready();
-})();
-</script>
 </body>
 <script>
 const L=[
@@ -391,6 +346,7 @@ if("speechSynthesis" in window){
 
 const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
 let r=null;
+let listening=false;
 let finalTranscript="";
 let heardAlternatives=[];
 let listenTimer=null;
@@ -406,9 +362,13 @@ function setListenUI(on){
   if(mic){
     mic.disabled=false;
     mic.classList.toggle("listening-ring",on);
-    mic.innerHTML=on?'🔴<span class="mic-label">กำลังฟัง… แตะเพื่อหยุด</span>':'🎙️<span class="mic-label">กดไมค์เพื่อพูด</span>';
+    mic.innerHTML=on
+      ? '🔴<span class="mic-label">กำลังฟัง… แตะเพื่อหยุด</span>'
+      : '🎙️<span class="mic-label">กดไมค์เพื่อพูด</span>';
   }
-  if(st) st.textContent=on?"กำลังฟัง… พูดคำเดียวให้ชัด แล้วเว้นจังหวะ":"แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ";
+  if(st)st.textContent=on
+    ?"กำลังฟัง… พูดคำเดียวให้ชัด แล้วเว้นจังหวะ"
+    :"แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ";
 }
 
 function micHint(){
@@ -416,47 +376,6 @@ function micHint(){
   if(!res)return;
   res.className="result";
   res.innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง แล้วเว้นจังหวะ</p><p style='font-size:15px'>พูดใกล้ไมค์และอยู่ในที่เงียบ</p>";
-}
-
-function firework(){
-  const chars=["🎉","✨","🎊","⭐","💥"];
-  for(let n=0;n<24;n++){
-    const el=document.createElement("div");
-    el.className="firework"; el.textContent=chars[n%chars.length];
-    const a=(Math.PI*2*n)/24, rr=90+Math.random()*180;
-    el.style.setProperty("--x",`${Math.cos(a)*rr}px`);
-    el.style.setProperty("--y",`${Math.sin(a)*rr}px`);
-    document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
-  }
-}
-
-function showResult(ok,heard,score){
-  const n=Math.round(Math.max(0,Math.min(100,score||0)));
-  if(S("heardWord"))S("heardWord").textContent=heard;
-  if(S("similarity"))S("similarity").textContent=n+"%";
-  if(S("position"))S("position").textContent=ok?"ตรงตามคำเป้าหมาย":"ต้องปรับการออกเสียง";
-  if(S("scoreBig"))S("scoreBig").innerHTML=n+'<span>/100</span>';
-  if(S("scoreText")){
-    S("scoreText").textContent=ok?"เยี่ยมมาก! 🎉":"ลองอีกครั้ง 💪";
-    S("scoreText").style.color=ok?"#119660":"#c44c45";
-  }
-  if(S("res"))S("res").className="result "+(ok?"ok":"bad");
-
-  if(ok){
-    correctCount++; streak++; totalScore+=n;
-    localStorage.setItem("arabicTotalScore",totalScore);
-    localStorage.setItem("arabicCorrect",correctCount);
-    localStorage.setItem("arabicStreak",streak);
-    if(S("res"))S("res").innerHTML="<h2>🎉 ถูกต้อง!</h2><p>ระบบได้ยิน “"+heard+"”</p><p><b>"+n+"/100</b> • 🔥 Streak "+streak+"</p>";
-    firework();
-  }else{
-    streak=0; localStorage.setItem("arabicStreak",streak);
-    const alifWrong=(i===0 && /(^|\s)(อาลี|อาลิ)(\s|$)/.test(norm(heard)) && !/อาลิฟ/.test(norm(heard)));
-    const tip=alifWrong?"⚠️ “อาลี” ไม่ถือว่าถูก — ต้องออกเสียงท้าย <b>ฟ</b> ให้ครบ":"ลองฟังตัวอย่าง แล้วพูดใหม่ให้ชัดขึ้น";
-    if(S("res"))S("res").innerHTML="<h2>ยังไม่ตรง</h2><p>"+tip+"</p><p>ระบบได้ยิน: <b>“"+heard+"”</b> • คะแนน <b>"+n+"/100</b></p>";
-  }
-  if(typeof renderStats==="function")renderStats();
-  if(typeof draw==="function")draw();
 }
 
 function bestRecognitionText(){
@@ -469,100 +388,205 @@ function bestRecognitionText(){
   return {text:bestText||finalTranscript,score:Math.max(0,bestScore)};
 }
 
+function stopAudioMeter(){
+  if(volumeRAF)cancelAnimationFrame(volumeRAF);
+  volumeRAF=null;
+  if(mediaStream){
+    mediaStream.getTracks().forEach(t=>t.stop());
+    mediaStream=null;
+  }
+  if(audioCtx){
+    try{audioCtx.close()}catch(e){}
+    audioCtx=null;
+  }
+}
+
+async function startAudioMeter(){
+  try{
+    if(!mediaStream)return;
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const source=audioCtx.createMediaStreamSource(mediaStream);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=512;
+    source.connect(analyser);
+    const data=new Uint8Array(analyser.fftSize);
+    let lastLoud=Date.now();
+    const tick=()=>{
+      if(!listening||!analyser)return;
+      analyser.getByteTimeDomainData(data);
+      let sum=0;
+      for(const v of data){
+        const d=(v-128)/128;
+        sum+=d*d;
+      }
+      const rms=Math.sqrt(sum/data.length);
+      if(rms>.025)lastLoud=Date.now();
+      if(Date.now()-lastLoud>1200){
+        try{if(r)r.stop()}catch(e){}
+        return;
+      }
+      volumeRAF=requestAnimationFrame(tick);
+    };
+    volumeRAF=requestAnimationFrame(tick);
+  }catch(e){}
+}
+
 function finishRecognition(){
-  clearTimeout(listenTimer); clearTimeout(silenceTimer);
-  setListenUI(false); stopAudioMeter();
+  clearTimeout(listenTimer);
+  clearTimeout(silenceTimer);
+  setListenUI(false);
+  stopAudioMeter();
+
   const best=bestRecognitionText();
   if(!best.text){
-    showResult(false,"ไม่ได้ยินคำพูด ลองกดไมค์แล้วพูดอีกครั้ง",0);
+    showResult(false,"ไม่ได้ยินเสียง ลองกดไมค์แล้วพูดอีกครั้ง",0);
     return;
   }
-  const out=scoreSpeech(best.text,best.score);
-  showResult(out.ok,best.text,out.best);
+
+  const out=scoreSpeech(best.text,.8);
+  showResult(out.correct,best.text,out.score);
 }
 
 function createRecognition(){
   if(!SpeechRec)return null;
+
   const x=new SpeechRec();
-  x.lang="ar-SA";
+
+  // The target words are Thai phonetic readings, so Thai recognition is
+  // more appropriate than ar-SA for this training UI.
+  x.lang="th-TH";
   x.continuous=false;
   x.interimResults=true;
   x.maxAlternatives=8;
 
   x.onstart=()=>{
-    setListenUI(true); micHint();
+    setListenUI(true);
+    micHint();
     startAudioMeter();
     clearTimeout(listenTimer);
     listenTimer=setTimeout(()=>{try{x.stop()}catch(e){}},6500);
   };
+
   x.onresult=e=>{
     for(let n=e.resultIndex;n<e.results.length;n++){
       const result=e.results[n];
       for(let k=0;k<result.length;k++){
         const alt=result[k];
-        if(alt.transcript)heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||.8});
-        if(result.isFinal && alt.transcript && k===0) finalTranscript+=" "+alt.transcript;
+        if(alt.transcript){
+          heardAlternatives.push({
+            text:alt.transcript,
+            confidence:alt.confidence||.8
+          });
+          if(result.isFinal && k===0){
+            finalTranscript+=" "+alt.transcript;
+          }
+        }
       }
     }
   };
+
   x.onspeechend=()=>{
     clearTimeout(silenceTimer);
-    silenceTimer=setTimeout(()=>{try{x.stop()}catch(e){}},500);
+    silenceTimer=setTimeout(()=>{try{x.stop()}catch(e){}},600);
   };
+
   x.onend=finishRecognition;
+
   x.onerror=e=>{
-    clearTimeout(listenTimer);clearTimeout(silenceTimer);
-    setListenUI(false);stopAudioMeter();
+    clearTimeout(listenTimer);
+    clearTimeout(silenceTimer);
+    setListenUI(false);
+    stopAudioMeter();
+
     if(e.error==="aborted")return;
-    const msg=e.error==="not-allowed"
-      ?"ไมโครโฟนยังไม่ได้รับอนุญาต — เปิดสิทธิ์ไมโครโฟนให้เว็บไซต์ก่อน"
-      :e.error==="no-speech"
-      ?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
-      :e.error==="audio-capture"
-      ?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
-      :e.error==="network"
-      ?"ระบบรู้จำเสียงเชื่อมต่อไม่ได้ ลองตรวจสอบอินเทอร์เน็ต"
-      :"ระบบฟังเสียงสะดุด ลองกดใหม่อีกครั้ง";
+
+    const msg=
+      e.error==="not-allowed"
+        ?"ไมโครโฟนยังไม่ได้รับอนุญาต — กรุณากดอนุญาตให้เว็บไซต์ใช้ไมโครโฟน"
+        :e.error==="no-speech"
+        ?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
+        :e.error==="audio-capture"
+        ?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
+        :e.error==="network"
+        ?"ระบบรู้จำเสียงเชื่อมต่อไม่ได้ ลองตรวจสอบอินเทอร์เน็ต"
+        :"ระบบฟังเสียงสะดุด ลองกดไมค์ใหม่อีกครั้ง";
+
     showResult(false,msg,0);
   };
+
   return x;
 }
 
-window.beginListening=function(){
-  // IMPORTANT: create + start SpeechRecognition inside the actual tap handler.
+/*
+ * SINGLE microphone entry point.
+ * The click handler immediately changes the UI, then asks for microphone
+ * permission. There is no second click/touch handler.
+ */
+window.beginListening=async function(){
   if(listening){
     try{if(r)r.stop()}catch(e){}
     return;
   }
+
   if(!window.isSecureContext){
-    showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0); return;
-  }
-  if(!SpeechRec){
-    showResult(false,"อุปกรณ์/เบราว์เซอร์นี้ไม่รองรับการฟังเสียงบนเว็บ — เปิดลิงก์ด้วย Safari แล้วลองใหม่",0);
+    showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0);
     return;
   }
 
-  finalTranscript=""; heardAlternatives=[];
+  if(!SpeechRec){
+    showResult(false,
+      "เบราว์เซอร์นี้ไม่รองรับการฟังเสียงบนเว็บ กรุณาเปิดด้วย Safari รุ่นล่าสุด",
+      0);
+    return;
+  }
+
+  // Immediate feedback proves the button was actually pressed.
+  const st=S("listenStatus");
+  if(st)st.textContent="⏳ กำลังขออนุญาตใช้ไมโครโฟน…";
+
+  finalTranscript="";
+  heardAlternatives=[];
+
   try{
+    // This is called directly from the button's click event.
+    // iPhone will show its native microphone permission dialog if needed.
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      mediaStream=await navigator.mediaDevices.getUserMedia({
+        audio:{
+          echoCancellation:true,
+          noiseSuppression:true,
+          autoGainControl:true
+        }
+      });
+    }
+
     r=createRecognition();
     if(!r)throw new Error("NO_RECOGNITION");
-    // No await, no Promise, no permission request before this line.
+
+    // Start only after the microphone permission has been granted.
     r.start();
+
   }catch(e){
-    setListenUI(false); stopAudioMeter();
-    showResult(false,"เริ่มไมโครโฟนไม่ได้ กรุณาเปิดเว็บด้วย Safari แล้วกดไมค์อีกครั้ง",0);
+    stopAudioMeter();
+    setListenUI(false);
+
+    const denied=e && (
+      e.name==="NotAllowedError" ||
+      e.name==="PermissionDeniedError"
+    );
+
+    showResult(false,
+      denied
+        ?"ยังไม่ได้อนุญาตไมโครโฟน — ไปที่การตั้งค่า Safari > ไมโครโฟน แล้วเลือกอนุญาต"
+        :"เปิดไมโครโฟนไม่ได้: "+(e.message||"ลองกดใหม่อีกครั้ง"),
+      0);
   }
 };
 
-// One and only one speak control.
 const micButton=S("micVisual");
 if(micButton){
   micButton.type="button";
-  micButton.addEventListener("click",window.beginListening);
-  micButton.addEventListener("touchend",function(e){
-    e.preventDefault();
-    window.beginListening();
-  },{passive:false});
+  micButton.onclick=window.beginListening;
 }
 
 function anatomySVG(zone){
@@ -630,53 +654,5 @@ const _oldDraw=draw;
 draw=function(){_oldDraw();buildCharList();updateTopStats();};
 
 draw();
-</script>
-<script>
-(function(){
-  function ready(){
-    const q=id=>document.getElementById(id);
-    const safeAlert=msg=>{try{alert(msg)}catch(e){}};
-
-    // Ensure example button always works independently of the scoring code.
-    const ex=q("ex");
-    if(ex){
-      ex.onclick=function(){
-        const text=(window.L&&window.L[window.i||0]&&window.L[window.i||0][0])||"ا";
-        if(!("speechSynthesis" in window)){
-          safeAlert("เครื่องนี้ไม่รองรับเสียงตัวอย่าง");
-          return;
-        }
-        speechSynthesis.cancel();
-        const u=new SpeechSynthesisUtterance(text);
-        u.lang="ar-SA"; u.rate=.6; u.volume=1;
-        setTimeout(function(){
-          const vs=speechSynthesis.getVoices();
-          const v=vs.find(x=>/^ar/i.test(x.lang))||vs.find(x=>/arab/i.test(x.name||""));
-          if(v)u.voice=v;
-          speechSynthesis.speak(u);
-        },150);
-      };
-    }
-
-    // Do not overwrite the real microphone handler. The main script requests permission.
-    const sp=q("sp"), mic=q("micVisual");
-    if(sp) sp.onclick=()=>window.beginListening && window.beginListening();
-    if(mic) mic.onclick=()=>window.beginListening && window.beginListening();
-
-    // Make every character in the left menu clickable.
-    document.querySelectorAll(".char").forEach(el=>{
-      el.addEventListener("click",function(){
-        const n=Number(this.dataset.n);
-        if(Number.isFinite(n) && window.sel && window.draw){
-          window.i=n;
-          window.sel.value=n;
-          window.draw();
-        }
-      });
-    });
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready);
-  else ready();
-})();
 </script>
 </body></html>

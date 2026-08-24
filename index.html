@@ -156,14 +156,10 @@ main{padding:24px 28px 45px;max-width:1420px;width:100%;margin:auto}
       };
     }
 
-    // Ensure microphone buttons are clickable even if the main JS failed.
+    // Do not overwrite the real microphone handler. The main script requests permission.
     const sp=q("sp"), mic=q("micVisual");
-    function micFallback(){
-      if(window.beginListening){ window.beginListening(); return; }
-      safeAlert("กดปุ่มพูดตามอีกครั้งเพื่อขออนุญาตไมโครโฟน");
-    }
-    if(sp)sp.onclick=micFallback;
-    if(mic)mic.onclick=micFallback;
+    if(sp) sp.onclick=()=>window.beginListening && window.beginListening();
+    if(mic) mic.onclick=()=>window.beginListening && window.beginListening();
 
     // Make every character in the left menu clickable.
     document.querySelectorAll(".char").forEach(el=>{
@@ -528,7 +524,7 @@ if(r){
   };
 }
 
-async function beginListening(){
+window.beginListening = async function beginListening(){
   if(!r){
     return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari รุ่นล่าสุด",0);
   }
@@ -566,8 +562,8 @@ async function beginListening(){
   }
 }
 
-S("sp").onclick=beginListening;
-S("micVisual").onclick=beginListening;
+S("sp").onclick=()=>window.beginListening();
+S("micVisual").onclick=()=>window.beginListening();
 
 
 function anatomySVG(zone){
@@ -663,14 +659,10 @@ draw();
       };
     }
 
-    // Ensure microphone buttons are clickable even if the main JS failed.
+    // Do not overwrite the real microphone handler. The main script requests permission.
     const sp=q("sp"), mic=q("micVisual");
-    function micFallback(){
-      if(window.beginListening){ window.beginListening(); return; }
-      safeAlert("กดปุ่มพูดตามอีกครั้งเพื่อขออนุญาตไมโครโฟน");
-    }
-    if(sp)sp.onclick=micFallback;
-    if(mic)mic.onclick=micFallback;
+    if(sp) sp.onclick=()=>window.beginListening && window.beginListening();
+    if(mic) mic.onclick=()=>window.beginListening && window.beginListening();
 
     // Make every character in the left menu clickable.
     document.querySelectorAll(".char").forEach(el=>{

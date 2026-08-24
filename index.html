@@ -1,22 +1,134 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ครูอาหรับ — ฝึกอ่านภาษาอาหรับ</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ฝึกอ่านอักษรอาหรับ พร้อมตัจวีด</title>
 <style>
-body{margin:0;background:#f4f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif}.app{max-width:900px;margin:auto;padding:22px 18px 50px}.brand{color:#2167d8;font-weight:800}.sub{font-size:20px;color:#66738a;margin-bottom:24px}h1{font-size:40px;line-height:1.15}.card{background:#fff;border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:0 10px 30px #16233c12}select{width:100%;padding:18px;border:0;border-radius:18px;background:#f7f9fc;font-size:18px}.progress{height:12px;background:#e7ebf2;border-radius:20px;overflow:hidden;margin:15px 0 25px}.bar{height:100%;background:#2167d8;width:0}.lesson{text-align:center;background:#f7f9fc;border-radius:26px;padding:30px}.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:90px}.roman{font-size:22px;color:#66738a}.thai{font-size:40px;font-weight:800;margin:7px}.desc{font-size:20px;color:#66738a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.btn{border:0;border-radius:22px;padding:20px;font-size:18px;font-weight:800}.example{background:#e9f1ff;color:#2167d8}.speak{background:#10172b;color:white}.result{text-align:center;padding:22px;border-radius:22px;background:#f7f9fc;margin-top:16px}.ok{background:#eaf8f0!important}.bad{background:#fff1f0!important}.result h2{margin:0 0 8px;font-size:30px}.result p{color:#66738a;font-size:18px}@media(max-width:600px){h1{font-size:34px}.actions{grid-template-columns:1fr}.arabic{font-size:78px}}
+:root{
+  --navy:#08112f;--navy2:#101b45;--blue:#386ee8;--green:#12ad73;
+  --purple:#7b45e8;--ink:#17203a;--muted:#74809a;--line:#e4e8f1;
+  --soft:#f6f8fc;--gold:#ffbf2f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai","Noto Sans",sans-serif}
+button,select{font:inherit}
+.topbar{height:104px;background:linear-gradient(115deg,#070d27,#101943);color:#fff;display:flex;align-items:center;padding:0 28px;gap:24px}
+.brandbox{display:flex;align-items:center;gap:13px;min-width:350px}
+.booklogo{font-size:42px}.brandtitle{font-size:24px;font-weight:900;line-height:1.1}.brandsub{font-size:15px;color:#d8def0;margin-top:5px}
+.topstats{margin-left:auto;display:flex;align-items:center;border:1px solid #394366;border-radius:32px;overflow:hidden;background:#0b1433}
+.stat{min-width:145px;padding:11px 24px;text-align:center;border-right:1px solid #394366}
+.stat:last-child{border:0}.stat .emoji{font-size:28px;vertical-align:middle;margin-right:8px}.stat b{font-size:22px}.stat small{display:block;color:#d4d9e8;font-size:13px}
+.gear{font-size:28px;width:48px;height:48px;border-radius:50%;background:#253052;border:0;color:#fff}
+.layout{display:grid;grid-template-columns:225px minmax(0,1fr);min-height:calc(100vh - 104px)}
+.sidebar{background:linear-gradient(#0c1a43,#0a1738);color:#fff;padding:18px 14px;display:flex;flex-direction:column}
+.mode{padding:12px 16px;border-radius:16px;margin-bottom:8px;font-weight:800;color:#e7ebf7}.mode.active{background:#11ae72;box-shadow:0 5px 14px #00a86b44}
+.side-title{font-size:14px;color:#b8c3dc;margin:16px 12px 8px}
+.char-list{display:flex;flex-direction:column;gap:2px;overflow:auto}
+.char{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:13px;font-size:15px;color:#dce3f2;cursor:pointer}
+.char.active{background:linear-gradient(90deg,#12b577,#08a86c);color:#fff;font-weight:900}.char .num{width:20px;text-align:center}.char .ar{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:22px;width:24px}.char .check{margin-left:auto;color:#39d78f;font-weight:900}
+.char.active .check{color:#fff}
+.side-bottom{margin-top:auto;border:1px solid #9b62ff;border-radius:18px;padding:10px;text-align:center;color:#d8c6ff}
+main{padding:24px 28px 45px;max-width:1420px;width:100%;margin:auto}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.breadcrumb{color:var(--muted);font-weight:800}.counter{background:#e9f7ef;color:#139762;border-radius:20px;padding:8px 16px;font-weight:900}
+.maincard{background:#fff;border:1px solid #dfe5ef;border-radius:22px;padding:20px;box-shadow:0 8px 28px #1825440c}
+.lesson-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:24px}
+.character-panel{text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:430px}
+.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:104px;line-height:1.05;color:#111a36}.thai{font-size:50px;font-weight:900;color:#11a16e;margin:6px}.roman{font-size:24px;color:#77829a}.desc{font-size:19px;color:#7a849a}
+.note{background:#edf9f3;color:#16865c;border-radius:14px;padding:11px 14px;margin:18px auto;max-width:440px;font-weight:700}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px;width:100%;margin:0 auto}.btn{border:0;border-radius:16px;padding:16px;font-weight:900;cursor:pointer}.example{background:#eaf2ff;color:#2868d7}.speak{background:#11172d;color:#fff}
+.example:hover,.speak:hover{filter:brightness(.97)}
+.progress{height:12px;background:#e7ebf2;border-radius:20px;overflow:hidden;margin:8px 0 15px}.bar{height:100%;background:linear-gradient(90deg,#20a9ed,#4269e8);width:0;border-radius:20px}
+.mouth-card{background:#fafbfe;border:1px solid #edf0f6;border-radius:18px;padding:12px;display:flex;flex-direction:column;justify-content:center}.mouth-title{font-weight:900;color:#168b61;font-size:18px;margin-bottom:4px}.anatomy{width:100%;height:auto;background:#fff;border-radius:16px;margin:0}.mouth-caption{text-align:center;color:#66738a;font-size:15px;line-height:1.5;padding:8px}
+.ai-card{margin-top:18px;background:linear-gradient(120deg,#fbf8ff,#f5f0ff);border:1px solid #ddd3f6;border-radius:22px;padding:20px}
+.ai-head{font-size:22px;font-weight:900;color:#4f2a99}.ai-grid{display:grid;grid-template-columns:1fr 230px 1fr;gap:18px;align-items:center}
+.wave{height:65px;display:flex;align-items:center;justify-content:center;gap:3px}.wave i{width:3px;border-radius:4px;background:#8755e8;display:block}.mic{width:86px;height:86px;border:0;border-radius:50%;background:linear-gradient(145deg,#9b65f0,#6832cf);color:#fff;font-size:38px;box-shadow:0 8px 22px #7135d355}
+.scorebox{background:#fff;border:1px solid #ded8f4;border-radius:18px;padding:15px;text-align:center}.scorecircle{width:125px;height:125px;border-radius:50%;border:11px solid #18a66f;display:grid;place-items:center;margin:auto;font-size:38px;font-weight:900}.scorecircle span{font-size:16px;color:#71809b;display:block}.score-good{color:#119660;font-size:24px;font-weight:900;margin-top:8px}
+.detail{background:#fff;border-radius:18px;padding:16px;border:1px solid #e7e1f7}.detail div{padding:7px 0;font-weight:800;color:#258f68}.detail span{color:#17203a}
+.result{margin-top:15px;padding:18px;border-radius:18px;background:#fff;text-align:center}.result h2{margin:0 0 8px;font-size:28px}.result p{color:#66738a;font-size:17px}.ok{background:#ecfaf3!important}.bad{background:#fff1f0!important}
+.stats-inline{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:12px 0 0;font-weight:900;color:#2167d8}
+.taj{background:#fff;border:1px solid #dfe5ef;border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 8px 28px #1825440c}.taj-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:21px}.pill{font-size:14px;background:#eaf3ff;color:#2167d8;padding:7px 12px;border-radius:999px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid2>div{background:#f7f9fc;border-radius:14px;padding:14px}.grid2 p,.rule p,.mistake p{margin:7px 0 0;line-height:1.65;color:#59667a}.rule{background:#eef7ff;border-left:5px solid #2167d8;border-radius:14px;padding:15px;margin-top:12px}.mistake{background:#fff5ed;border-left:5px solid #ef8a35;border-radius:14px;padding:15px;margin-top:12px}.zone-map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.zone-map div{padding:10px;background:#f7f9fc;border-radius:14px;text-align:center;font-size:13px}
+.footer-note{background:#fff7e8;border:1px solid #f4e1b5;color:#866525;border-radius:14px;padding:11px 14px;margin-top:14px;font-size:14px}
+@media(max-width:900px){.topbar{height:auto;padding:14px 16px;flex-wrap:wrap}.brandbox{min-width:0}.topstats{margin-left:0;width:100%;justify-content:space-between}.stat{min-width:0;flex:1;padding:8px 10px}.layout{grid-template-columns:1fr}.sidebar{display:none}main{padding:14px 12px 35px}.lesson-grid{grid-template-columns:1fr}.character-panel{min-height:auto}.ai-grid{grid-template-columns:1fr}.mouth-card{order:-1}.grid2{grid-template-columns:1fr}}
+@media(max-width:520px){.brandtitle{font-size:20px}.brandsub{font-size:13px}.booklogo{font-size:34px}.stat{padding:7px 4px}.stat .emoji{font-size:21px;margin:0}.stat b{font-size:18px}.stat small{font-size:11px}.arabic{font-size:86px}.thai{font-size:40px}.actions{grid-template-columns:1fr}.toolbar{gap:8px}.topbar{gap:10px}}
 
-.taj{background:#fff;border-radius:26px;padding:22px;margin-top:18px;box-shadow:0 10px 30px #16233c10}
-.taj-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:22px}
-.pill{font-size:14px;background:#eaf3ff;color:#2167d8;padding:7px 12px;border-radius:999px}
-.anatomy{width:100%;height:auto;background:#f8fafc;border-radius:20px;margin:14px 0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid2>div{background:#f7f9fc;border-radius:16px;padding:14px}
-.grid2 p,.rule p,.mistake p{margin:7px 0 0;line-height:1.65;color:#59667a}
-.rule{background:#eef7ff;border-left:5px solid #2167d8;border-radius:14px;padding:15px;margin-top:12px}
-.mistake{background:#fff5ed;border-left:5px solid #ef8a35;border-radius:14px;padding:15px;margin-top:12px}
-.zone-map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
-.zone-map div{padding:10px;background:#f7f9fc;border-radius:14px;text-align:center;font-size:13px}
-@media(max-width:600px){.grid2{grid-template-columns:1fr}.zone-map{grid-template-columns:1fr 1fr}.taj-head{font-size:18px}}
-</style></head><body><div class="app"><div class="card" style="background:#fff8e8"><b>หมายเหตุสำคัญ:</b> บทเรียนชุดนี้ใช้ 28 ตัวตามชุดที่กำหนดในเว็บ แต่ในวิชาตัจวีดแบบคลาสสิกมักนับ <b>ء (Hamzah)</b> แยกด้วย ทำให้พบการนับ 29 ตัวอักษรอาหรับในตำรา</div><div class="brand">🇹🇭 ครูอาหรับ</div><h1>ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</h1><div class="sub">🤖 AI ฟังเสียง → วิเคราะห์คำอ่าน → ให้คะแนน → 🎉 พลุเมื่อถูก</div><div style="background:#eef5ff;color:#315a9a;border-radius:16px;padding:12px 15px;margin:10px 0 18px;font-size:15px">🎙️ โหมดฟังเสียงไทย: ระบบจะรับคำอ่านภาษาไทย และเทียบหลายรูปแบบเสียง เช่น “อาลิฟ / อาลีฟ / อาลี” เพื่อไม่ตัดคะแนนเพราะ Safari ฟังเพี้ยนเล็กน้อย</div>
-<div class="card"><b>เลือกบทเรียน</b><select id="lesson"></select></div><div class="card"><h2>ฝึกอ่าน</h2><div class="progress"><div class="bar" id="bar"></div></div><div class="lesson"><div class="arabic" id="ar">ا</div><div class="roman" id="ro">Alif</div><div class="thai" id="th">อาลิฟ</div><div class="desc" id="de">ตัวอักษร อาลิฟ</div></div>
-<div class="actions"><button class="btn example" id="ex">🔊 ฟังตัวอย่าง</button><button class="btn speak" id="sp">🎙️ พูดตาม</button></div><div class="result" id="res"><h2>พร้อมฝึก</h2><p>กด “พูดตาม” แล้วพูดคำอ่าน</p></div></div></div>
+.listening-ring{animation:micPulse 1s infinite;box-shadow:0 0 0 0 rgba(104,50,207,.45),0 8px 22px #7135d355!important}
+@keyframes micPulse{0%{transform:scale(1)}50%{transform:scale(1.08);box-shadow:0 0 0 18px rgba(104,50,207,0),0 8px 22px #7135d355}100%{transform:scale(1)}}
+.firework{position:fixed;left:50%;top:42%;z-index:9999;pointer-events:none;font-size:34px;animation:fw 1.4s ease-out forwards}
+@keyframes fw{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.5)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brandbox">
+    <div class="booklogo">📖</div>
+    <div><div class="brandtitle">ฝึกอ่านอักษรอาหรับ</div><div class="brandsub">พร้อมตัจวีด (Tajweed)</div></div>
+  </div>
+  <div class="topstats">
+    <div class="stat"><span class="emoji">⭐</span><b id="topScore">0</b><small>คะแนนสะสม</small></div>
+    <div class="stat"><span class="emoji">🏆</span><b id="topStreak">0</b><small>Streak</small></div>
+    <div class="stat"><span class="emoji">🔷</span><b id="topCorrect">0</b><small>ถูกต้อง</small></div>
+  </div>
+  <button class="gear">⚙️</button>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="mode active">📖 &nbsp;โหมดเรียนรู้</div>
+  <div class="mode">🎯 &nbsp;โหมดทดสอบ</div>
+  <div class="side-title">อักษรอาหรับ 28 ตัว</div>
+  <div class="char-list" id="charList"></div>
+  <div class="side-bottom">📊 &nbsp;สถิติทั้งหมด</div>
+</aside>
+<main>
+  <div class="toolbar"><div class="breadcrumb">ฝึกอ่าน → <b id="crumb">อาลิฟ</b></div><div class="counter" id="counter">1 / 28</div></div>
+  <div class="maincard">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="lesson-grid">
+      <section class="character-panel">
+        <div class="arabic" id="ar">ا</div>
+        <div class="thai" id="th">อาลิฟ</div>
+        <div class="roman" id="ro">Alif</div>
+        <div class="desc" id="de">ตัวอักษร อาลิฟ</div>
+        <div class="note">🔊 ความหมาย: ไม่มีเสียงพยัญชนะโดยตัวมันเอง เป็นตัวแทนของเสียงยาว อา / อะ</div>
+        <div class="actions">
+          <button class="btn example" id="ex">🔊 ฟังเสียงตัวอย่าง</button><div id="voiceStatus" style="grid-column:1/-1;text-align:center;color:#73809a;font-size:13px;margin-top:-5px">เสียงตัวอย่าง: Arabic (Saudi Arabia)</div>
+          <button class="btn speak" id="sp">🎙️ พูดตาม</button>
+        </div>
+      </section>
+      <section class="mouth-card">
+        <div class="mouth-title">📍 ออกเสียงจากตรงไหน?</div>
+        <div id="mouthVisual"></div>
+        <div class="mouth-caption" id="mouthCaption">เสียงออกจากช่องว่างภายในปาก โดยไม่สัมผัสลิ้น ฟัน หรือริมฝีปาก</div>
+      </section>
+    </div>
+  </div>
+
+  <section class="ai-card">
+    <div class="ai-head">🎙️ ฝึกพูดตาม AI <span style="font-size:12px;background:#eee8ff;color:#6434b5;padding:5px 9px;border-radius:999px">Pronunciation AI</span></div>
+    <div class="ai-grid">
+      <div style="text-align:center">
+        <div class="wave" id="wave"></div>
+        <b>กดปุ่มแล้วพูดว่า</b>
+        <div style="font-size:27px;color:#7442d8;font-weight:900;margin:5px">“อาลิฟ”</div>
+        <button class="mic" id="micVisual">🎙️</button>
+        <div id="listenStatus" style="margin-top:8px;color:#75809a">แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ</div>
+      </div>
+      <div class="scorebox">
+        <div style="font-weight:900;color:#4c3691">ผลการประเมิน</div>
+        <div class="scorecircle"><div id="scoreBig">--<span>/100</span></div></div>
+        <div class="score-good" id="scoreText">พร้อมเริ่ม</div>
+      </div>
+      <div class="detail" id="aiDetail">
+        <b style="font-size:18px">รายละเอียด</b>
+        <div>✓ <span>คำเป้าหมาย: <b id="targetWord">อาลิฟ</b></span></div>
+        <div>✓ <span>ระบบได้ยิน: <b id="heardWord">—</b></span></div>
+        <div>✓ <span>ความใกล้เคียง: <b id="similarity">—</b></span></div>
+        <div>✓ <span>ตำแหน่งเสียง: <b id="position">รอการตรวจ</b></span></div>
+      </div>
+    </div>
+    <div class="result" id="res"><h2>🤖 AI พร้อมฟัง</h2><p>กด “พูดตาม” แล้วออกเสียงตามคำอ่าน</p></div>
+  </section>
+
+  <div class="footer-note">💡 เคล็ดลับ: ฟังตัวอย่างก่อน แล้วออกเสียงให้ชัด 1 ครั้ง ระบบจะให้คะแนนตามความใกล้เคียงและจะแสดงผลทันที</div>
+</main>
+</div>
+</body>
 <script>
 const L=[
 ["ا","Alif","อาลิฟ",["อาลิฟ","อาลีฟ","อาลิฟฟ์"]],
@@ -152,14 +264,41 @@ function draw(){
 }
 sel.onchange=()=>{i=+sel.value;draw()};
 
-S("ex").onclick=()=>{
-  if("speechSynthesis"in window){
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(L[i][0]);
-    u.lang="ar-SA";u.rate=.7;
-    speechSynthesis.speak(u);
+function speakArabic(text){
+  if(!("speechSynthesis" in window)){
+    alert("อุปกรณ์นี้ไม่รองรับเสียงตัวอย่างในเบราว์เซอร์นี้");
+    return;
   }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="ar-SA";
+  u.rate=.58;
+  u.pitch=1;
+  u.volume=1;
+
+  // Safari/iPhone sometimes needs a short delay after cancel().
+  setTimeout(()=>{
+    const voices=speechSynthesis.getVoices();
+    const ar=voices.find(v=>/^ar(-|_)/i.test(v.lang)) ||
+             voices.find(v=>/arabic|ar-sa|arab/i.test((v.name||"")+" "+(v.lang||"")));
+    if(ar) u.voice=ar;
+    speechSynthesis.speak(u);
+  },120);
+}
+
+S("ex").onclick=()=>{
+  const st=S("voiceStatus");
+  if(st)st.textContent="🔊 กำลังเล่นเสียงภาษาอาหรับ…";
+  speakArabic(L[i][0]);
+  setTimeout(()=>{if(st)st.textContent="เสียงตัวอย่าง: Arabic (Saudi Arabia)"},1800);
 };
+
+// iOS Safari can populate voices only after voiceschanged.
+if("speechSynthesis" in window){
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+}
+
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let r=SR?new SR():null;
@@ -167,74 +306,143 @@ let listening=false;
 let finalTranscript="";
 let heardAlternatives=[];
 let listenTimer=null;
+let silenceTimer=null;
+let mediaStream=null;
+let audioCtx=null;
+let analyser=null;
+let volumeRAF=null;
 
 function setListenUI(on){
   listening=on;
-  S("sp").textContent=on?"🔴 AI กำลังฟัง…":"🎙️ พูดตาม";
-  S("sp").style.background=on?"#c62828":"#10172b";
+  const btn=S("sp"), mic=S("micVisual"), st=S("listenStatus");
+  if(btn){
+    btn.textContent=on?"🔴 AI กำลังฟัง…":"🎙️ พูดตาม";
+    btn.style.background=on?"#c62828":"#10172b";
+  }
+  if(mic) mic.classList.toggle("listening-ring",on);
+  if(st) st.textContent=on?"กำลังฟัง… พูดคำเดียวให้ชัด แล้วเว้นจังหวะ":"แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ";
 }
 
 function micHint(){
   S("res").className="result";
-  S("res").innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง เช่น “อาลิฟ” แล้วเว้นจังหวะ</p><p style='font-size:15px'>เคล็ดลับ: ถือ iPhone ห่างปากประมาณ 15–30 ซม. และอยู่ในที่เงียบ</p>";
+  S("res").innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง แล้วเว้นจังหวะ</p><p style='font-size:15px'>เคล็ดลับ: ถือ iPhone ห่างปากประมาณ 15–30 ซม. และอยู่ในที่เงียบ</p>";
 }
 
 function bestRecognitionText(){
-  const all=[...heardAlternatives.map(x=>x.text),finalTranscript].filter(Boolean);
-  let bestText="",bestScore=0,bestConf=0;
+  const all=heardAlternatives.map(x=>x.text).concat(finalTranscript).filter(Boolean);
+  let bestText="",bestScore=-1,bestConf=.8;
   for(const t of all){
-    const out=scoreSpeech(t,0.8);
+    const out=scoreSpeech(t,.8);
     if(out.best>bestScore){bestScore=out.best;bestText=t;}
   }
-  return {text:bestText||finalTranscript, score:bestScore};
+  return {text:bestText||finalTranscript,score:Math.max(0,bestScore),confidence:bestConf};
+}
+
+function firework(){
+  const chars=["🎉","✨","🎊","⭐","💥"];
+  for(let n=0;n<24;n++){
+    const el=document.createElement("div");
+    el.className="firework";
+    el.textContent=chars[n%chars.length];
+    const a=(Math.PI*2*n)/24, rr=90+Math.random()*180;
+    el.style.setProperty("--x",`${Math.cos(a)*rr}px`);
+    el.style.setProperty("--y",`${Math.sin(a)*rr}px`);
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1500);
+  }
+}
+
+function showResult(ok,heard,score){
+  const n=Math.round(Math.max(0,Math.min(100,score||0)));
+  S("heardWord").textContent=heard;
+  S("similarity").textContent=n+"%";
+  S("position").textContent=ok?"ตรงตามคำเป้าหมาย":"ต้องปรับการออกเสียง";
+  S("scoreBig").innerHTML=n+'<span>/100</span>';
+  S("scoreText").textContent=ok?"เยี่ยมมาก! 🎉":"ลองอีกครั้ง 💪";
+  S("scoreText").style.color=ok?"#119660":"#c44c45";
+  S("res").className="result "+(ok?"ok":"bad");
+
+  if(ok){
+    correctCount++;
+    streak++;
+    totalScore+=n;
+    localStorage.setItem("arabicTotalScore",totalScore);
+    localStorage.setItem("arabicCorrect",correctCount);
+    localStorage.setItem("arabicStreak",streak);
+    S("res").innerHTML="<h2>🎉 ถูกต้อง!</h2><p>ระบบได้ยิน “"+heard+"”</p><p><b>"+n+"/100</b> • 🔥 Streak "+streak+"</p>";
+    firework();
+  }else{
+    streak=0;
+    localStorage.setItem("arabicStreak",streak);
+    const alifWrong=(i===0 && /(^|\s)(อาลี|อาลิ)(\s|$)/.test(norm(heard)) && !/อาลิฟ/.test(norm(heard)));
+    const tip=alifWrong
+      ?"⚠️ “อาลี” ไม่ถือว่าถูก — ต้องออกเสียงท้าย <b>ฟ</b> ให้ครบ"
+      :"ลองฟังตัวอย่าง แล้วพูดใหม่ให้ชัดขึ้น";
+    S("res").innerHTML="<h2>ยังไม่ตรง</h2><p>"+tip+"</p><p>ระบบได้ยิน: <b>“"+heard+"”</b> • คะแนน <b>"+n+"/100</b></p>";
+  }
+  renderStats();
+}
+
+async function startAudioMeter(){
+  try{
+    mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const source=audioCtx.createMediaStreamSource(mediaStream);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=512;
+    source.connect(analyser);
+    const data=new Uint8Array(analyser.fftSize);
+    let lastLoud=Date.now();
+    const tick=()=>{
+      if(!listening||!analyser)return;
+      analyser.getByteTimeDomainData(data);
+      let sum=0;
+      for(const v of data){const d=(v-128)/128;sum+=d*d;}
+      const rms=Math.sqrt(sum/data.length);
+      if(rms>.025) lastLoud=Date.now();
+      if(Date.now()-lastLoud>1000){try{r.stop()}catch(e){}}
+      volumeRAF=requestAnimationFrame(tick);
+    };
+    volumeRAF=requestAnimationFrame(tick);
+  }catch(e){}
+}
+
+function stopAudioMeter(){
+  if(volumeRAF)cancelAnimationFrame(volumeRAF);
+  volumeRAF=null;
+  if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null;}
+  if(audioCtx){try{audioCtx.close()}catch(e){} audioCtx=null;}
+}
+
+function finishRecognition(){
+  clearTimeout(listenTimer);clearTimeout(silenceTimer);
+  setListenUI(false);stopAudioMeter();
+  const pick=bestRecognitionText();
+  if(pick.text){
+    const out=scoreSpeech(pick.text,pick.confidence);
+    showResult(out.correct,pick.text,out.score);
+  }else showResult(false,"ไม่ได้ยินเสียง",0);
 }
 
 if(r){
-  r.lang="th-TH";                 // User normally pronounces the letter names in Thai.
-  r.continuous=true;              // Keep listening through short pauses.
-  r.interimResults=true;          // Use interim text to avoid losing short words.
-  r.maxAlternatives=10;            // Safari may return several interpretations.
+  r.lang="th-TH";
+  r.continuous=false;
+  r.interimResults=true;
+  r.maxAlternatives=10;
 
   r.onstart=()=>{
     setListenUI(true);
     finalTranscript="";
     heardAlternatives=[];
     micHint();
+    startAudioMeter();
     clearTimeout(listenTimer);
-    // Safety timeout so the microphone never appears stuck.
-    listenTimer=setTimeout(()=>{if(listening){try{r.stop()}catch(e){}}},7000);
+    listenTimer=setTimeout(()=>{try{r.stop()}catch(e){}},6500);
   };
 
   r.onspeechend=()=>{
-    // Give Safari a short moment to deliver the final result.
-    clearTimeout(listenTimer);
-    listenTimer=setTimeout(()=>{if(listening){try{r.stop()}catch(e){}}},900);
-  };
-
-  r.onend=()=>{
-    clearTimeout(listenTimer);
-    setListenUI(false);
-    const pick=bestRecognitionText();
-    if(pick.text){
-      const out=scoreSpeech(pick.text,0.82);
-      showResult(out.correct,pick.text,out.score);
-    }else{
-      showResult(false,"ไม่ได้ยินเสียง",0);
-    }
-  };
-
-  r.onerror=e=>{
-    clearTimeout(listenTimer);
-    setListenUI(false);
-    if(e.error==="aborted") return;
-    const msg=e.error==="not-allowed"
-      ?"กรุณาอนุญาตไมโครโฟนให้ Safari แล้วลองใหม่"
-      :e.error==="no-speech"
-      ?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
-      :e.error==="audio-capture"
-      ?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
-      :"ระบบฟังเสียงสะดุด ลองใหม่อีกครั้ง";
-    showResult(false,msg,0);
+    clearTimeout(silenceTimer);
+    silenceTimer=setTimeout(()=>{try{r.stop()}catch(e){}},700);
   };
 
   r.onresult=e=>{
@@ -243,76 +451,35 @@ if(r){
       for(let k=0;k<result.length;k++){
         const alt=result[k];
         if(alt.transcript){
-          if(result.isFinal) finalTranscript += " "+alt.transcript;
-          heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||0});
+          heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||.8});
+          if(result.isFinal)finalTranscript+=" "+alt.transcript;
         }
       }
     }
+  };
 
-    // If Safari already produced a very good match, stop early.
-    const current=bestRecognitionText();
-    if(current.score>=.93){
-      clearTimeout(listenTimer);
-      try{r.stop()}catch(e){}
-    }
+  r.onend=finishRecognition;
+
+  r.onerror=e=>{
+    clearTimeout(listenTimer);setListenUI(false);stopAudioMeter();
+    if(e.error==="aborted")return;
+    const msg=e.error==="not-allowed"?"กรุณาอนุญาตไมโครโฟนให้ Safari แล้วลองใหม่"
+      :e.error==="no-speech"?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
+      :e.error==="audio-capture"?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
+      :"ระบบฟังเสียงสะดุด ลองใหม่อีกครั้ง";
+    showResult(false,msg,0);
   };
 }
 
-S("sp").onclick=()=>{
-  if(!r)return showResult(false,"เบราว์เซอร์ไม่รองรับการรู้จำเสียง",0);
-  if(listening){try{r.stop()}catch(e){}}
-  else{
-    try{
-      // Reset browser recognition state before every attempt.
-      finalTranscript="";
-      heardAlternatives=[];
-      r.start();
-    }catch(e){
-      // Safari can throw if start() is called too quickly after stop().
-      setTimeout(()=>{try{r.start()}catch(err){}},350);
-    }
-  }
-};
+function beginListening(){
+  if(!r)return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari/Chrome รุ่นล่าสุด",0);
+  if(listening){try{r.stop()}catch(e){};return;}
+  try{r.start()}catch(e){setListenUI(false);showResult(false,"ไมโครโฟนกำลังถูกใช้งานอยู่ ลองกดอีกครั้ง",0);}
+}
 
+S("sp").onclick=beginListening;
+S("micVisual").onclick=beginListening;
 
-const D={
-"ا":{zone:"الجوف — Al-Jawf",point:"ช่องว่างภายในปากและลำคอ (เสียงยาวของ ا)",where:"ปล่อยเสียงผ่านช่องปากโดยไม่มีจุดสัมผัสเฉพาะ",how:"เปิดปากตามธรรมชาติ รักษาเสียงให้ต่อเนื่องเมื่อเป็น ا مدّ",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"อาลิฟจะเป็น Huruf al-Madd เมื่อมีฟัตหะฮ์ก่อนหน้า เช่น قَالَ; ต้องไม่เติมพยัญชนะท้ายให้เสียงเป็น “อาลี”",mistake:"อย่าพูดชื่ออักษรสั้นจนหายเสียง ف; ชื่อที่ฝึกคือ “อาลิฟ”"},
-"ب":{zone:"الشفتان — Ash-Shafatan",point:"ริมฝีปากบนและล่างประกบกัน",where:"กลางริมฝีปากทั้งสอง",how:"ปิดริมฝีปากแล้วปล่อยลมออก",sifat:"Jahr, Shiddah, Istifal, Infitah, Idhlaq",tajweed:"บาเป็นหนึ่งใน Huruf al-Qalqalah เมื่อมีสุกูนจริง/หยุดที่ตัวอักษรนั้นต้องฝึกตามบริบท",mistake:"อย่าเปลี่ยนเป็น ف ซึ่งใช้ฟันหน้าบนแตะริมฝีปากล่าง"},
-"ت":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน",where:"ปลายลิ้น + ด้านหลังฟันหน้าบน",how:"แตะสั้นและปล่อยลม",sifat:"Hams, Shiddah, Istifal, Infitah, Ismat",tajweed:"ت เป็นหนึ่งในเสียงที่ต้องแยกจาก ط ด้วยน้ำหนักและตำแหน่งลิ้น",mistake:"อย่าทำเสียงหนักแบบ ط"},
-"ث":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะ/โผล่เล็กน้อยระหว่างฟันหน้า",where:"ขอบปลายลิ้นกับขอบฟันหน้าบน",how:"ให้ลมเสียดผ่านเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"เสียง ث ต้องรักษาความเสียดแทรก ไม่เปลี่ยนเป็น س หรือ ت",mistake:"คนไทยมักแทนด้วย ซ/ส; ให้เห็นปลายลิ้น"},
-"ج":{zone:"اللسان — Al-Lisan",point:"กลางลิ้นกับเพดานแข็ง",where:"กลางลิ้นยกขึ้นหาเพดาน",how:"ทำเสียงจากกลางลิ้น ไม่ใช้ปลายลิ้น",sifat:"Jahr, Shiddah, Istifal, Infitah, Qalqalah",tajweed:"ج อยู่ใน حروف القلقلة เมื่อเป็นสุกูน",mistake:"อย่าอ่านเป็น ย หรือ จ แบบภาษาไทยจนตำแหน่งกลางลิ้นหาย"},
-"ح":{zone:"الحلق — Al-Halq",point:"กลางลำคอ",where:"บริเวณกลางคอ",how:"เปิดคอและปล่อยลมเสียดเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ต้องแยก ح จาก ه และ خ ด้วยตำแหน่งคอ",mistake:"อย่าออกเสียงเป็น ฮ จากปากด้านหน้า"},
-"خ":{zone:"الحلق — Al-Halq",point:"ส่วนบนของลำคอ ใกล้ปาก",where:"คอส่วนบน/บริเวณใกล้ลิ้นไก่",how:"ยกโคนลิ้นเข้าใกล้เพดานอ่อนให้เกิดเสียงเสียด",sifat:"Hams, Rikhwah, Istila, Infitah, Ismat",tajweed:"เป็นหนึ่งใน Huruf al-Isti'la; ต้องมีน้ำหนัก",mistake:"อย่าอ่านเป็น ค ธรรมดาจนไม่มีเสียงเสียดในคอ"},
-"د":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน",where:"ปลายลิ้นด้านบน",how:"แตะแล้วปล่อยทันที",sifat:"Jahr, Shiddah, Istifal, Infitah, Ismat",tajweed:"ดาลต่างจาก ض/ظ ด้วยจุดสัมผัสปลายลิ้น",mistake:"อย่ากดลิ้นด้านข้าง"},
-"ذ":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นกับขอบฟันหน้าบน",where:"ปลายลิ้นโผล่เล็กน้อย",how:"แตะเบา ๆ ให้มีเสียงก้องเสียดแทรก",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ต้องแยก ذ จาก ز และ ظ",mistake:"อย่าอ่านเป็น ซ หรือ ด"},
-"ر":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้เหงือกฟันหน้าบน",where:"ปลายลิ้นแตะ/เข้าใกล้เหงือกด้านบน",how:"ทำให้ลิ้นสั่นอย่างพอดี ไม่รัวเกิน",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Inhiraf, Takrir",tajweed:"ر มี Tafkhim/Tarqiq ตามสระและบริบท; การสั่นต้องพอดี",mistake:"อย่ารัว ร หลายครั้ง"},
-"ز":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง",where:"ปลายลิ้นอยู่ใกล้ด้านในฟันหน้าล่าง",how:"ปล่อยลมให้เกิดเสียงเสียดพร้อมก้อง",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat, Safir",tajweed:"เป็นหนึ่งใน Huruf al-Safir ร่วมกับ س ص",mistake:"อย่าอ่านเป็น ذ"},
-"س":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง",where:"ช่องแคบระหว่างปลายลิ้นกับฟัน",how:"เป่าลมผ่านช่องแคบให้เกิดเสียง /s/",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat, Safir",tajweed:"เป็น Huruf al-Safir",mistake:"อย่าให้หนักแบบ ص"},
-"ش":{zone:"اللسان — Al-Lisan",point:"กลางลิ้นกับเพดานแข็ง",where:"กลางลิ้นยกขึ้น",how:"ปล่อยลมผ่านกลางปากให้มีเสียงกระจาย",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat, Tafashshi",tajweed:"ชีนมี Sifat al-Tafashshi คือเสียงกระจายไปในปาก",mistake:"อย่าอ่านเป็น ซ"},
-"ص":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง + ยกด้านหลังลิ้น",where:"ด้านหน้าเป็นช่องลม และด้านหลังลิ้นยก",how:"เสียง س แต่หนักและหนากว่า",sifat:"Hams, Rikhwah, Istila, Itbaq, Ismat, Safir",tajweed:"เป็น Huruf al-Isti'la และ Itbaq จึงต้อง Tafkhim",mistake:"ถ้าออกมาเหมือน س แสดงว่าน้ำหนักไม่พอ"},
-"ض":{zone:"اللسان — Al-Lisan",point:"ด้านข้างลิ้นกับฟันกรามบน",where:"ข้างลิ้นด้านหนึ่งหรือทั้งสองข้าง",how:"ยกด้านข้างลิ้นแตะฟันกรามบนแล้วปล่อยเสียง",sifat:"Jahr, Rikhwah, Istila, Itbaq, Ismat, Istital",tajweed:"ض มี Sifat al-Istital คือเสียงยืดไปตามข้างลิ้น",mistake:"อย่าแทนด้วย د หรือ ز"},
-"ط":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน + ด้านหลังลิ้นยก",where:"ปลายลิ้นด้านบนและช่องปากด้านหลัง",how:"เสียงปิดสั้น หนัก และมีการยกเพดานปาก",sifat:"Jahr, Shiddah, Istila, Itbaq, Ismat, Qalqalah",tajweed:"ط อยู่ใน Huruf al-Qalqalah เมื่อเป็นสุกูน และเป็นอักษรหนัก",mistake:"อย่าอ่านเบาเป็น ت"},
-"ظ":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นกับขอบฟันหน้าบน + ยกด้านหลังลิ้น",where:"ปลายลิ้นแตะขอบฟัน",how:"เสียงเสียดก้องและหนัก",sifat:"Jahr, Rikhwah, Istila, Itbaq, Ismat",tajweed:"เป็น Huruf al-Isti'la/Itbaq จึงอ่านหนัก",mistake:"อย่าเปลี่ยนเป็น ذ หรือ ز"},
-"ع":{zone:"الحلق — Al-Halq",point:"กลางลำคอ",where:"กลางคอ",how:"บีบ/ควบคุมช่องคอเบา ๆ โดยไม่ใช้เสียง ฮ ไทยแทน",sifat:"Jahr, Tawassut, Istifal, Infitah, Ismat",tajweed:"ع ต้องออกจากกลางคอและต่างจาก ء ที่เป็นเสียงตัด",mistake:"อย่าเริ่มด้วย อะ แบบไทยจนไม่มีลักษณะ ع"},
-"غ":{zone:"الحلق — Al-Halq",point:"ส่วนบนของลำคอ",where:"บริเวณคอส่วนบน",how:"ให้โคนลิ้นเข้าใกล้เพดานอ่อนและทำเสียงก้องเสียด",sifat:"Jahr, Rikhwah, Istila, Infitah, Ismat",tajweed:"เป็น Huruf al-Isti'la; มีน้ำหนัก",mistake:"อย่าอ่านเป็น ก"},
-"ف":{zone:"الشفتان — Ash-Shafatan",point:"ริมฝีปากล่างกับปลายฟันหน้าบน",where:"ฟันหน้าบนแตะริมฝีปากล่าง",how:"ปล่อยลมผ่านรอยต่อฟันกับริมฝีปาก",sifat:"Hams, Rikhwah, Istifal, Infitah, Idhlaq",tajweed:"ต้องแยกจาก ب ที่ริมฝีปากปิดสนิท",mistake:"อย่าเม้มริมฝีปากทั้งสองข้าง"},
-"ق":{zone:"اللسان — Al-Lisan",point:"โคนลิ้นกับเพดานอ่อน",where:"ด้านหลังสุดของลิ้น",how:"ปิดสั้นจากโคนลิ้นแล้วปล่อย",sifat:"Jahr, Shiddah, Istila, Infitah, Ismat, Qalqalah",tajweed:"ق เป็นอักษรหนัก และอยู่ใน Huruf al-Qalqalah เมื่อเป็นสุกูน",mistake:"อย่าอ่านเป็น ك ซึ่งอยู่ด้านหน้ากว่า"},
-"ك":{zone:"اللسان — Al-Lisan",point:"โคนลิ้นกับเพดานอ่อนค่อนไปด้านหน้า",where:"ด้านหลังลิ้น แต่หน้ากว่า ق",how:"ปิดแล้วปล่อยพร้อมลม",sifat:"Hams, Shiddah, Istifal, Infitah, Ismat",tajweed:"ต้องแยกตำแหน่งจาก ق ให้ชัด",mistake:"อย่าออกเสียงหนักแบบ ق"},
-"ل":{zone:"اللسان — Al-Lisan",point:"ขอบลิ้นด้านหน้าแตะเหงือกฟันบน",where:"ด้านข้าง/ด้านหน้าของลิ้น",how:"ยกปลายและขอบลิ้นแตะเหงือกด้านบน",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Inhiraf",tajweed:"ลามมี Tafkhim ในคำว่า الله ภายใต้เงื่อนไขที่กำหนด; ที่เหลือโดยทั่วไปบาง",mistake:"อย่ากดลิ้นจนเสียงกลายเป็น ร"},
-"م":{zone:"الشفتان — Ash-Shafatan + الخيشوم",point:"ริมฝีปากทั้งสองปิด; Ghunnah มาจากโพรงจมูก",where:"ริมฝีปาก + โพรงจมูกเมื่อมีฆุนนะฮ์",how:"ปิดริมฝีปากและให้เสียงก้องผ่านจมูกเมื่อเป็นตำแหน่งที่ต้องมี Ghunnah",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Ghunnah",tajweed:"Mim มี Idgham/Ikhfa/Izhar Shafawi ตามตัวอักษรที่ตามหลัง",mistake:"อย่าปิดจมูกเมื่อฝึกฆุนนะฮ์"},
-"ن":{zone:"اللسان — Al-Lisan + الخيشوم",point:"ปลายลิ้นกับเหงือกฟันบน; Ghunnah จากโพรงจมูก",where:"ปลายลิ้น + ช่องจมูก",how:"แตะปลายลิ้นเบา ๆ และรักษาเสียงจมูกเมื่อเป็นตำแหน่งที่ต้องมี Ghunnah",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Ghunnah",tajweed:"Nun Sakinah/Tanwin มี Izhar, Idgham, Iqlab, Ikhfa ตามอักษรถัดไป",mistake:"อย่าอ่าน น โดยไม่มีฆุนนะฮ์เมื่อกฎกำหนด"},
-"ه":{zone:"الحلق — Al-Halq",point:"ส่วนลึกของลำคอ",where:"คอส่วนล่าง/ใกล้กล่องเสียง",how:"เปิดคอและปล่อยลมเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"แยก ه จาก ح ด้วยตำแหน่งและแรงเสียด",mistake:"อย่าใช้เสียงคอแบบ ح"},
-"و":{zone:"الشفتان / الجوف",point:"วาวไม่ยาว: ริมฝีปากกลม; วาวมัดด์: Al-Jawf",where:"ริมฝีปากกลมเมื่อเป็น و ปกติ",how:"ห่อริมฝีปากเล็กน้อย; ถ้าเป็น و مدّ ให้เสียงยาวจากช่องปาก",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"و อาจเป็น Huruf al-Madd เมื่อมี ضمة ก่อนหน้าและเป็นสระยาว",mistake:"อย่ากลายเป็นเสียง อู แบบสั้นเมื่อเป็นพยัญชนะ و"},
-"ي":{zone:"اللسان / الجوف",point:"ยาไม่ยาว: กลางลิ้น; ยามัดด์: Al-Jawf",where:"กลางลิ้นกับเพดานแข็งเมื่อเป็นพยัญชนะ",how:"ยกกลางลิ้นขึ้นเล็กน้อย; ถ้าเป็น ي مدّ ให้เสียงยาว",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ي อาจเป็น Huruf al-Madd เมื่อมี Kasrah ก่อนหน้า",mistake:"อย่าสับสน ยาแบบพยัญชนะกับเสียง อี แบบมัดด์"}
-};
-
-const zones=[
-["الجوف","Al-Jawf","ช่องว่างภายในปาก/คอ","ا و ي (เมื่อเป็น Madd)"],
-["الحلق","Al-Halq","ลำคอ: ลึก–กลาง–บน","ء ه / ع ح / غ خ"],
-["اللسان","Al-Lisan","ลิ้นและจุดสัมผัสกับเพดาน/ฟัน","ق ك ج ش ي ض ل ن ر ط د ت ص س ز ظ ذ ث"],
-["الشفتان","Ash-Shafatan","ริมฝีปาก","ف و ب م"],
-["الخيشوم","Al-Khayshum","โพรงจมูกสำหรับ Ghunnah","غنة ของ ن และ م"]
-];
 
 function anatomySVG(zone){
   const color=zone==="الحلق"?"#ef6c55":zone==="اللسان"?"#2d7ff9":zone==="الشفتان"?"#9b59b6":zone==="الخيشوم"?"#18a66a":"#f0a43c";
@@ -353,5 +520,30 @@ reset.onclick=()=>{
   draw();
 };
 S("res").parentNode.appendChild(reset);
+
+// ===== UI matching the reference design =====
+function buildCharList(){
+  const el=document.getElementById("charList"); if(!el)return;
+  el.innerHTML=L.map((x,n)=>`<div class="char ${n===i?"active":""}" data-n="${n}">
+    <span class="num">${n+1}</span><span class="ar">${x[0]}</span><span>${x[2]}</span><span class="check">${n<i? "✓":""}</span>
+  </div>`).join("");
+  el.querySelectorAll(".char").forEach(c=>c.onclick=()=>{i=+c.dataset.n;sel.value=i;draw();});
+}
+function updateTopStats(){
+  const a=document.getElementById("topScore"),b=document.getElementById("topStreak"),c=document.getElementById("topCorrect");
+  if(a)a.textContent=totalScore.toLocaleString();
+  if(b)b.textContent=streak;
+  if(c)c.textContent=correctCount;
+  const cr=document.getElementById("counter"),cb=document.getElementById("crumb");
+  if(cr)cr.textContent=(i+1)+" / "+L.length;
+  if(cb)cb.textContent=L[i][2];
+  const t=document.getElementById("targetWord"); if(t)t.textContent=L[i][2];
+  const m=document.getElementById("mouthCaption"); if(m && typeof D!=="undefined" && D[L[i][0]])m.textContent=D[L[i][0]].where+" — "+D[L[i][0]].how;
+  const mv=document.getElementById("mouthVisual"); if(mv && typeof D!=="undefined" && D[L[i][0]])mv.innerHTML=anatomySVG(D[L[i][0]].zone.split(" — ")[0]);
+  const w=document.getElementById("wave"); if(w && !w.dataset.ready){w.innerHTML=Array.from({length:48},(_,n)=>`<i style="height:${12+Math.abs(Math.sin(n*.75))*42}px"></i>`).join("");w.dataset.ready="1";}
+}
+const _oldDraw=draw;
+draw=function(){_oldDraw();buildCharList();updateTopStats();};
+
 draw();
 </script></body></html>

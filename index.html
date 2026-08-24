@@ -160,7 +160,7 @@ main{padding:24px 28px 45px;max-width:1420px;width:100%;margin:auto}
     const sp=q("sp"), mic=q("micVisual");
     function micFallback(){
       if(window.beginListening){ window.beginListening(); return; }
-      safeAlert("ระบบฟังเสียงยังไม่พร้อม กรุณาเปิดหน้าเว็บใหม่ แล้วอนุญาตไมโครโฟน");
+      safeAlert("กดปุ่มพูดตามอีกครั้งเพื่อขออนุญาตไมโครโฟน");
     }
     if(sp)sp.onclick=micFallback;
     if(mic)mic.onclick=micFallback;
@@ -438,7 +438,11 @@ function showResult(ok,heard,score){
 
 async function startAudioMeter(){
   try{
-    mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    // Reuse the stream opened by the user's tap so iPhone does not ask twice.
+    if(!mediaStream){
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+      mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    }
     audioCtx=new (window.AudioContext||window.webkitAudioContext)();
     const source=audioCtx.createMediaStreamSource(mediaStream);
     analyser=audioCtx.createAnalyser();
@@ -524,10 +528,42 @@ if(r){
   };
 }
 
-function beginListening(){
-  if(!r)return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari/Chrome รุ่นล่าสุด",0);
+async function beginListening(){
+  if(!r){
+    return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari รุ่นล่าสุด",0);
+  }
   if(listening){try{r.stop()}catch(e){};return;}
-  try{r.start()}catch(e){setListenUI(false);showResult(false,"ไมโครโฟนกำลังถูกใช้งานอยู่ ลองกดอีกครั้ง",0);}
+
+  // IMPORTANT on iPhone/iPad: explicitly request microphone permission
+  // from the button tap before starting SpeechRecognition.
+  if(!window.isSecureContext){
+    return showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0);
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    return showResult(false,"เบราว์เซอร์นี้ไม่สามารถขอสิทธิ์ไมโครโฟนได้",0);
+  }
+
+  try{
+    // This triggers the native iPhone prompt:
+    // “meaningmeen.github.io ต้องการใช้ไมโครโฟน”
+    mediaStream=await navigator.mediaDevices.getUserMedia({
+      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
+    });
+  }catch(e){
+    const denied=(e && (e.name==="NotAllowedError" || e.name==="PermissionDeniedError"));
+    setListenUI(false);
+    return showResult(false,denied
+      ? "ยังไม่ได้อนุญาตไมโครโฟน — กดอนุญาตให้ meaningmeen.github.io ใช้ไมโครโฟน แล้วลองใหม่"
+      : "เปิดไมโครโฟนไม่สำเร็จ ลองกดอีกครั้ง",0);
+  }
+
+  try{
+    r.start();
+  }catch(e){
+    stopAudioMeter();
+    setListenUI(false);
+    showResult(false,"ไมโครโฟนกำลังถูกใช้งานอยู่ ลองกดอีกครั้ง",0);
+  }
 }
 
 S("sp").onclick=beginListening;
@@ -631,7 +667,7 @@ draw();
     const sp=q("sp"), mic=q("micVisual");
     function micFallback(){
       if(window.beginListening){ window.beginListening(); return; }
-      safeAlert("ระบบฟังเสียงยังไม่พร้อม กรุณาเปิดหน้าเว็บใหม่ แล้วอนุญาตไมโครโฟน");
+      safeAlert("กดปุ่มพูดตามอีกครั้งเพื่อขออนุญาตไมโครโฟน");
     }
     if(sp)sp.onclick=micFallback;
     if(mic)mic.onclick=micFallback;

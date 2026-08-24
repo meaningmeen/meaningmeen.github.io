@@ -1,26 +1,52 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ครูอาหรับ — ฝึกอ่านภาษาอาหรับ</title>
 <style>
 body{margin:0;background:#f4f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif}.app{max-width:900px;margin:auto;padding:22px 18px 50px}.brand{color:#2167d8;font-weight:800}.sub{font-size:20px;color:#66738a;margin-bottom:24px}h1{font-size:40px;line-height:1.15}.card{background:#fff;border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:0 10px 30px #16233c12}select{width:100%;padding:18px;border:0;border-radius:18px;background:#f7f9fc;font-size:18px}.progress{height:12px;background:#e7ebf2;border-radius:20px;overflow:hidden;margin:15px 0 25px}.bar{height:100%;background:#2167d8;width:0}.lesson{text-align:center;background:#f7f9fc;border-radius:26px;padding:30px}.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:90px}.roman{font-size:22px;color:#66738a}.thai{font-size:40px;font-weight:800;margin:7px}.desc{font-size:20px;color:#66738a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.btn{border:0;border-radius:22px;padding:20px;font-size:18px;font-weight:800}.example{background:#e9f1ff;color:#2167d8}.speak{background:#10172b;color:white}.result{text-align:center;padding:22px;border-radius:22px;background:#f7f9fc;margin-top:16px}.ok{background:#eaf8f0!important}.bad{background:#fff1f0!important}.result h2{margin:0 0 8px;font-size:30px}.result p{color:#66738a;font-size:18px}@media(max-width:600px){h1{font-size:34px}.actions{grid-template-columns:1fr}.arabic{font-size:78px}}
-</style></head><body><div class="app"><div class="brand">🇹🇭 ครูอาหรับ</div><h1>ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</h1><div class="sub">🤖 AI ฟังเสียง → วิเคราะห์คำอ่าน → ให้คะแนน → 🎉 พลุเมื่อถูก</div>
+
+.taj{background:#fff;border-radius:26px;padding:22px;margin-top:18px;box-shadow:0 10px 30px #16233c10}
+.taj-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:22px}
+.pill{font-size:14px;background:#eaf3ff;color:#2167d8;padding:7px 12px;border-radius:999px}
+.anatomy{width:100%;height:auto;background:#f8fafc;border-radius:20px;margin:14px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid2>div{background:#f7f9fc;border-radius:16px;padding:14px}
+.grid2 p,.rule p,.mistake p{margin:7px 0 0;line-height:1.65;color:#59667a}
+.rule{background:#eef7ff;border-left:5px solid #2167d8;border-radius:14px;padding:15px;margin-top:12px}
+.mistake{background:#fff5ed;border-left:5px solid #ef8a35;border-radius:14px;padding:15px;margin-top:12px}
+.zone-map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.zone-map div{padding:10px;background:#f7f9fc;border-radius:14px;text-align:center;font-size:13px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.zone-map{grid-template-columns:1fr 1fr}.taj-head{font-size:18px}}
+</style></head><body><div class="app"><div class="card" style="background:#fff8e8"><b>หมายเหตุสำคัญ:</b> บทเรียนชุดนี้ใช้ 28 ตัวตามชุดที่กำหนดในเว็บ แต่ในวิชาตัจวีดแบบคลาสสิกมักนับ <b>ء (Hamzah)</b> แยกด้วย ทำให้พบการนับ 29 ตัวอักษรอาหรับในตำรา</div><div class="brand">🇹🇭 ครูอาหรับ</div><h1>ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</h1><div class="sub">🤖 AI ฟังเสียง → วิเคราะห์คำอ่าน → ให้คะแนน → 🎉 พลุเมื่อถูก</div><div style="background:#eef5ff;color:#315a9a;border-radius:16px;padding:12px 15px;margin:10px 0 18px;font-size:15px">🎙️ โหมดฟังเสียงไทย: ระบบจะรับคำอ่านภาษาไทย และเทียบหลายรูปแบบเสียง เช่น “อาลิฟ / อาลีฟ / อาลี” เพื่อไม่ตัดคะแนนเพราะ Safari ฟังเพี้ยนเล็กน้อย</div>
 <div class="card"><b>เลือกบทเรียน</b><select id="lesson"></select></div><div class="card"><h2>ฝึกอ่าน</h2><div class="progress"><div class="bar" id="bar"></div></div><div class="lesson"><div class="arabic" id="ar">ا</div><div class="roman" id="ro">Alif</div><div class="thai" id="th">อาลิฟ</div><div class="desc" id="de">ตัวอักษร อาลิฟ</div></div>
 <div class="actions"><button class="btn example" id="ex">🔊 ฟังตัวอย่าง</button><button class="btn speak" id="sp">🎙️ พูดตาม</button></div><div class="result" id="res"><h2>พร้อมฝึก</h2><p>กด “พูดตาม” แล้วพูดคำอ่าน</p></div></div></div>
 <script>
 const L=[
-["ا","Alif","อาลิฟ",["อาลิฟ","alif"]],
-["ب","Ba","บา",["บา","ba"]],["ت","Ta","ตา",["ตา","ta"]],
-["ث","Tha","ษา",["ษา","ซา","tha"]],["ج","Jim","ญีม",["ญีม","จีม","jim"]],
-["ح","Ha","ฮา",["ฮา","ha"]],["خ","Kha","คอ",["คอ","คา","kha"]],
-["د","Dal","ดาล",["ดาล","dal"]],["ذ","Dhal","ษาล",["ษาล","ซาล","dhal"]],
-["ر","Ra","รอ",["รอ","รา","ra"]],["ز","Zay","ซาย",["ซาย","ซัย","zay"]],
-["س","Sin","ซีน",["ซีน","ซิน","sin"]],["ش","Shin","ชีน",["ชีน","ชิน","shin"]],
-["ص","Sad","ศอด",["ศอด","ซอด","sad"]],["ض","Dad","ฎอด",["ฎอด","ดอด","dad"]],
-["ط","Ta","ฏอ",["ฏอ","ตอ","ta"]],["ظ","Dha","ซอ",["ซอ","ซา","dha"]],
-["ع","Ayn","อัยน์",["อัยน์","อัย","ayn"]],["غ","Ghayn","ฆ็อยน์",["ฆ็อยน์","ฆอยน์","ghayn"]],
-["ف","Fa","ฟา",["ฟา","fa"]],["ق","Qaf","กอฟ",["กอฟ","ก๊อฟ","qaf"]],
-["ك","Kaf","กาฟ",["กาฟ","คาฟ","kaf"]],["ل","Lam","ลาม",["ลาม","lam"]],
-["م","Mim","มีม",["มีม","มิม","mim"]],["ن","Nun","นูน",["นูน","นุน","nun"]],
-["ه","Ha","ฮา",["ฮา","ha"]],["و","Waw","วาว",["วาว","วอ","waw"]],
-["ي","Ya","ยา",["ยา","ya"]]
+["ا","Alif","อาลิฟ",["อาลิฟ","อาลีฟ","อาลิฟฟ์"]],
+["ب","Ba","บา",["บา","บะ","บาห์"]],
+["ت","Ta","ตา",["ตา","ตะ"]],
+["ث","Tha","ษา",["ษา","ซา","สา","ธา"]],
+["ج","Jim","ญีม",["ญีม","จีม","จิม"]],
+["ح","Ha","ฮา",["ฮา","ฮะ"]],
+["خ","Kha","คอ",["คอ","คา","คฮา"]],
+["د","Dal","ดาล",["ดาล","ดัล"]],
+["ذ","Dhal","ซาล",["ซาล","ซัล","ษาล"]],
+["ر","Ra","รอ",["รอ","รา","ระ"]],
+["ز","Zay","ซาย",["ซาย","ซัย","เซ"]],
+["س","Sin","ซีน",["ซีน","ซิน","สิน"]],
+["ش","Shin","ชีน",["ชีน","ชิน"]],
+["ص","Sad","ศอด",["ศอด","ซอด","สอด"]],
+["ض","Dad","ฎอด",["ฎอด","ดอด","ซอด"]],
+["ط","Ta","ฏอ",["ฏอ","ตอ","ทอ"]],
+["ظ","Dha","ซอ",["ซอ","ซา","ษอ"]],
+["ع","Ayn","อัยน์",["อัยน์","อัย","อัยน","ไอน์"]],
+["غ","Ghayn","ฆ็อยน์",["ฆ็อยน์","ฆอยน์","กอยน์"]],
+["ف","Fa","ฟา",["ฟา","ฟะ"]],
+["ق","Qaf","กอฟ",["กอฟ","ก๊อฟ","กัฟ"]],
+["ك","Kaf","กาฟ",["กาฟ","คาฟ","กะฟ"]],
+["ل","Lam","ลาม",["ลาม","ลัม"]],
+["م","Mim","มีม",["มีม","มิม"]],
+["ن","Nun","นูน",["นูน","นุน"]],
+["ه","Ha","ฮา",["ฮา","ฮะ"]],
+["و","Waw","วาว",["วาว","วอ","วะ"]],
+["ي","Ya","ยา",["ยา","ยอ","ยาอ์"]]
 ];
 
 const S=id=>document.getElementById(id);
@@ -35,13 +61,33 @@ let streak=Number(localStorage.getItem("arabicStreak")||0);
 function norm(s){
   return (s||"").toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/[์ๆฯ.,!?]/g,"").replace(/\s+/g," ").trim();
+    .replace(/[์ๆฯ.,!?“”"']/g,"")
+    .replace(/\s+/g," ").trim();
 }
+
+// Extra normalization for common Thai speech-recognition substitutions.
+function speechNorm(s){
+  return norm(s)
+    .replace(/อาลีฟฟ์|อาลิฟฟ์|อาลีฟ/g,"อาลิฟ")
+    .replace(/ญีม/g,"จีม")
+    .replace(/ษา|สา/g,"ซา")
+    .replace(/ดัล/g,"ดาล")
+    .replace(/ซัย/g,"ซาย")
+    .replace(/ชิน/g,"ชีน")
+    .replace(/ซอด|สอด/g,"ศอด")
+    .replace(/ดอด/g,"ฎอด")
+    .replace(/ซัล/g,"ษาล")
+    .replace(/ฆอยน์|กอยน์/g,"ฆ็อยน์");
+}
+
 function similarity(a,b){
-  a=norm(a); b=norm(b);
+  a=speechNorm(a); b=speechNorm(b);
   if(!a||!b)return 0;
   if(a===b)return 1;
-  if(a.includes(b)||b.includes(a))return .88;
+  if(a.includes(b)||b.includes(a)){
+    const ratio=Math.min(a.length,b.length)/Math.max(a.length,b.length);
+    return ratio>=.65?.93:.86;
+  }
   const A=[...a],B=[...b],d=Array.from({length:A.length+1},()=>Array(B.length+1).fill(0));
   for(let x=0;x<=A.length;x++)d[x][0]=x;
   for(let y=0;y<=B.length;y++)d[0][y]=y;
@@ -49,15 +95,23 @@ function similarity(a,b){
     d[x][y]=A[x-1]===B[y-1]?d[x-1][y-1]:Math.min(d[x-1][y]+1,d[x][y-1]+1,d[x-1][y-1]+1);
   return 1-d[A.length][B.length]/Math.max(A.length,B.length);
 }
+
 function scoreSpeech(text,confidence){
+  const raw=norm(text);
+  if(i===0 && /(^|\s)(อาลี|อาลิ)(\s|$)/.test(raw) && !/อาลิฟ/.test(raw)){
+    return {score:0,correct:false,best:0,reason:"คำที่ระบบได้ยินคือ “อาลี” ไม่ใช่ “อาลิฟ”"};
+  }
   const targets=L[i][3];
   let best=0;
   targets.forEach(t=>best=Math.max(best,similarity(text,t)));
-  // Speech-recognition confidence is incorporated but never allowed to make
-  // a correct transcript fail just because the browser reported low confidence.
-  const c=(typeof confidence==="number" && confidence>0)?confidence:0.75;
-  const score=Math.round(Math.min(100,Math.max(0,(best*.82+c*.18)*100)));
-  return {score,correct:best>=.72};
+
+  const c=(typeof confidence==="number" && confidence>0)?confidence:0.72;
+  let score=Math.round(Math.min(100,Math.max(0,(best*.90+c*.10)*100)));
+
+  // Strict threshold: a different word is not accepted just because it sounds vaguely similar.
+  const correct=best>=.78 && !(i===0 && /(^|\s)(อาลี|อาลิ)(\s|$)/.test(raw));
+  if(correct && score<75) score=75;
+  return {score,correct,best};
 }
 
 function renderStats(){
@@ -70,6 +124,21 @@ function renderStats(){
   }
   S("stats").innerHTML=`<span>⭐ คะแนนสะสม ${totalScore}</span><span>🔥 ถูก ${correctCount} ครั้ง</span><span>🏆 Streak ${streak}</span>`;
 }
+
+const taj=document.createElement("section");
+taj.id="taj";
+taj.className="taj";
+const parent=S("res").parentNode;
+parent.insertBefore(taj,S("res").nextSibling);
+function renderZones(){
+  let z=document.getElementById("zoneMap");
+  if(!z){
+    z=document.createElement("div");z.id="zoneMap";z.className="zone-map";
+    taj.parentNode.insertBefore(z,taj);
+  }
+  z.innerHTML=zones.map(a=>`<div><b>${a[0]}</b><br>${a[1]}<br><small>${a[2]}<br>${a[3]}</small></div>`).join("");
+}
+
 function draw(){
   const x=L[i];
   S("ar").textContent=x[0];S("ro").textContent=x[1];S("th").textContent=x[2];
@@ -77,6 +146,8 @@ function draw(){
   S("bar").style.width=((i+1)/L.length*100)+"%";
   S("res").className="result";
   S("res").innerHTML="<h2>🤖 AI พร้อมฟัง</h2><p>กด “พูดตาม” แล้วออกเสียงตามคำอ่าน</p>";
+  renderZones();
+  renderTajweed();
   renderStats();
 }
 sel.onchange=()=>{i=+sel.value;draw()};
@@ -92,68 +163,184 @@ S("ex").onclick=()=>{
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let r=SR?new SR():null;
+let listening=false;
+let finalTranscript="";
+let heardAlternatives=[];
+let listenTimer=null;
 
-function confetti(){
-  const wrap=document.createElement("div");
-  wrap.id="confetti";
-  wrap.style.cssText="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999";
-  document.body.appendChild(wrap);
-  for(let n=0;n<70;n++){
-    const p=document.createElement("i");
-    const size=6+Math.random()*9;
-    p.style.cssText=`position:absolute;left:${Math.random()*100}%;top:-20px;width:${size}px;height:${size*1.5}px;background:hsl(${Math.random()*360},90%,60%);transform:rotate(${Math.random()*360}deg);animation:fall ${1.2+Math.random()*1.5}s ease-out forwards;`;
-    wrap.appendChild(p);
-  }
-  setTimeout(()=>wrap.remove(),3200);
-}
-if(!document.getElementById("confettiStyle")){
-  const st=document.createElement("style");st.id="confettiStyle";
-  st.textContent="@keyframes fall{to{top:110%;transform:translateY(0) rotate(720deg)}}";
-  document.head.appendChild(st);
+function setListenUI(on){
+  listening=on;
+  S("sp").textContent=on?"🔴 AI กำลังฟัง…":"🎙️ พูดตาม";
+  S("sp").style.background=on?"#c62828":"#10172b";
 }
 
-function showResult(ok,text,score){
-  const box=S("res");
-  box.className="result "+(ok?"ok":"bad");
-  if(ok){
-    const points=Math.max(10,score);
-    totalScore+=points;correctCount++;streak++;
-    localStorage.setItem("arabicTotalScore",totalScore);
-    localStorage.setItem("arabicCorrect",correctCount);
-    localStorage.setItem("arabicStreak",streak);
-    box.innerHTML=`<h2>🎉 ถูกต้อง!</h2><p style="font-size:30px;font-weight:900;color:#2167d8">${score}/100 คะแนน</p><p>AI ได้ยินว่า “${text}”</p><p>+${points} คะแนน • 🔥 Streak ${streak}</p>`;
-    confetti();
-  }else{
-    streak=0;localStorage.setItem("arabicStreak",0);
-    box.innerHTML=`<h2>ลองอีกครั้ง 💪</h2><p style="font-size:28px;font-weight:900">${score}/100 คะแนน</p><p>AI ได้ยินว่า “${text||"ไม่ได้ยินเสียง"}”</p><p>คำที่ต้องการ: “${L[i][2]}”</p>`;
+function micHint(){
+  S("res").className="result";
+  S("res").innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง เช่น “อาลิฟ” แล้วเว้นจังหวะ</p><p style='font-size:15px'>เคล็ดลับ: ถือ iPhone ห่างปากประมาณ 15–30 ซม. และอยู่ในที่เงียบ</p>";
+}
+
+function bestRecognitionText(){
+  const all=[...heardAlternatives.map(x=>x.text),finalTranscript].filter(Boolean);
+  let bestText="",bestScore=0,bestConf=0;
+  for(const t of all){
+    const out=scoreSpeech(t,0.8);
+    if(out.best>bestScore){bestScore=out.best;bestText=t;}
   }
-  renderStats();
+  return {text:bestText||finalTranscript, score:bestScore};
 }
 
 if(r){
-  r.lang="th-TH";r.continuous=false;r.interimResults=false;r.maxAlternatives=5;
-  r.onstart=()=>{listening=true;S("sp").textContent="🔴 AI กำลังฟัง…";};
-  r.onend=()=>{listening=false;S("sp").textContent="🎙️ พูดตาม";};
+  r.lang="th-TH";                 // User normally pronounces the letter names in Thai.
+  r.continuous=true;              // Keep listening through short pauses.
+  r.interimResults=true;          // Use interim text to avoid losing short words.
+  r.maxAlternatives=10;            // Safari may return several interpretations.
+
+  r.onstart=()=>{
+    setListenUI(true);
+    finalTranscript="";
+    heardAlternatives=[];
+    micHint();
+    clearTimeout(listenTimer);
+    // Safety timeout so the microphone never appears stuck.
+    listenTimer=setTimeout(()=>{if(listening){try{r.stop()}catch(e){}}},7000);
+  };
+
+  r.onspeechend=()=>{
+    // Give Safari a short moment to deliver the final result.
+    clearTimeout(listenTimer);
+    listenTimer=setTimeout(()=>{if(listening){try{r.stop()}catch(e){}}},900);
+  };
+
+  r.onend=()=>{
+    clearTimeout(listenTimer);
+    setListenUI(false);
+    const pick=bestRecognitionText();
+    if(pick.text){
+      const out=scoreSpeech(pick.text,0.82);
+      showResult(out.correct,pick.text,out.score);
+    }else{
+      showResult(false,"ไม่ได้ยินเสียง",0);
+    }
+  };
+
   r.onerror=e=>{
-    listening=false;S("sp").textContent="🎙️ พูดตาม";
-    const msg=e.error==="not-allowed"?"กรุณาอนุญาตไมโครโฟนใน Safari":e.error==="no-speech"?"ไม่ได้ยินเสียง ลองพูดให้ใกล้ไมโครโฟนขึ้น":"ระบบฟังเสียงมีปัญหา";
+    clearTimeout(listenTimer);
+    setListenUI(false);
+    if(e.error==="aborted") return;
+    const msg=e.error==="not-allowed"
+      ?"กรุณาอนุญาตไมโครโฟนให้ Safari แล้วลองใหม่"
+      :e.error==="no-speech"
+      ?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
+      :e.error==="audio-capture"
+      ?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
+      :"ระบบฟังเสียงสะดุด ลองใหม่อีกครั้ง";
     showResult(false,msg,0);
   };
+
   r.onresult=e=>{
-    let bestText="",bestConfidence=0;
-    for(const alt of e.results[0]){
-      if((alt.confidence||0)>bestConfidence){bestConfidence=alt.confidence||0;bestText=alt.transcript;}
+    for(let n=e.resultIndex;n<e.results.length;n++){
+      const result=e.results[n];
+      for(let k=0;k<result.length;k++){
+        const alt=result[k];
+        if(alt.transcript){
+          if(result.isFinal) finalTranscript += " "+alt.transcript;
+          heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||0});
+        }
+      }
     }
-    if(!bestText)bestText=e.results[0][0].transcript;
-    const out=scoreSpeech(bestText,bestConfidence);
-    showResult(out.correct,bestText,out.score);
+
+    // If Safari already produced a very good match, stop early.
+    const current=bestRecognitionText();
+    if(current.score>=.93){
+      clearTimeout(listenTimer);
+      try{r.stop()}catch(e){}
+    }
   };
 }
+
 S("sp").onclick=()=>{
   if(!r)return showResult(false,"เบราว์เซอร์ไม่รองรับการรู้จำเสียง",0);
-  if(listening)r.stop();
-  else try{r.start()}catch(e){}
+  if(listening){try{r.stop()}catch(e){}}
+  else{
+    try{
+      // Reset browser recognition state before every attempt.
+      finalTranscript="";
+      heardAlternatives=[];
+      r.start();
+    }catch(e){
+      // Safari can throw if start() is called too quickly after stop().
+      setTimeout(()=>{try{r.start()}catch(err){}},350);
+    }
+  }
 };
+
+
+const D={
+"ا":{zone:"الجوف — Al-Jawf",point:"ช่องว่างภายในปากและลำคอ (เสียงยาวของ ا)",where:"ปล่อยเสียงผ่านช่องปากโดยไม่มีจุดสัมผัสเฉพาะ",how:"เปิดปากตามธรรมชาติ รักษาเสียงให้ต่อเนื่องเมื่อเป็น ا مدّ",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"อาลิฟจะเป็น Huruf al-Madd เมื่อมีฟัตหะฮ์ก่อนหน้า เช่น قَالَ; ต้องไม่เติมพยัญชนะท้ายให้เสียงเป็น “อาลี”",mistake:"อย่าพูดชื่ออักษรสั้นจนหายเสียง ف; ชื่อที่ฝึกคือ “อาลิฟ”"},
+"ب":{zone:"الشفتان — Ash-Shafatan",point:"ริมฝีปากบนและล่างประกบกัน",where:"กลางริมฝีปากทั้งสอง",how:"ปิดริมฝีปากแล้วปล่อยลมออก",sifat:"Jahr, Shiddah, Istifal, Infitah, Idhlaq",tajweed:"บาเป็นหนึ่งใน Huruf al-Qalqalah เมื่อมีสุกูนจริง/หยุดที่ตัวอักษรนั้นต้องฝึกตามบริบท",mistake:"อย่าเปลี่ยนเป็น ف ซึ่งใช้ฟันหน้าบนแตะริมฝีปากล่าง"},
+"ت":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน",where:"ปลายลิ้น + ด้านหลังฟันหน้าบน",how:"แตะสั้นและปล่อยลม",sifat:"Hams, Shiddah, Istifal, Infitah, Ismat",tajweed:"ت เป็นหนึ่งในเสียงที่ต้องแยกจาก ط ด้วยน้ำหนักและตำแหน่งลิ้น",mistake:"อย่าทำเสียงหนักแบบ ط"},
+"ث":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะ/โผล่เล็กน้อยระหว่างฟันหน้า",where:"ขอบปลายลิ้นกับขอบฟันหน้าบน",how:"ให้ลมเสียดผ่านเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"เสียง ث ต้องรักษาความเสียดแทรก ไม่เปลี่ยนเป็น س หรือ ت",mistake:"คนไทยมักแทนด้วย ซ/ส; ให้เห็นปลายลิ้น"},
+"ج":{zone:"اللسان — Al-Lisan",point:"กลางลิ้นกับเพดานแข็ง",where:"กลางลิ้นยกขึ้นหาเพดาน",how:"ทำเสียงจากกลางลิ้น ไม่ใช้ปลายลิ้น",sifat:"Jahr, Shiddah, Istifal, Infitah, Qalqalah",tajweed:"ج อยู่ใน حروف القلقلة เมื่อเป็นสุกูน",mistake:"อย่าอ่านเป็น ย หรือ จ แบบภาษาไทยจนตำแหน่งกลางลิ้นหาย"},
+"ح":{zone:"الحلق — Al-Halq",point:"กลางลำคอ",where:"บริเวณกลางคอ",how:"เปิดคอและปล่อยลมเสียดเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ต้องแยก ح จาก ه และ خ ด้วยตำแหน่งคอ",mistake:"อย่าออกเสียงเป็น ฮ จากปากด้านหน้า"},
+"خ":{zone:"الحلق — Al-Halq",point:"ส่วนบนของลำคอ ใกล้ปาก",where:"คอส่วนบน/บริเวณใกล้ลิ้นไก่",how:"ยกโคนลิ้นเข้าใกล้เพดานอ่อนให้เกิดเสียงเสียด",sifat:"Hams, Rikhwah, Istila, Infitah, Ismat",tajweed:"เป็นหนึ่งใน Huruf al-Isti'la; ต้องมีน้ำหนัก",mistake:"อย่าอ่านเป็น ค ธรรมดาจนไม่มีเสียงเสียดในคอ"},
+"د":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน",where:"ปลายลิ้นด้านบน",how:"แตะแล้วปล่อยทันที",sifat:"Jahr, Shiddah, Istifal, Infitah, Ismat",tajweed:"ดาลต่างจาก ض/ظ ด้วยจุดสัมผัสปลายลิ้น",mistake:"อย่ากดลิ้นด้านข้าง"},
+"ذ":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นกับขอบฟันหน้าบน",where:"ปลายลิ้นโผล่เล็กน้อย",how:"แตะเบา ๆ ให้มีเสียงก้องเสียดแทรก",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ต้องแยก ذ จาก ز และ ظ",mistake:"อย่าอ่านเป็น ซ หรือ ด"},
+"ر":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้เหงือกฟันหน้าบน",where:"ปลายลิ้นแตะ/เข้าใกล้เหงือกด้านบน",how:"ทำให้ลิ้นสั่นอย่างพอดี ไม่รัวเกิน",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Inhiraf, Takrir",tajweed:"ر มี Tafkhim/Tarqiq ตามสระและบริบท; การสั่นต้องพอดี",mistake:"อย่ารัว ร หลายครั้ง"},
+"ز":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง",where:"ปลายลิ้นอยู่ใกล้ด้านในฟันหน้าล่าง",how:"ปล่อยลมให้เกิดเสียงเสียดพร้อมก้อง",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat, Safir",tajweed:"เป็นหนึ่งใน Huruf al-Safir ร่วมกับ س ص",mistake:"อย่าอ่านเป็น ذ"},
+"س":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง",where:"ช่องแคบระหว่างปลายลิ้นกับฟัน",how:"เป่าลมผ่านช่องแคบให้เกิดเสียง /s/",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat, Safir",tajweed:"เป็น Huruf al-Safir",mistake:"อย่าให้หนักแบบ ص"},
+"ش":{zone:"اللسان — Al-Lisan",point:"กลางลิ้นกับเพดานแข็ง",where:"กลางลิ้นยกขึ้น",how:"ปล่อยลมผ่านกลางปากให้มีเสียงกระจาย",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat, Tafashshi",tajweed:"ชีนมี Sifat al-Tafashshi คือเสียงกระจายไปในปาก",mistake:"อย่าอ่านเป็น ซ"},
+"ص":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นใกล้ฟันหน้าล่าง + ยกด้านหลังลิ้น",where:"ด้านหน้าเป็นช่องลม และด้านหลังลิ้นยก",how:"เสียง س แต่หนักและหนากว่า",sifat:"Hams, Rikhwah, Istila, Itbaq, Ismat, Safir",tajweed:"เป็น Huruf al-Isti'la และ Itbaq จึงต้อง Tafkhim",mistake:"ถ้าออกมาเหมือน س แสดงว่าน้ำหนักไม่พอ"},
+"ض":{zone:"اللسان — Al-Lisan",point:"ด้านข้างลิ้นกับฟันกรามบน",where:"ข้างลิ้นด้านหนึ่งหรือทั้งสองข้าง",how:"ยกด้านข้างลิ้นแตะฟันกรามบนแล้วปล่อยเสียง",sifat:"Jahr, Rikhwah, Istila, Itbaq, Ismat, Istital",tajweed:"ض มี Sifat al-Istital คือเสียงยืดไปตามข้างลิ้น",mistake:"อย่าแทนด้วย د หรือ ز"},
+"ط":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นแตะโคนฟันหน้าบน + ด้านหลังลิ้นยก",where:"ปลายลิ้นด้านบนและช่องปากด้านหลัง",how:"เสียงปิดสั้น หนัก และมีการยกเพดานปาก",sifat:"Jahr, Shiddah, Istila, Itbaq, Ismat, Qalqalah",tajweed:"ط อยู่ใน Huruf al-Qalqalah เมื่อเป็นสุกูน และเป็นอักษรหนัก",mistake:"อย่าอ่านเบาเป็น ت"},
+"ظ":{zone:"اللسان — Al-Lisan",point:"ปลายลิ้นกับขอบฟันหน้าบน + ยกด้านหลังลิ้น",where:"ปลายลิ้นแตะขอบฟัน",how:"เสียงเสียดก้องและหนัก",sifat:"Jahr, Rikhwah, Istila, Itbaq, Ismat",tajweed:"เป็น Huruf al-Isti'la/Itbaq จึงอ่านหนัก",mistake:"อย่าเปลี่ยนเป็น ذ หรือ ز"},
+"ع":{zone:"الحلق — Al-Halq",point:"กลางลำคอ",where:"กลางคอ",how:"บีบ/ควบคุมช่องคอเบา ๆ โดยไม่ใช้เสียง ฮ ไทยแทน",sifat:"Jahr, Tawassut, Istifal, Infitah, Ismat",tajweed:"ع ต้องออกจากกลางคอและต่างจาก ء ที่เป็นเสียงตัด",mistake:"อย่าเริ่มด้วย อะ แบบไทยจนไม่มีลักษณะ ع"},
+"غ":{zone:"الحلق — Al-Halq",point:"ส่วนบนของลำคอ",where:"บริเวณคอส่วนบน",how:"ให้โคนลิ้นเข้าใกล้เพดานอ่อนและทำเสียงก้องเสียด",sifat:"Jahr, Rikhwah, Istila, Infitah, Ismat",tajweed:"เป็น Huruf al-Isti'la; มีน้ำหนัก",mistake:"อย่าอ่านเป็น ก"},
+"ف":{zone:"الشفتان — Ash-Shafatan",point:"ริมฝีปากล่างกับปลายฟันหน้าบน",where:"ฟันหน้าบนแตะริมฝีปากล่าง",how:"ปล่อยลมผ่านรอยต่อฟันกับริมฝีปาก",sifat:"Hams, Rikhwah, Istifal, Infitah, Idhlaq",tajweed:"ต้องแยกจาก ب ที่ริมฝีปากปิดสนิท",mistake:"อย่าเม้มริมฝีปากทั้งสองข้าง"},
+"ق":{zone:"اللسان — Al-Lisan",point:"โคนลิ้นกับเพดานอ่อน",where:"ด้านหลังสุดของลิ้น",how:"ปิดสั้นจากโคนลิ้นแล้วปล่อย",sifat:"Jahr, Shiddah, Istila, Infitah, Ismat, Qalqalah",tajweed:"ق เป็นอักษรหนัก และอยู่ใน Huruf al-Qalqalah เมื่อเป็นสุกูน",mistake:"อย่าอ่านเป็น ك ซึ่งอยู่ด้านหน้ากว่า"},
+"ك":{zone:"اللسان — Al-Lisan",point:"โคนลิ้นกับเพดานอ่อนค่อนไปด้านหน้า",where:"ด้านหลังลิ้น แต่หน้ากว่า ق",how:"ปิดแล้วปล่อยพร้อมลม",sifat:"Hams, Shiddah, Istifal, Infitah, Ismat",tajweed:"ต้องแยกตำแหน่งจาก ق ให้ชัด",mistake:"อย่าออกเสียงหนักแบบ ق"},
+"ل":{zone:"اللسان — Al-Lisan",point:"ขอบลิ้นด้านหน้าแตะเหงือกฟันบน",where:"ด้านข้าง/ด้านหน้าของลิ้น",how:"ยกปลายและขอบลิ้นแตะเหงือกด้านบน",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Inhiraf",tajweed:"ลามมี Tafkhim ในคำว่า الله ภายใต้เงื่อนไขที่กำหนด; ที่เหลือโดยทั่วไปบาง",mistake:"อย่ากดลิ้นจนเสียงกลายเป็น ร"},
+"م":{zone:"الشفتان — Ash-Shafatan + الخيشوم",point:"ริมฝีปากทั้งสองปิด; Ghunnah มาจากโพรงจมูก",where:"ริมฝีปาก + โพรงจมูกเมื่อมีฆุนนะฮ์",how:"ปิดริมฝีปากและให้เสียงก้องผ่านจมูกเมื่อเป็นตำแหน่งที่ต้องมี Ghunnah",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Ghunnah",tajweed:"Mim มี Idgham/Ikhfa/Izhar Shafawi ตามตัวอักษรที่ตามหลัง",mistake:"อย่าปิดจมูกเมื่อฝึกฆุนนะฮ์"},
+"ن":{zone:"اللسان — Al-Lisan + الخيشوم",point:"ปลายลิ้นกับเหงือกฟันบน; Ghunnah จากโพรงจมูก",where:"ปลายลิ้น + ช่องจมูก",how:"แตะปลายลิ้นเบา ๆ และรักษาเสียงจมูกเมื่อเป็นตำแหน่งที่ต้องมี Ghunnah",sifat:"Jahr, Tawassut, Istifal, Infitah, Idhlaq, Ghunnah",tajweed:"Nun Sakinah/Tanwin มี Izhar, Idgham, Iqlab, Ikhfa ตามอักษรถัดไป",mistake:"อย่าอ่าน น โดยไม่มีฆุนนะฮ์เมื่อกฎกำหนด"},
+"ه":{zone:"الحلق — Al-Halq",point:"ส่วนลึกของลำคอ",where:"คอส่วนล่าง/ใกล้กล่องเสียง",how:"เปิดคอและปล่อยลมเบา ๆ",sifat:"Hams, Rikhwah, Istifal, Infitah, Ismat",tajweed:"แยก ه จาก ح ด้วยตำแหน่งและแรงเสียด",mistake:"อย่าใช้เสียงคอแบบ ح"},
+"و":{zone:"الشفتان / الجوف",point:"วาวไม่ยาว: ริมฝีปากกลม; วาวมัดด์: Al-Jawf",where:"ริมฝีปากกลมเมื่อเป็น و ปกติ",how:"ห่อริมฝีปากเล็กน้อย; ถ้าเป็น و مدّ ให้เสียงยาวจากช่องปาก",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"و อาจเป็น Huruf al-Madd เมื่อมี ضمة ก่อนหน้าและเป็นสระยาว",mistake:"อย่ากลายเป็นเสียง อู แบบสั้นเมื่อเป็นพยัญชนะ و"},
+"ي":{zone:"اللسان / الجوف",point:"ยาไม่ยาว: กลางลิ้น; ยามัดด์: Al-Jawf",where:"กลางลิ้นกับเพดานแข็งเมื่อเป็นพยัญชนะ",how:"ยกกลางลิ้นขึ้นเล็กน้อย; ถ้าเป็น ي مدّ ให้เสียงยาว",sifat:"Jahr, Rikhwah, Istifal, Infitah, Ismat",tajweed:"ي อาจเป็น Huruf al-Madd เมื่อมี Kasrah ก่อนหน้า",mistake:"อย่าสับสน ยาแบบพยัญชนะกับเสียง อี แบบมัดด์"}
+};
+
+const zones=[
+["الجوف","Al-Jawf","ช่องว่างภายในปาก/คอ","ا و ي (เมื่อเป็น Madd)"],
+["الحلق","Al-Halq","ลำคอ: ลึก–กลาง–บน","ء ه / ع ح / غ خ"],
+["اللسان","Al-Lisan","ลิ้นและจุดสัมผัสกับเพดาน/ฟัน","ق ك ج ش ي ض ل ن ر ط د ت ص س ز ظ ذ ث"],
+["الشفتان","Ash-Shafatan","ริมฝีปาก","ف و ب م"],
+["الخيشوم","Al-Khayshum","โพรงจมูกสำหรับ Ghunnah","غنة ของ ن และ م"]
+];
+
+function anatomySVG(zone){
+  const color=zone==="الحلق"?"#ef6c55":zone==="اللسان"?"#2d7ff9":zone==="الشفتان"?"#9b59b6":zone==="الخيشوم"?"#18a66a":"#f0a43c";
+  return `<svg viewBox="0 0 720 330" class="anatomy" role="img" aria-label="ตำแหน่งออกเสียง ${zone}">
+    <path d="M115 155 Q105 65 205 45 Q330 20 470 78 Q575 122 565 210 Q550 285 455 292 L250 292 Q155 280 115 155Z" fill="#fff8f4" stroke="#b8c1ce" stroke-width="5"/>
+    <path d="M145 145 Q180 90 270 98 Q355 105 405 140 L455 165 Q400 175 340 170 Q270 160 205 175Z" fill="#ffd6c9" stroke="#c99587" stroke-width="3"/>
+    <path d="M195 175 Q270 188 340 180 Q400 175 465 192 Q410 210 350 214 Q270 218 200 198Z" fill="#f3a59d"/>
+    <ellipse cx="300" cy="152" rx="105" ry="48" fill="${color}" opacity=".28" stroke="${color}" stroke-width="6"/>
+    <circle cx="${zone==="الخيشوم"?510:zone==="الحلق"?385:zone==="الشفتان"?170:300}" cy="${zone==="الخيشوم"?100:zone==="الحلق"?145:zone==="الشفتان"?188:165}" r="16" fill="${color}"/>
+    <text x="35" y="315" font-size="20" fill="#516078">ภาพสาธิตตำแหน่งโดยประมาณ • ใช้ร่วมกับครู/เสียงตัวอย่าง</text>
+  </svg>`;
+}
+
+function renderTajweed(){
+  const x=L[i], d=D[x[0]];
+  const zone=d.zone.split(" — ")[0];
+  S("taj").innerHTML=`
+    <div class="taj-head"><span>📍</span><b>มะคอริจ (Makhraj)</b><span class="pill">${d.zone}</span></div>
+    ${anatomySVG(zone)}
+    <div class="grid2">
+      <div><b>จุดออกเสียง</b><p>${d.point}</p></div>
+      <div><b>ตำแหน่งในปาก/คอ</b><p>${d.where}</p></div>
+      <div><b>วิธีออกเสียง</b><p>${d.how}</p></div>
+      <div><b>ศิฟาต (Sifat)</b><p>${d.sifat}</p></div>
+    </div>
+    <div class="rule"><b>📖 ตัจวีดที่เกี่ยวข้อง</b><p>${d.tajweed}</p></div>
+    <div class="mistake"><b>⚠️ จุดที่ AI จะช่วยจับ</b><p>${d.mistake}</p></div>`;
+}
 
 // Add a reset button without changing the original layout.
 const reset=document.createElement("button");

@@ -1,97 +1,170 @@
-<!doctype html>
-<html lang="th">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ครูอาหรับ — ฝึกอ่านภาษาอาหรับ</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ครูอาหรับ — ฝึกอ่านภาษาอาหรับ</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--ink:#162033;--muted:#6b7890;--blue:#2166df;--dark:#10182d;--ok:#16864b;--bad:#c63c3c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif}
-main{max-width:820px;margin:auto;padding:28px 18px 50px}.brand{font-weight:800;color:var(--blue);font-size:22px}.title{font-size:42px;line-height:1.15;margin:12px 0 8px;font-weight:850}.sub{font-size:20px;color:var(--muted);margin-bottom:24px}
-.card{background:var(--card);border-radius:30px;padding:28px;box-shadow:0 10px 35px #1d31550e;margin:18px 0}
-h2{font-size:28px;margin:0 0 18px}.lesson{width:100%;padding:18px 20px;border:1px solid #e5eaf2;background:white;border-radius:20px;font-size:20px;text-align:left}
-.word{background:#f7f9fc;border-radius:25px;padding:28px;text-align:center}.arabic{font-size:92px;line-height:1.1;font-family:serif}.roman{font-size:20px;color:var(--muted);margin-top:8px}.thai{font-size:40px;font-weight:800;margin-top:4px}.desc{font-size:18px;color:var(--muted)}
-.row{display:flex;gap:14px;margin-top:18px}.btn{flex:1;border:0;border-radius:20px;padding:18px;font-size:20px;font-weight:750;cursor:pointer}.sample{background:#eaf2ff;color:var(--blue)}.speak{background:var(--dark);color:white}.speak.listening{background:#bd3030}.result{margin-top:18px;background:#f7f9fc;border-radius:22px;padding:22px;text-align:center}.score{font-size:38px;font-weight:850}.heard{font-size:22px;margin-top:8px}.hint{color:var(--muted);margin-top:8px}.ok{color:var(--ok)}.bad{color:var(--bad)}
-.progress{height:12px;background:#e5e9ef;border-radius:99px;overflow:hidden;margin:14px 0 24px}.bar{height:100%;background:var(--blue);width:25%}
-@media(max-width:600px){main{padding:22px 16px}.title{font-size:35px}.arabic{font-size:76px}.thai{font-size:34px}.card{padding:22px;border-radius:26px}.row{flex-direction:column}}
-</style>
-</head>
-<body>
-<main>
-  <div class="brand">🇹🇭 ครูอาหรับ</div>
-  <div class="title">ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</div>
-  <div class="sub">ฟังเสียง → อ่านตาม → ให้ระบบตรวจคำอ่าน</div>
-
-  <div class="card">
-    <h2>เลือกบทเรียน</h2>
-    <button class="lesson" onclick="selectWord('alif')">บทที่ 1 — ตัวอักษรพื้นฐาน</button>
-  </div>
-
-  <div class="card">
-    <h2>ฝึกอ่าน</h2>
-    <div class="progress"><div class="bar"></div></div>
-    <div class="word">
-      <div class="arabic">ا</div>
-      <div class="roman">Alif</div>
-      <div class="thai">อาลิฟ</div>
-      <div class="desc">ตัวอักษร อาลิฟ</div>
-    </div>
-
-    <div class="row">
-      <button class="btn sample" onclick="playSample()">🔊 ฟังตัวอย่าง</button>
-      <button id="mic" class="btn speak" onclick="startMic()">🎤 พูดตาม</button>
-    </div>
-
-    <div id="result" class="result">
-      <div class="score">พร้อมฝึก</div>
-      <div class="hint">กด “พูดตาม” แล้วพูดว่า “อาลิฟ”</div>
-    </div>
-  </div>
-</main>
-
+body{margin:0;background:#f4f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif}.app{max-width:900px;margin:auto;padding:22px 18px 50px}.brand{color:#2167d8;font-weight:800}.sub{font-size:20px;color:#66738a;margin-bottom:24px}h1{font-size:40px;line-height:1.15}.card{background:#fff;border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:0 10px 30px #16233c12}select{width:100%;padding:18px;border:0;border-radius:18px;background:#f7f9fc;font-size:18px}.progress{height:12px;background:#e7ebf2;border-radius:20px;overflow:hidden;margin:15px 0 25px}.bar{height:100%;background:#2167d8;width:0}.lesson{text-align:center;background:#f7f9fc;border-radius:26px;padding:30px}.arabic{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:90px}.roman{font-size:22px;color:#66738a}.thai{font-size:40px;font-weight:800;margin:7px}.desc{font-size:20px;color:#66738a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.btn{border:0;border-radius:22px;padding:20px;font-size:18px;font-weight:800}.example{background:#e9f1ff;color:#2167d8}.speak{background:#10172b;color:white}.result{text-align:center;padding:22px;border-radius:22px;background:#f7f9fc;margin-top:16px}.ok{background:#eaf8f0!important}.bad{background:#fff1f0!important}.result h2{margin:0 0 8px;font-size:30px}.result p{color:#66738a;font-size:18px}@media(max-width:600px){h1{font-size:34px}.actions{grid-template-columns:1fr}.arabic{font-size:78px}}
+</style></head><body><div class="app"><div class="brand">🇹🇭 ครูอาหรับ</div><h1>ฝึกอ่านภาษาอาหรับ<br>สำหรับคนไทย</h1><div class="sub">🤖 AI ฟังเสียง → วิเคราะห์คำอ่าน → ให้คะแนน → 🎉 พลุเมื่อถูก</div>
+<div class="card"><b>เลือกบทเรียน</b><select id="lesson"></select></div><div class="card"><h2>ฝึกอ่าน</h2><div class="progress"><div class="bar" id="bar"></div></div><div class="lesson"><div class="arabic" id="ar">ا</div><div class="roman" id="ro">Alif</div><div class="thai" id="th">อาลิฟ</div><div class="desc" id="de">ตัวอักษร อาลิฟ</div></div>
+<div class="actions"><button class="btn example" id="ex">🔊 ฟังตัวอย่าง</button><button class="btn speak" id="sp">🎙️ พูดตาม</button></div><div class="result" id="res"><h2>พร้อมฝึก</h2><p>กด “พูดตาม” แล้วพูดคำอ่าน</p></div></div></div>
 <script>
-let recognition=null, listening=false;
-const target=['อาลิฟ','alif','alif','ألف','الف'];
+const L=[
+["ا","Alif","อาลิฟ",["อาลิฟ","alif"]],
+["ب","Ba","บา",["บา","ba"]],["ت","Ta","ตา",["ตา","ta"]],
+["ث","Tha","ษา",["ษา","ซา","tha"]],["ج","Jim","ญีม",["ญีม","จีม","jim"]],
+["ح","Ha","ฮา",["ฮา","ha"]],["خ","Kha","คอ",["คอ","คา","kha"]],
+["د","Dal","ดาล",["ดาล","dal"]],["ذ","Dhal","ษาล",["ษาล","ซาล","dhal"]],
+["ر","Ra","รอ",["รอ","รา","ra"]],["ز","Zay","ซาย",["ซาย","ซัย","zay"]],
+["س","Sin","ซีน",["ซีน","ซิน","sin"]],["ش","Shin","ชีน",["ชีน","ชิน","shin"]],
+["ص","Sad","ศอด",["ศอด","ซอด","sad"]],["ض","Dad","ฎอด",["ฎอด","ดอด","dad"]],
+["ط","Ta","ฏอ",["ฏอ","ตอ","ta"]],["ظ","Dha","ซอ",["ซอ","ซา","dha"]],
+["ع","Ayn","อัยน์",["อัยน์","อัย","ayn"]],["غ","Ghayn","ฆ็อยน์",["ฆ็อยน์","ฆอยน์","ghayn"]],
+["ف","Fa","ฟา",["ฟา","fa"]],["ق","Qaf","กอฟ",["กอฟ","ก๊อฟ","qaf"]],
+["ك","Kaf","กาฟ",["กาฟ","คาฟ","kaf"]],["ل","Lam","ลาม",["ลาม","lam"]],
+["م","Mim","มีม",["มีม","มิม","mim"]],["ن","Nun","นูน",["นูน","นุน","nun"]],
+["ه","Ha","ฮา",["ฮา","ha"]],["و","Waw","วาว",["วาว","วอ","waw"]],
+["ي","Ya","ยา",["ยา","ya"]]
+];
 
-function normalize(s){
-  return (s||'').toLowerCase().replace(/[.,!?؟،]/g,'').replace(/\s+/g,' ').trim();
+const S=id=>document.getElementById(id);
+const sel=S("lesson");
+L.forEach((x,n)=>sel.add(new Option((n+1)+". "+x[1]+" — "+x[2],n)));
+
+let i=0, listening=false;
+let totalScore=Number(localStorage.getItem("arabicTotalScore")||0);
+let correctCount=Number(localStorage.getItem("arabicCorrect")||0);
+let streak=Number(localStorage.getItem("arabicStreak")||0);
+
+function norm(s){
+  return (s||"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[์ๆฯ.,!?]/g,"").replace(/\s+/g," ").trim();
 }
-function playSample(){
-  const u=new SpeechSynthesisUtterance('อาลิฟ');
-  u.lang='th-TH'; u.rate=.78; speechSynthesis.cancel(); speechSynthesis.speak(u);
+function similarity(a,b){
+  a=norm(a); b=norm(b);
+  if(!a||!b)return 0;
+  if(a===b)return 1;
+  if(a.includes(b)||b.includes(a))return .88;
+  const A=[...a],B=[...b],d=Array.from({length:A.length+1},()=>Array(B.length+1).fill(0));
+  for(let x=0;x<=A.length;x++)d[x][0]=x;
+  for(let y=0;y<=B.length;y++)d[0][y]=y;
+  for(let x=1;x<=A.length;x++)for(let y=1;y<=B.length;y++)
+    d[x][y]=A[x-1]===B[y-1]?d[x-1][y-1]:Math.min(d[x-1][y]+1,d[x][y-1]+1,d[x-1][y-1]+1);
+  return 1-d[A.length][B.length]/Math.max(A.length,B.length);
 }
-function startMic(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  const btn=document.getElementById('mic'), box=document.getElementById('result');
-  if(!SR){
-    box.innerHTML='<div class="score bad">เปิดไมค์ไม่ได้</div><div class="hint">เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาเปิดเว็บด้วย Safari/Chrome บน HTTPS และอนุญาตไมโครโฟน</div>';
-    return;
+function scoreSpeech(text,confidence){
+  const targets=L[i][3];
+  let best=0;
+  targets.forEach(t=>best=Math.max(best,similarity(text,t)));
+  // Speech-recognition confidence is incorporated but never allowed to make
+  // a correct transcript fail just because the browser reported low confidence.
+  const c=(typeof confidence==="number" && confidence>0)?confidence:0.75;
+  const score=Math.round(Math.min(100,Math.max(0,(best*.82+c*.18)*100)));
+  return {score,correct:best>=.72};
+}
+
+function renderStats(){
+  let box=S("res");
+  if(!document.getElementById("stats")){
+    const stats=document.createElement("div");
+    stats.id="stats";
+    stats.style.cssText="display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:18px 0 0;font-weight:800;color:#2167d8";
+    box.parentNode.insertBefore(stats,box);
   }
-  if(listening){ recognition.stop(); return; }
-  recognition=new SR();
-  recognition.lang='th-TH';
-  recognition.continuous=false;
-  recognition.interimResults=false;
-  recognition.maxAlternatives=5;
-  recognition.onstart=()=>{listening=true;btn.classList.add('listening');btn.textContent='⏹️ กำลังฟัง...';box.innerHTML='<div class="score">กำลังฟัง</div><div class="hint">พูดว่า “อาลิฟ” ชัด ๆ</div>';};
-  recognition.onresult=e=>{
-    const alts=[...e.results[0]].map(x=>normalize(x.transcript));
-    const heard=alts[0]||'';
-    const good=alts.some(x=>target.some(t=>x===normalize(t)||x.includes(normalize(t))));
-    box.innerHTML=good
-      ? '<div class="score ok">✓ ผ่าน</div><div class="heard">ระบบได้ยิน: “'+heard+'”</div><div class="hint">ออกเสียงได้ใกล้เคียงแล้ว</div>'
-      : '<div class="score bad">ยังไม่ตรง</div><div class="heard">ระบบได้ยิน: “'+(heard||'ไม่พบเสียง')+'”</div><div class="hint">ลองพูดว่า “อาลิฟ” อีกครั้ง</div>';
-  };
-  recognition.onerror=e=>{
-    let msg='ลองใหม่อีกครั้ง';
-    if(e.error==='not-allowed') msg='กรุณาอนุญาตการใช้ไมโครโฟนในการตั้งค่าเบราว์เซอร์';
-    if(e.error==='no-speech') msg='ไม่ได้ยินเสียง ลองพูดใกล้ไมโครโฟนขึ้น';
-    box.innerHTML='<div class="score bad">เกิดข้อผิดพลาด</div><div class="hint">'+msg+'</div>';
-  };
-  recognition.onend=()=>{listening=false;btn.classList.remove('listening');btn.textContent='🎤 พูดตาม';};
-  recognition.start();
+  S("stats").innerHTML=`<span>⭐ คะแนนสะสม ${totalScore}</span><span>🔥 ถูก ${correctCount} ครั้ง</span><span>🏆 Streak ${streak}</span>`;
 }
-function selectWord(){ alert('ตอนนี้ตัวอย่างบทเรียนแรกคือ อาลิฟ (ا) — เพิ่มบทเรียนอื่นได้ภายหลัง'); }
-</script>
-</body>
-</html>
+function draw(){
+  const x=L[i];
+  S("ar").textContent=x[0];S("ro").textContent=x[1];S("th").textContent=x[2];
+  S("de").textContent="ตัวอักษร "+x[2];
+  S("bar").style.width=((i+1)/L.length*100)+"%";
+  S("res").className="result";
+  S("res").innerHTML="<h2>🤖 AI พร้อมฟัง</h2><p>กด “พูดตาม” แล้วออกเสียงตามคำอ่าน</p>";
+  renderStats();
+}
+sel.onchange=()=>{i=+sel.value;draw()};
+
+S("ex").onclick=()=>{
+  if("speechSynthesis"in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(L[i][0]);
+    u.lang="ar-SA";u.rate=.7;
+    speechSynthesis.speak(u);
+  }
+};
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let r=SR?new SR():null;
+
+function confetti(){
+  const wrap=document.createElement("div");
+  wrap.id="confetti";
+  wrap.style.cssText="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999";
+  document.body.appendChild(wrap);
+  for(let n=0;n<70;n++){
+    const p=document.createElement("i");
+    const size=6+Math.random()*9;
+    p.style.cssText=`position:absolute;left:${Math.random()*100}%;top:-20px;width:${size}px;height:${size*1.5}px;background:hsl(${Math.random()*360},90%,60%);transform:rotate(${Math.random()*360}deg);animation:fall ${1.2+Math.random()*1.5}s ease-out forwards;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.remove(),3200);
+}
+if(!document.getElementById("confettiStyle")){
+  const st=document.createElement("style");st.id="confettiStyle";
+  st.textContent="@keyframes fall{to{top:110%;transform:translateY(0) rotate(720deg)}}";
+  document.head.appendChild(st);
+}
+
+function showResult(ok,text,score){
+  const box=S("res");
+  box.className="result "+(ok?"ok":"bad");
+  if(ok){
+    const points=Math.max(10,score);
+    totalScore+=points;correctCount++;streak++;
+    localStorage.setItem("arabicTotalScore",totalScore);
+    localStorage.setItem("arabicCorrect",correctCount);
+    localStorage.setItem("arabicStreak",streak);
+    box.innerHTML=`<h2>🎉 ถูกต้อง!</h2><p style="font-size:30px;font-weight:900;color:#2167d8">${score}/100 คะแนน</p><p>AI ได้ยินว่า “${text}”</p><p>+${points} คะแนน • 🔥 Streak ${streak}</p>`;
+    confetti();
+  }else{
+    streak=0;localStorage.setItem("arabicStreak",0);
+    box.innerHTML=`<h2>ลองอีกครั้ง 💪</h2><p style="font-size:28px;font-weight:900">${score}/100 คะแนน</p><p>AI ได้ยินว่า “${text||"ไม่ได้ยินเสียง"}”</p><p>คำที่ต้องการ: “${L[i][2]}”</p>`;
+  }
+  renderStats();
+}
+
+if(r){
+  r.lang="th-TH";r.continuous=false;r.interimResults=false;r.maxAlternatives=5;
+  r.onstart=()=>{listening=true;S("sp").textContent="🔴 AI กำลังฟัง…";};
+  r.onend=()=>{listening=false;S("sp").textContent="🎙️ พูดตาม";};
+  r.onerror=e=>{
+    listening=false;S("sp").textContent="🎙️ พูดตาม";
+    const msg=e.error==="not-allowed"?"กรุณาอนุญาตไมโครโฟนใน Safari":e.error==="no-speech"?"ไม่ได้ยินเสียง ลองพูดให้ใกล้ไมโครโฟนขึ้น":"ระบบฟังเสียงมีปัญหา";
+    showResult(false,msg,0);
+  };
+  r.onresult=e=>{
+    let bestText="",bestConfidence=0;
+    for(const alt of e.results[0]){
+      if((alt.confidence||0)>bestConfidence){bestConfidence=alt.confidence||0;bestText=alt.transcript;}
+    }
+    if(!bestText)bestText=e.results[0][0].transcript;
+    const out=scoreSpeech(bestText,bestConfidence);
+    showResult(out.correct,bestText,out.score);
+  };
+}
+S("sp").onclick=()=>{
+  if(!r)return showResult(false,"เบราว์เซอร์ไม่รองรับการรู้จำเสียง",0);
+  if(listening)r.stop();
+  else try{r.start()}catch(e){}
+};
+
+// Add a reset button without changing the original layout.
+const reset=document.createElement("button");
+reset.textContent="↻ รีเซ็ตคะแนน";
+reset.className="btn";
+reset.style.cssText="margin-top:14px;background:#eef1f6;color:#172033;width:100%";
+reset.onclick=()=>{
+  totalScore=0;correctCount=0;streak=0;
+  localStorage.removeItem("arabicTotalScore");localStorage.removeItem("arabicCorrect");localStorage.removeItem("arabicStreak");
+  draw();
+};
+S("res").parentNode.appendChild(reset);
+draw();
+</script></body></html>

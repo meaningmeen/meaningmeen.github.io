@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7c5cff">
+<title>Arabic Kids • Tajweed Practice • V22</title>
+<style>
+:root{--p:#7c5cff;--p2:#9d70ff;--g:#24b47e;--ink:#253252;--blue:#eaf4ff;--gold:#fff3c4;--pink:#ffe8ef}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f3ff,#fff 55%,#eefaff);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+button{font:inherit;-webkit-tap-highlight-color:transparent}.hero{color:#fff;background:linear-gradient(135deg,#7355f4,#a06cff);padding:26px 18px 22px;border-radius:0 0 30px 30px}.hero h1{margin:0;font-size:28px}.hero p{margin:6px 0 0;font-size:15px}
+.wrap{max-width:760px;margin:auto;padding:16px 14px 36px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#fffffff2;border:2px solid #eee8ff;border-radius:18px;padding:9px 5px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:#71809f}
+.card{background:#fff;border:3px solid #e8e0ff;border-radius:28px;padding:18px 14px;margin:14px 0;box-shadow:0 8px 24px #6d57b312}.lesson{text-align:center}.progress{height:10px;background:#eeeaff;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--p),#28c58b);transition:width .3s}.badge{display:inline-block;margin:14px 0 2px;background:#eaf8f2;color:#159365;font-weight:900;padding:7px 13px;border-radius:999px}
+.arabic{font-family:"Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;font-size:92px;line-height:1.08;font-weight:800;color:#2aa77c;margin:12px 0 0}.name{font-size:27px;font-weight:900}.thai{color:#75809a;font-size:18px;margin-top:3px}
+.meaning{background:var(--gold);border:2px solid #ffe38c;border-radius:18px;padding:12px;margin:14px auto;max-width:620px;font-size:17px}.goal{background:var(--blue);border:2px solid #d7e9ff;border-radius:18px;padding:12px;font-size:16px}
+.mic-zone{padding:12px 0 4px}.mic{width:126px;height:126px;border-radius:50%;border:8px solid #fff;background:linear-gradient(145deg,#9b5cff,#7041cf);box-shadow:0 11px 0 #5730a9,0 18px 28px #7146d533;color:#fff;font-size:56px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation}.mic:active{transform:translateY(6px)}.mic.listening{background:linear-gradient(145deg,#ff668c,#e9446d);animation:pulse 1s infinite}@keyframes pulse{50%{transform:scale(1.045)}}
+.status{min-height:30px;margin:15px auto 4px;font-weight:900;font-size:19px}.ok{color:#159365}.bad{color:#d95772}.info{color:#7657c9}.heard{min-height:30px;color:#4f5f7d;font-size:20px;margin:5px auto 13px;direction:rtl;unicode-bidi:plaintext}.heard small{direction:ltr;unicode-bidi:plaintext;color:#8b95a9;font-size:13px}
+.actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}.action{border:0;border-radius:16px;padding:12px 17px;font-weight:900;cursor:pointer}.listen{background:#eaf4ff;color:#326db4}.next{background:#24b47e;color:#fff}.reset{background:var(--pink);color:#b83d61}
+.details{text-align:left}.details h2{margin:0 0 10px}.row{padding:9px 0;border-bottom:1px dashed #e6e0f3;font-size:16px}.row:last-child{border:0}.footer{text-align:center;color:#a3abc0;font-size:13px;padding:17px 0 4px}
+@media(max-width:420px){.arabic{font-size:82px}.mic{width:116px;height:116px}.hero h1{font-size:25px}}
+
+.firework{position:fixed;left:50%;top:42%;width:10px;height:10px;pointer-events:none;z-index:9999}
+.spark{position:absolute;left:0;top:0;width:8px;height:8px;border-radius:50%;
+  background:#ffd166;box-shadow:0 0 10px #fff;animation:burst 900ms ease-out forwards}
+@keyframes burst{
+  0%{transform:rotate(var(--a)) translateY(0) scale(1);opacity:1}
+  100%{transform:rotate(var(--a)) translateY(-115px) scale(.15);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.spark{animation-duration:1ms}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap" style="padding:0"><h1>📖 Arabic Kids</h1><p>ฝึกอ่านชื่ออักษรอาหรับ • จับเสียงด้วย Arabic Speech</p></div></header>
+<main class="wrap">
+<section class="stats"><div class="stat"><b id="scoreTop">0</b><span>คะแนน</span></div><div class="stat"><b id="streakTop">0</b><span>ต่อเนื่อง</span></div><div class="stat"><b id="doneTop">0/28</b><span>ตัวอักษร</span></div></section>
+<section class="card lesson">
+<div class="progress"><i id="progressBar"></i></div><div class="badge" id="counter">ตัวที่ 1 / 28</div>
+<div class="arabic" id="letter">ا</div><div class="name" id="name">ألف</div><div class="thai" id="thai">อาลิฟ</div>
+<div class="meaning">🔊 ชื่ออักษร: <b id="meaning">ألف</b></div>
+<div class="goal">🎯 เป้าหมาย: <b id="goal">ألف</b></div>
+<div class="mic-zone">
+<button class="mic" id="micBtn" type="button" aria-label="พูดชื่ออักษร">🎙️</button>
+<div class="status info" id="status">แตะไมค์ แล้วพูดว่า “ألف”</div>
+<div class="heard" id="heardLive">ยังไม่ได้ยิน</div>
+</div>
+<div class="actions"><button class="action listen" id="exampleBtn" type="button">🔊 ฟังตัวอย่าง</button><button class="action next" id="nextBtn" type="button">ถัดไป ➜</button><button class="action reset" id="resetBtn" type="button">เริ่มใหม่</button></div>
+</section>
+<section class="card details"><h2>🧠 ผลการฝึก</h2><div class="row">🎯 เป้าหมาย: <b id="targetOut">ألف</b></div><div class="row">🎧 ระบบได้ยิน: <b id="heardOut">—</b></div><div class="row">📌 ไมค์: <b id="micOut">พร้อม</b></div><div class="row">⭐ คะแนนรอบนี้: <b id="roundOut">—</b></div></section>
+<div class="footer">👧 Arabic Kids • Tajweed Practice • <b>V22</b></div>
+</main>
+<script>
+const DB_NAME="ArabicKidsDB",DB_VERSION=2,STORE="letters";
+const letters=[
+{l:"ا",n:"ألف",t:"อาลิฟ",v:["ألف","الف","الالف","أليف","اليف","ا"]},
+{l:"ب",n:"باء",t:"บาอ์",v:["باء","با","الباء","ب"]},
+{l:"ت",n:"تاء",t:"ตาอ์",v:["تاء","تا","التاء","ت"]},
+{l:"ث",n:"ثاء",t:"ษาอ์",v:["ثاء","ثا","الثاء","ث"]},
+{l:"ج",n:"جيم",t:"ญีม",v:["جيم","الجيم","ج"]},
+{l:"ح",n:"حاء",t:"หาอ์",v:["حاء","حا","الحاء","ح"]},
+{l:"خ",n:"خاء",t:"คออ์",v:["خاء","خا","الخاء","خ"]},
+{l:"د",n:"دال",t:"ดาล",v:["دال","الدال","د"]},
+{l:"ذ",n:"ذال",t:"ซาล",v:["ذال","ذال","الذال","ذ"]},
+{l:"ر",n:"راء",t:"ราอ์",v:["راء","را","الراء","ر"]},
+{l:"ز",n:"زاي",t:"ซาย",v:["زاي","زاي","الزاي","ز"]},
+{l:"س",n:"سين",t:"ซีน",v:["سين","السين","س"]},
+{l:"ش",n:"شين",t:"ชีน",v:["شين","الشين","ش"]},
+{l:"ص",n:"صاد",t:"ศอด",v:["صاد","صا","الصاد","ص"]},
+{l:"ض",n:"ضاد",t:"ฎอด",v:["ضاد","ضا","الضاد","ض"]},
+{l:"ط",n:"طاء",t:"ฏออ์",v:["طاء","طا","الطاء","ط"]},
+{l:"ظ",n:"ظاء",t:"ซออ์",v:["ظاء","ظا","الظاء","ظ"]},
+{l:"ع",n:"عين",t:"อัยน์",v:["عين","العين","ع"]},
+{l:"غ",n:"غين",t:"ฆ็อยน์",v:["غين","الغين","غ"]},
+{l:"ف",n:"فاء",t:"ฟาอ์",v:["فاء","فا","الفاء","ف"]},
+{l:"ق",n:"قاف",t:"กอฟ",v:["قاف","قا","القاف","ق"]},
+{l:"ك",n:"كاف",t:"กาฟ",v:["كاف","كا","الكاف","ك"]},
+{l:"ل",n:"لام",t:"ลาม",v:["لام","لا","اللام","ل"]},
+{l:"م",n:"ميم",t:"มีม",v:["ميم","الميم","م"]},
+{l:"ن",n:"نون",t:"นูน",v:["نون","النون","ن"]},
+{l:"ه",n:"هاء",t:"ฮาอ์",v:["هاء","ها","الهاء","ه"]},
+{l:"و",n:"واو",t:"วาว",v:["واو","الواو","و"]},
+{l:"ي",n:"ياء",t:"ยาอ์",v:["ياء","يا","الياء","ي"]}
+];
+let idx=0,score=0,streak=0,listening=false,recognition=null;const $=id=>document.getElementById(id);
+function norm(s){return(s||"").normalize("NFKD").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/[إأآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/ة/g,"ه").replace(/ـ/g,"").replace(/[^\u0600-\u06FF]/g,"").trim()}
+function matchArabic(spoken,target){
+ const s=norm(spoken);if(!s)return false;
+ const vars=target.v.map(norm);
+ return vars.some(v=>s===v||s.includes(v)||v.includes(s));
+}
+function render(){
+ const x=letters[idx];$("counter").textContent=`ตัวที่ ${idx+1} / ${letters.length}`;$("progressBar").style.width=((idx+1)/letters.length*100)+"%";
+ $("letter").textContent=x.l;$("name").textContent=x.n;$("thai").textContent=x.t;$("meaning").textContent=x.n;$("goal").textContent=x.n;$("targetOut").textContent=x.n;
+ $("heardOut").textContent="—";$("heardLive").textContent="ยังไม่ได้ยิน";$("roundOut").textContent="—";$("micOut").textContent="พร้อม";$("doneTop").textContent=`${idx}/28`;
+ $("status").className="status info";$("status").textContent=`แตะไมค์ แล้วพูดว่า “${x.n}”`;
+}
+function speak(){const x=letters[idx];if(!("speechSynthesis"in window)){alert("เครื่องนี้ไม่รองรับเสียง");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(x.n);u.lang="ar-SA";u.rate=.72;u.pitch=1;speechSynthesis.speak(u)}
+function saveResult(ok,heard){const req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:"key"})};req.onsuccess=e=>{const db=e.target.result,tx=db.transaction(STORE,"readwrite");tx.objectStore(STORE).put({key:letters[idx].l,letter:letters[idx].l,name:letters[idx].n,thai:letters[idx].t,lastHeard:heard,correct:ok,updatedAt:new Date().toISOString()})}}
+
+function fireworks(){
+  const colors=["#ff4d6d","#ffd166","#24b47e","#5aa9ff","#9d70ff","#ff8fab"];
+  for(let burst=0;burst<3;burst++){
+    setTimeout(()=>{
+      const f=document.createElement("div");
+      f.className="firework";
+      f.style.left=(25+Math.random()*50)+"%";
+      f.style.top=(25+Math.random()*35)+"%";
+      for(let i=0;i<18;i++){
+        const sp=document.createElement("i");
+        sp.className="spark";
+        sp.style.setProperty("--a",(i*20)+"deg");
+        sp.style.background=colors[(i+burst)%colors.length];
+        sp.style.boxShadow="0 0 10px "+colors[(i+burst)%colors.length];
+        f.appendChild(sp);
+      }
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),1000);
+    },burst*180);
+  }
+}
+function setupRecognition(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$("micOut").textContent="ไม่รองรับ";$("status").className="status bad";$("status").textContent="เบราว์เซอร์นี้ไม่รองรับการจับเสียง";return null}
+ const r=new SR();r.lang="ar-SA";r.continuous=false;r.interimResults=true;r.maxAlternatives=8;
+ r.onstart=()=>{listening=true;$("micBtn").classList.add("listening");$("micOut").textContent="กำลังฟัง…";$("status").className="status info";$("status").textContent="🎧 กำลังฟังภาษาอาหรับ…"};
+ r.onresult=e=>{
+   let finalText="";
+   for(let i=e.resultIndex;i<e.results.length;i++){const text=e.results[i][0].transcript;if(e.results[i].isFinal)finalText+=text;else $("heardLive").textContent="ได้ยิน: "+text}
+   if(!finalText)return;
+   const x=letters[idx],heard=finalText.trim(),ok=matchArabic(heard,x);
+   $("heardLive").textContent="ได้ยิน: "+heard;
+   $("heardOut").textContent=heard;
+   $("roundOut").textContent=ok?"100 / 100":"0 / 100";
+   $("status").className="status "+(ok?"ok":"bad");
+   if(ok){fireworks();score+=100;streak++;$("scoreTop").textContent=score;$("streakTop").textContent=streak;$("status").textContent="✅ ถูกต้อง! ممتاز 👏";saveResult(true,heard);setTimeout(()=>{if(idx<letters.length-1){idx++;render()}else $("status").textContent="🎉 ครบทั้ง 28 ตัวแล้ว!"},700)}
+   else{streak=0;$("streakTop").textContent=0;$("status").textContent=`❌ ยังไม่ตรง ลองพูด “${x.n}” อีกครั้ง`;saveResult(false,heard)}
+ };
+ r.onerror=e=>{$("status").className="status bad";$("status").textContent=e.error==="not-allowed"?"ไมโครโฟนถูกปฏิเสธ — เปิดสิทธิ์ไมโครโฟนใน Safari":e.error==="no-speech"?"ไม่ได้ยินเสียง ลองอีกครั้ง":e.error==="network"?"ระบบรู้จำเสียงขัดข้อง — ตรวจอินเทอร์เน็ต":"เกิดข้อผิดพลาด: "+e.error;$("micOut").textContent="หยุดฟัง"};
+ r.onend=()=>{listening=false;$("micBtn").classList.remove("listening");if($("micOut").textContent==="กำลังฟัง…")$("micOut").textContent="พร้อม"};
+ return r
+}
+function startMic(){if(!recognition)recognition=setupRecognition();if(!recognition)return;if(listening){try{recognition.stop()}catch(e){}return}try{recognition.start()}catch(e){$("status").className="status bad";$("status").textContent="กดอีกครั้งเพื่อเริ่มไมค์"}}
+$("micBtn").addEventListener("click",startMic);$("exampleBtn").addEventListener("click",speak);
+$("nextBtn").addEventListener("click",()=>{if(idx<letters.length-1){idx++;render()}});
+$("resetBtn").addEventListener("click",()=>{idx=0;score=0;streak=0;$("scoreTop").textContent=0;$("streakTop").textContent=0;render()});
+render();
+</script>
+</body>
+</html>

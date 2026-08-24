@@ -560,41 +560,49 @@ if(r){
   };
 }
 
-window.beginListening = async function beginListening(){
+window.beginListening = function beginListening(){
   if(!r){
     return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari รุ่นล่าสุด",0);
   }
-  if(listening){try{r.stop()}catch(e){};return;}
+  if(listening){
+    try{r.stop()}catch(e){}
+    return;
+  }
 
-  // IMPORTANT on iPhone/iPad: explicitly request microphone permission
-  // from the button tap before starting SpeechRecognition.
+  /*
+   * IMPORTANT FOR iPHONE/iPAD:
+   * SpeechRecognition.start() ต้องถูกเรียกตรงจากการแตะปุ่ม
+   * ห้าม await getUserMedia() ก่อน r.start() เพราะ iOS อาจมองว่า
+   * ไม่ใช่ user gesture แล้ว ทำให้กดไมค์แล้วเงียบ/ไม่ขึ้นอะไร
+   *
+   * ให้ SpeechRecognition เป็นตัวขอสิทธิ์ไมโครโฟนเอง
+   * เมื่อกดปุ่มครั้งแรก Safari จะขึ้นถาม "อนุญาตไมโครโฟน"
+   */
   if(!window.isSecureContext){
     return showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0);
   }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    return showResult(false,"เบราว์เซอร์นี้ไม่สามารถขอสิทธิ์ไมโครโฟนได้",0);
-  }
 
   try{
-    // This triggers the native iPhone prompt:
-    // “meaningmeen.github.io ต้องการใช้ไมโครโฟน”
-    mediaStream=await navigator.mediaDevices.getUserMedia({
-      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
-    });
-  }catch(e){
-    const denied=(e && (e.name==="NotAllowedError" || e.name==="PermissionDeniedError"));
-    setListenUI(false);
-    return showResult(false,denied
-      ? "ยังไม่ได้อนุญาตไมโครโฟน — กดอนุญาตให้ meaningmeen.github.io ใช้ไมโครโฟน แล้วลองใหม่"
-      : "เปิดไมโครโฟนไม่สำเร็จ ลองกดอีกครั้ง",0);
-  }
+    finalTranscript="";
+    heardAlternatives=[];
+    setListenUI(true);
+    micHint();
 
-  try{
+    // เรียกทันทีจาก click — ห้ามมี await ก่อนบรรทัดนี้
     r.start();
   }catch(e){
-    stopAudioMeter();
     setListenUI(false);
-    showResult(false,"ไมโครโฟนกำลังถูกใช้งานอยู่ ลองกดอีกครั้ง",0);
+    stopAudioMeter();
+
+    const name=e && e.name ? e.name : "";
+    const msg =
+      name==="NotAllowedError"
+        ? "ไมโครโฟนยังไม่ได้รับอนุญาต — กดอนุญาตให้ meaningmeen.github.io ใช้ไมโครโฟน"
+        : name==="InvalidStateError"
+        ? "ระบบกำลังฟังอยู่แล้ว ลองกดใหม่อีกครั้ง"
+        : "เปิดระบบฟังเสียงไม่สำเร็จ ลองกดไมค์อีกครั้ง";
+
+    showResult(false,msg,0);
   }
 }
 

@@ -88,6 +88,13 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
 .progress{height:16px;background:#e8edf8;border:2px solid #fff}.bar{background:linear-gradient(90deg,#52d79c,#55a6ff,#9b72ed)}
 @media(max-width:520px){.maincard:before{font-size:22px;right:12px}}
 
+
+/* Single microphone control: keep the AI practice mic as the only speak button */
+.duplicate-speak,.secondary-speak,#sp2,#speak2,#mic2{display:none!important}
+
+.mic{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;position:relative;z-index:5}
+.mic-label{display:block;font-size:12px;font-weight:800;margin-top:4px}
+.mic:disabled{opacity:1}
 </style>
 </head>
 <body>
@@ -124,7 +131,6 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
         <div class="note">🔊 ความหมาย: ไม่มีเสียงพยัญชนะโดยตัวมันเอง เป็นตัวแทนของเสียงยาว อา / อะ</div>
         <div class="actions">
           <button class="btn example" id="ex">🔊 ฟังเสียงตัวอย่าง</button><div id="voiceStatus" style="grid-column:1/-1;text-align:center;color:#73809a;font-size:13px;margin-top:-5px">เสียงตัวอย่าง: Arabic (Saudi Arabia)</div>
-          <button class="btn speak" id="sp">🎙️ พูดตาม</button>
         </div>
       </section>
       <section class="mouth-card">
@@ -142,7 +148,7 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
         <div class="wave" id="wave"></div>
         <b>กดปุ่มแล้วพูดว่า</b>
         <div style="font-size:27px;color:#7442d8;font-weight:900;margin:5px">“อาลิฟ”</div>
-        <button class="mic" id="micVisual">🎙️</button>
+        <button class="mic" id="micVisual" type="button" aria-label="กดไมโครโฟนเพื่อพูด">🎙️<span class="mic-label">กดไมค์เพื่อพูด</span></button>
         <div id="listenStatus" style="margin-top:8px;color:#75809a">แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ</div>
       </div>
       <div class="scorebox">
@@ -193,10 +199,7 @@ body{background:radial-gradient(circle at 8% 10%,#fff1b8 0 42px,transparent 43px
     }
 
     // Do not overwrite the real microphone handler. The main script requests permission.
-    const sp=q("sp"), mic=q("micVisual");
-    if(sp) sp.onclick=()=>window.beginListening && window.beginListening();
-    if(mic) mic.onclick=()=>window.beginListening && window.beginListening();
-
+    const mic=q("micVisual");
     // Make every character in the left menu clickable.
     document.querySelectorAll(".char").forEach(el=>{
       el.addEventListener("click",function(){
@@ -385,9 +388,9 @@ if("speechSynthesis" in window){
 }
 
 
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-let r=SR?new SR():null;
-/* listening is already declared with i above */
+
+const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+let r=null;
 let finalTranscript="";
 let heardAlternatives=[];
 let listenTimer=null;
@@ -399,216 +402,168 @@ let volumeRAF=null;
 
 function setListenUI(on){
   listening=on;
-  const btn=S("sp"), mic=S("micVisual"), st=S("listenStatus");
-  if(btn){
-    btn.textContent=on?"🔴 AI กำลังฟัง…":"🎙️ พูดตาม";
-    btn.style.background=on?"#c62828":"#10172b";
+  const mic=S("micVisual"), st=S("listenStatus");
+  if(mic){
+    mic.disabled=false;
+    mic.classList.toggle("listening-ring",on);
+    mic.innerHTML=on?'🔴<span class="mic-label">กำลังฟัง… แตะเพื่อหยุด</span>':'🎙️<span class="mic-label">กดไมค์เพื่อพูด</span>';
   }
-  if(mic) mic.classList.toggle("listening-ring",on);
   if(st) st.textContent=on?"กำลังฟัง… พูดคำเดียวให้ชัด แล้วเว้นจังหวะ":"แตะไมค์แล้วพูด 1 ครั้ง • ระบบจะหยุดเองเมื่อเว้นจังหวะ";
 }
 
 function micHint(){
-  S("res").className="result";
-  S("res").innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง แล้วเว้นจังหวะ</p><p style='font-size:15px'>เคล็ดลับ: ถือ iPhone ห่างปากประมาณ 15–30 ซม. และอยู่ในที่เงียบ</p>";
-}
-
-function bestRecognitionText(){
-  const all=heardAlternatives.map(x=>x.text).concat(finalTranscript).filter(Boolean);
-  let bestText="",bestScore=-1,bestConf=.8;
-  for(const t of all){
-    const out=scoreSpeech(t,.8);
-    if(out.best>bestScore){bestScore=out.best;bestText=t;}
-  }
-  return {text:bestText||finalTranscript,score:Math.max(0,bestScore),confidence:bestConf};
+  const res=S("res");
+  if(!res)return;
+  res.className="result";
+  res.innerHTML="<h2>🎙️ กำลังฟัง</h2><p>พูดคำอ่านชัด ๆ 1 ครั้ง แล้วเว้นจังหวะ</p><p style='font-size:15px'>พูดใกล้ไมค์และอยู่ในที่เงียบ</p>";
 }
 
 function firework(){
   const chars=["🎉","✨","🎊","⭐","💥"];
   for(let n=0;n<24;n++){
     const el=document.createElement("div");
-    el.className="firework";
-    el.textContent=chars[n%chars.length];
+    el.className="firework"; el.textContent=chars[n%chars.length];
     const a=(Math.PI*2*n)/24, rr=90+Math.random()*180;
     el.style.setProperty("--x",`${Math.cos(a)*rr}px`);
     el.style.setProperty("--y",`${Math.sin(a)*rr}px`);
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),1500);
+    document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
   }
 }
 
 function showResult(ok,heard,score){
   const n=Math.round(Math.max(0,Math.min(100,score||0)));
-  S("heardWord").textContent=heard;
-  S("similarity").textContent=n+"%";
-  S("position").textContent=ok?"ตรงตามคำเป้าหมาย":"ต้องปรับการออกเสียง";
-  S("scoreBig").innerHTML=n+'<span>/100</span>';
-  S("scoreText").textContent=ok?"เยี่ยมมาก! 🎉":"ลองอีกครั้ง 💪";
-  S("scoreText").style.color=ok?"#119660":"#c44c45";
-  S("res").className="result "+(ok?"ok":"bad");
+  if(S("heardWord"))S("heardWord").textContent=heard;
+  if(S("similarity"))S("similarity").textContent=n+"%";
+  if(S("position"))S("position").textContent=ok?"ตรงตามคำเป้าหมาย":"ต้องปรับการออกเสียง";
+  if(S("scoreBig"))S("scoreBig").innerHTML=n+'<span>/100</span>';
+  if(S("scoreText")){
+    S("scoreText").textContent=ok?"เยี่ยมมาก! 🎉":"ลองอีกครั้ง 💪";
+    S("scoreText").style.color=ok?"#119660":"#c44c45";
+  }
+  if(S("res"))S("res").className="result "+(ok?"ok":"bad");
 
   if(ok){
-    correctCount++;
-    streak++;
-    totalScore+=n;
+    correctCount++; streak++; totalScore+=n;
     localStorage.setItem("arabicTotalScore",totalScore);
     localStorage.setItem("arabicCorrect",correctCount);
     localStorage.setItem("arabicStreak",streak);
-    S("res").innerHTML="<h2>🎉 ถูกต้อง!</h2><p>ระบบได้ยิน “"+heard+"”</p><p><b>"+n+"/100</b> • 🔥 Streak "+streak+"</p>";
+    if(S("res"))S("res").innerHTML="<h2>🎉 ถูกต้อง!</h2><p>ระบบได้ยิน “"+heard+"”</p><p><b>"+n+"/100</b> • 🔥 Streak "+streak+"</p>";
     firework();
   }else{
-    streak=0;
-    localStorage.setItem("arabicStreak",streak);
+    streak=0; localStorage.setItem("arabicStreak",streak);
     const alifWrong=(i===0 && /(^|\s)(อาลี|อาลิ)(\s|$)/.test(norm(heard)) && !/อาลิฟ/.test(norm(heard)));
-    const tip=alifWrong
-      ?"⚠️ “อาลี” ไม่ถือว่าถูก — ต้องออกเสียงท้าย <b>ฟ</b> ให้ครบ"
-      :"ลองฟังตัวอย่าง แล้วพูดใหม่ให้ชัดขึ้น";
-    S("res").innerHTML="<h2>ยังไม่ตรง</h2><p>"+tip+"</p><p>ระบบได้ยิน: <b>“"+heard+"”</b> • คะแนน <b>"+n+"/100</b></p>";
+    const tip=alifWrong?"⚠️ “อาลี” ไม่ถือว่าถูก — ต้องออกเสียงท้าย <b>ฟ</b> ให้ครบ":"ลองฟังตัวอย่าง แล้วพูดใหม่ให้ชัดขึ้น";
+    if(S("res"))S("res").innerHTML="<h2>ยังไม่ตรง</h2><p>"+tip+"</p><p>ระบบได้ยิน: <b>“"+heard+"”</b> • คะแนน <b>"+n+"/100</b></p>";
   }
-  renderStats();
+  if(typeof renderStats==="function")renderStats();
+  if(typeof draw==="function")draw();
 }
 
-async function startAudioMeter(){
-  try{
-    // Reuse the stream opened by the user's tap so iPhone does not ask twice.
-    if(!mediaStream){
-      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
-      mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
-    }
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    const source=audioCtx.createMediaStreamSource(mediaStream);
-    analyser=audioCtx.createAnalyser();
-    analyser.fftSize=512;
-    source.connect(analyser);
-    const data=new Uint8Array(analyser.fftSize);
-    let lastLoud=Date.now();
-    const tick=()=>{
-      if(!listening||!analyser)return;
-      analyser.getByteTimeDomainData(data);
-      let sum=0;
-      for(const v of data){const d=(v-128)/128;sum+=d*d;}
-      const rms=Math.sqrt(sum/data.length);
-      if(rms>.025) lastLoud=Date.now();
-      if(Date.now()-lastLoud>1000){try{r.stop()}catch(e){}}
-      volumeRAF=requestAnimationFrame(tick);
-    };
-    volumeRAF=requestAnimationFrame(tick);
-  }catch(e){}
-}
-
-function stopAudioMeter(){
-  if(volumeRAF)cancelAnimationFrame(volumeRAF);
-  volumeRAF=null;
-  if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null;}
-  if(audioCtx){try{audioCtx.close()}catch(e){} audioCtx=null;}
+function bestRecognitionText(){
+  const all=heardAlternatives.map(x=>x.text).concat(finalTranscript).filter(Boolean);
+  let bestText="",bestScore=-1;
+  for(const t of all){
+    const out=scoreSpeech(t,.8);
+    if(out.best>bestScore){bestScore=out.best;bestText=t;}
+  }
+  return {text:bestText||finalTranscript,score:Math.max(0,bestScore)};
 }
 
 function finishRecognition(){
-  clearTimeout(listenTimer);clearTimeout(silenceTimer);
-  setListenUI(false);stopAudioMeter();
-  const pick=bestRecognitionText();
-  if(pick.text){
-    const out=scoreSpeech(pick.text,pick.confidence);
-    showResult(out.correct,pick.text,out.score);
-  }else showResult(false,"ไม่ได้ยินเสียง",0);
+  clearTimeout(listenTimer); clearTimeout(silenceTimer);
+  setListenUI(false); stopAudioMeter();
+  const best=bestRecognitionText();
+  if(!best.text){
+    showResult(false,"ไม่ได้ยินคำพูด ลองกดไมค์แล้วพูดอีกครั้ง",0);
+    return;
+  }
+  const out=scoreSpeech(best.text,best.score);
+  showResult(out.ok,best.text,out.best);
 }
 
-if(r){
-  r.lang="th-TH";
-  r.continuous=false;
-  r.interimResults=true;
-  r.maxAlternatives=10;
+function createRecognition(){
+  if(!SpeechRec)return null;
+  const x=new SpeechRec();
+  x.lang="ar-SA";
+  x.continuous=false;
+  x.interimResults=true;
+  x.maxAlternatives=8;
 
-  r.onstart=()=>{
-    setListenUI(true);
-    finalTranscript="";
-    heardAlternatives=[];
-    micHint();
+  x.onstart=()=>{
+    setListenUI(true); micHint();
     startAudioMeter();
     clearTimeout(listenTimer);
-    listenTimer=setTimeout(()=>{try{r.stop()}catch(e){}},6500);
+    listenTimer=setTimeout(()=>{try{x.stop()}catch(e){}},6500);
   };
-
-  r.onspeechend=()=>{
-    clearTimeout(silenceTimer);
-    silenceTimer=setTimeout(()=>{try{r.stop()}catch(e){}},700);
-  };
-
-  r.onresult=e=>{
+  x.onresult=e=>{
     for(let n=e.resultIndex;n<e.results.length;n++){
       const result=e.results[n];
       for(let k=0;k<result.length;k++){
         const alt=result[k];
-        if(alt.transcript){
-          heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||.8});
-          if(result.isFinal)finalTranscript+=" "+alt.transcript;
-        }
+        if(alt.transcript)heardAlternatives.push({text:alt.transcript,confidence:alt.confidence||.8});
+        if(result.isFinal && alt.transcript && k===0) finalTranscript+=" "+alt.transcript;
       }
     }
   };
-
-  r.onend=finishRecognition;
-
-  r.onerror=e=>{
-    clearTimeout(listenTimer);setListenUI(false);stopAudioMeter();
+  x.onspeechend=()=>{
+    clearTimeout(silenceTimer);
+    silenceTimer=setTimeout(()=>{try{x.stop()}catch(e){}},500);
+  };
+  x.onend=finishRecognition;
+  x.onerror=e=>{
+    clearTimeout(listenTimer);clearTimeout(silenceTimer);
+    setListenUI(false);stopAudioMeter();
     if(e.error==="aborted")return;
-    const msg=e.error==="not-allowed"?"กรุณาอนุญาตไมโครโฟนให้ Safari แล้วลองใหม่"
-      :e.error==="no-speech"?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
-      :e.error==="audio-capture"?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
-      :"ระบบฟังเสียงสะดุด ลองใหม่อีกครั้ง";
+    const msg=e.error==="not-allowed"
+      ?"ไมโครโฟนยังไม่ได้รับอนุญาต — เปิดสิทธิ์ไมโครโฟนให้เว็บไซต์ก่อน"
+      :e.error==="no-speech"
+      ?"ไม่ได้ยินเสียง ลองพูดดังและชัดขึ้น"
+      :e.error==="audio-capture"
+      ?"ไม่พบไมโครโฟน กรุณาตรวจสอบไมโครโฟนของ iPhone"
+      :e.error==="network"
+      ?"ระบบรู้จำเสียงเชื่อมต่อไม่ได้ ลองตรวจสอบอินเทอร์เน็ต"
+      :"ระบบฟังเสียงสะดุด ลองกดใหม่อีกครั้ง";
     showResult(false,msg,0);
   };
+  return x;
 }
 
-window.beginListening = function beginListening(){
-  if(!r){
-    return showResult(false,"เบราว์เซอร์นี้ไม่รองรับการรู้จำเสียง กรุณาใช้ Safari รุ่นล่าสุด",0);
-  }
+window.beginListening=function(){
+  // IMPORTANT: create + start SpeechRecognition inside the actual tap handler.
   if(listening){
-    try{r.stop()}catch(e){}
+    try{if(r)r.stop()}catch(e){}
+    return;
+  }
+  if(!window.isSecureContext){
+    showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0); return;
+  }
+  if(!SpeechRec){
+    showResult(false,"อุปกรณ์/เบราว์เซอร์นี้ไม่รองรับการฟังเสียงบนเว็บ — เปิดลิงก์ด้วย Safari แล้วลองใหม่",0);
     return;
   }
 
-  /*
-   * IMPORTANT FOR iPHONE/iPAD:
-   * SpeechRecognition.start() ต้องถูกเรียกตรงจากการแตะปุ่ม
-   * ห้าม await getUserMedia() ก่อน r.start() เพราะ iOS อาจมองว่า
-   * ไม่ใช่ user gesture แล้ว ทำให้กดไมค์แล้วเงียบ/ไม่ขึ้นอะไร
-   *
-   * ให้ SpeechRecognition เป็นตัวขอสิทธิ์ไมโครโฟนเอง
-   * เมื่อกดปุ่มครั้งแรก Safari จะขึ้นถาม "อนุญาตไมโครโฟน"
-   */
-  if(!window.isSecureContext){
-    return showResult(false,"ต้องเปิดเว็บผ่าน HTTPS เพื่อใช้ไมโครโฟน",0);
-  }
-
+  finalTranscript=""; heardAlternatives=[];
   try{
-    finalTranscript="";
-    heardAlternatives=[];
-    setListenUI(true);
-    micHint();
-
-    // เรียกทันทีจาก click — ห้ามมี await ก่อนบรรทัดนี้
+    r=createRecognition();
+    if(!r)throw new Error("NO_RECOGNITION");
+    // No await, no Promise, no permission request before this line.
     r.start();
   }catch(e){
-    setListenUI(false);
-    stopAudioMeter();
-
-    const name=e && e.name ? e.name : "";
-    const msg =
-      name==="NotAllowedError"
-        ? "ไมโครโฟนยังไม่ได้รับอนุญาต — กดอนุญาตให้ meaningmeen.github.io ใช้ไมโครโฟน"
-        : name==="InvalidStateError"
-        ? "ระบบกำลังฟังอยู่แล้ว ลองกดใหม่อีกครั้ง"
-        : "เปิดระบบฟังเสียงไม่สำเร็จ ลองกดไมค์อีกครั้ง";
-
-    showResult(false,msg,0);
+    setListenUI(false); stopAudioMeter();
+    showResult(false,"เริ่มไมโครโฟนไม่ได้ กรุณาเปิดเว็บด้วย Safari แล้วกดไมค์อีกครั้ง",0);
   }
+};
+
+// One and only one speak control.
+const micButton=S("micVisual");
+if(micButton){
+  micButton.type="button";
+  micButton.addEventListener("click",window.beginListening);
+  micButton.addEventListener("touchend",function(e){
+    e.preventDefault();
+    window.beginListening();
+  },{passive:false});
 }
-
-S("sp").onclick=()=>window.beginListening();
-S("micVisual").onclick=()=>window.beginListening();
-
 
 function anatomySVG(zone){
   const color=zone==="الحلق"?"#ef6c55":zone==="اللسان"?"#2d7ff9":zone==="الشفتان"?"#9b59b6":zone==="الخيشوم"?"#18a66a":"#f0a43c";

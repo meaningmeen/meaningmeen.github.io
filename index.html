@@ -135,8 +135,18 @@ function evaluateAlternatives(items,x){
   return {ok:!!hit,heard:hit||items[0]||'',transcriptPair:best?.[0]||null,transcriptScores:scores};
 }
 function setProbe(text,kind=''){const el=$('audioProbe');if(!el)return;el.textContent=text;el.className='audioProbe '+kind}
-function render(){let x=letters[i];$('counter').textContent=`ตัวที่ ${i+1} / 28`;$('bar').style.width=((i+1)/28*100)+'%';$('letter').textContent=x[0];$('name').textContent=x[1];$('thai').textContent=x[2];$('meaning').textContent=x[1];$('target').textContent=x[1];$('leftThai').textContent=x[2];$('rightThai').textContent=x[2];$('prompt').textContent=x[1];$('heard').textContent='—';$('status').className='status info';$('status').textContent='พร้อมฟังภาษาอาหรับ';$('done').textContent=i+'/28';$('back').hidden=i===0;$('complete').classList.remove('show');renderGuide(x[0]);setProbe('🎙️ จะตรวจทั้งคำที่ระบบได้ยินและลักษณะเสียง')}
-function speak(){if(!('speechSynthesis'in window))return;let u=new SpeechSynthesisUtterance(letters[i][1]);u.lang='ar-SA';u.rate=.72;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function render(){let x=letters[i];$('counter').textContent=`ตัวที่ ${i+1} / 28`;$('bar').style.width=((i+1)/28*100)+'%';$('letter').textContent=x[0];$('name').textContent=x[1];$('thai').textContent=x[2];$('meaning').textContent=x[1];$('target').textContent=x[1];$('leftThai').textContent=x[2];$('rightThai').textContent=x[2];$('prompt').textContent=x[1];$('heard').textContent='—';$('status').className='status info';$('status').textContent='พร้อมฟังภาษาอาหรับ';$('done').textContent=(i+1)+'/28';$('back').hidden=i===0;$('complete').classList.remove('show');renderGuide(x[0]);setProbe('🎙️ จะตรวจทั้งคำที่ระบบได้ยินและลักษณะเสียง')}
+function getVoices(){return new Promise(resolve=>{let v=speechSynthesis.getVoices();if(v&&v.length){resolve(v);return}let done=false;const finish=()=>{if(done)return;done=true;resolve(speechSynthesis.getVoices())};speechSynthesis.onvoiceschanged=finish;setTimeout(finish,800)})}
+async function speak(){
+  if(!('speechSynthesis'in window)){$('status').className='status bad';$('status').textContent='เบราว์เซอร์นี้ไม่รองรับการอ่านออกเสียง';return}
+  const voices=await getVoices();
+  const arVoice=voices.find(v=>/^ar\b/i.test(v.lang)||/-ar\b/i.test(v.lang))||voices.find(v=>/arabic/i.test(v.name));
+  let u=new SpeechSynthesisUtterance(letters[i][1]);u.lang='ar-SA';u.rate=.72;
+  if(arVoice){u.voice=arVoice;u.lang=arVoice.lang;$('status').className='status info';$('status').textContent='🔊 กำลังอ่านตัวอย่าง…';}
+  else{$('status').className='status info';$('status').textContent='🔊 กำลังอ่าน… (เครื่องนี้ไม่มีเสียงภาษาอาหรับ ติดตั้งเสียง Arabic เพื่อให้ชัดขึ้น)';}
+  u.onend=()=>{if($('status').textContent.startsWith('🔊')){$('status').className='status info';$('status').textContent='พร้อมฟังภาษาอาหรับ'}};
+  speechSynthesis.cancel();speechSynthesis.speak(u);
+}
 function fireworks(){let c=['#ff4d6d','#ffd166','#24b47e','#5aa9ff','#9d70ff'];for(let b=0;b<3;b++)setTimeout(()=>{for(let k=0;k<18;k++){let s=document.createElement('i');s.className='spark';s.style.left=(20+Math.random()*60)+'%';s.style.top=(22+Math.random()*35)+'%';s.style.setProperty('--a',k*20+'deg');s.style.background=c[(k+b)%c.length];s.style.boxShadow='0 0 10px '+c[(k+b)%c.length];document.body.appendChild(s);setTimeout(()=>s.remove(),950)}},b*140)}
 async function startAudioCapture(){
   if(!navigator.mediaDevices?.getUserMedia)return false;

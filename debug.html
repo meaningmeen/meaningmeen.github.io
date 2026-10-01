@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Debug • จับเสียงอาหรับ</title>
+<style>
+body{font-family:-apple-system,"Segoe UI",sans-serif;margin:0;padding:16px;background:#f4f1ff;color:#18254a}
+h1{font-size:20px}
+select,button{font:inherit;padding:12px;border-radius:12px;border:1px solid #c9c0f0;margin:4px 0;width:100%}
+.mic{background:#4b20d8;color:#fff;font-weight:800;font-size:18px;padding:18px;border:none}
+.mic.rec{background:#ff5470}
+pre{background:#fff;border:1px solid #e4ddff;border-radius:12px;padding:12px;white-space:pre-wrap;word-break:break-word;font-size:14px;line-height:1.6}
+.row{margin:8px 0}
+.big{font-size:40px;text-align:center;padding:8px;background:#fff;border-radius:12px}
+</style>
+</head>
+<body>
+<h1>🔍 Debug เสียงอาหรับ</h1>
+<p>เลือกตัวอักษร → กดไมค์ → พูด → ดูค่าดิบที่ระบบได้ยินและผลคำนวณ</p>
+
+<div class="row">
+  <select id="pick"></select>
+  <div class="big" id="show">ا</div>
+</div>
+<button class="mic" id="mic">🎙️ กดเพื่อพูด</button>
+
+<h3>ผลลัพธ์ดิบ</h3>
+<pre id="out">—</pre>
+
+<script>
+const letters=[
+['ا','ألف','อาลิฟ',['ألف','الف','الالف','أليف','اليف','ا']],['ب','باء','บาอ์',['باء','با','الباء','ب']],['ت','تاء','ตาอ์',['تاء','تا','التاء','ت']],['ث','ثاء','ษาอ์',['ثاء','ثا','الثاء','ث']],['ج','جيم','ญีม',['جيم','الجيم','ج']],['ح','حاء','หาอ์',['حاء','حا','الحاء','ح']],['خ','خاء','คออ์',['خاء','خا','الخاء','خ']],['د','دال','ดาล',['دال','الدال','د']],['ذ','ذال','ซาล',['ذال','الذال','ذ']],['ر','راء','ราอ์',['راء','را','الراء','ر']],['ز','زاي','ซาย',['زاي','الزاي','ز']],['س','سين','ซีน',['سين','السين','س']],['ش','شين','ชีน',['شين','الشين','ش']],['ص','صاد','ศอด',['صاد','صا','الصاد','ص']],['ض','ضاد','ฎอด',['ضاد','ضا','الضاد','ض']],['ط','طاء','ฏออ์',['طاء','طا','الطاء','ط']],['ظ','ظاء','ซออ์',['ظاء','ظا','الظاء','ظ']],['ع','عين','อัยน์',['عين','العين','ع']],['غ','غين','ฆ็อยน์',['غين','الغين','غ']],['ف','فاء','ฟาอ์',['فاء','فا','الفاء','ف']],['ق','قاف','กอฟ',['قاف','قا','القاف','ق']],['ك','كاف','กาฟ',['كاف','كا','الكاف','ك']],['ل','لام','ลาม',['لام','لا','اللام','ل']],['م','ميم','มีม',['ميم','الميم','م']],['ن','نون','นูน',['نون','النون','ن']],['ه','هاء','ฮาอ์',['هاء','ها','الهاء','ه']],['و','واو','วาว',['واو','الواو','و']],['ي','ياء','ยาอ์',['ياء','يا','الياء','ي']]];
+
+// === ฟังก์ชันตัวจริงจาก index.html ===
+function norm(s){return(s||'').normalize('NFKD').replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'').replace(/[إأآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/ـ/g,'').replace(/[^\u0600-\u06FFa-z]/gi,'').trim().toLowerCase()}
+function simRatio(a,b){a=norm(a);b=norm(b);if(!a&&!b)return 1;if(!a||!b)return 0;const m=a.length,n=b.length;let prev=Array.from({length:n+1},(_,j)=>j);for(let r=1;r<=m;r++){let cur=[r];for(let c=1;c<=n;c++){const cost=a[r-1]===b[c-1]?0:1;cur[c]=Math.min(prev[c]+1,cur[c-1]+1,prev[c-1]+cost)}prev=cur}return 1-prev[n]/Math.max(m,n)}
+function gradeSpoken(items,x){
+  const target=norm(x[0]);const accepted=x[3].map(norm);let best=0,hasTargetConsonant=false;
+  for(const raw of items){const it=norm(raw);if(!it)continue;
+    for(const acc of accepted){const s=simRatio(it,acc);if(s>best)best=s}
+    if(target&&it.includes(target))hasTargetConsonant=true;
+    if(target&&it[0]===target&&best<0.85)best=Math.max(best,0.85);}
+  const exact=items.some(it=>accepted.includes(norm(it)));
+  let stars=Math.round(best*10);if(exact)stars=10;else if(hasTargetConsonant)stars=Math.max(stars,7);
+  return {best,stars:Math.max(0,Math.min(10,stars)),hasTargetConsonant};
+}
+
+const pick=document.getElementById('pick'),show=document.getElementById('show'),out=document.getElementById('out'),mic=document.getElementById('mic');
+letters.forEach((l,n)=>{const o=document.createElement('option');o.value=n;o.textContent=`${l[0]}  (${l[1]} / ${l[2]})`;pick.appendChild(o)});
+let idx=0;
+pick.onchange=()=>{idx=+pick.value;show.textContent=letters[idx][0]};
+
+let rec=null,listening=false;
+function setup(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){out.textContent='❌ เบราว์เซอร์นี้ไม่รองรับ SpeechRecognition\nnavigator.userAgent:\n'+navigator.userAgent;return null}
+  const r=new SR();r.lang='ar-SA';r.continuous=false;r.interimResults=false;r.maxAlternatives=8;
+  r.onstart=()=>{listening=true;mic.classList.add('rec');mic.textContent='⏺ กำลังฟัง...พูดเลย'};
+  r.onend=()=>{listening=false;mic.classList.remove('rec');mic.textContent='🎙️ กดเพื่อพูด'};
+  r.onerror=e=>{out.textContent='⚠️ onerror: '+e.error};
+  r.onresult=e=>{
+    const x=letters[idx];
+    const items=[];
+    for(let n=0;n<e.results.length;n++){const res=e.results[n];if(res.isFinal){for(let k=0;k<res.length;k++)items.push(res[k].transcript)}}
+    const g=gradeSpoken(items,x);
+    let lines=[];
+    lines.push('🎯 ตัวอักษรเป้าหมาย: '+x[0]+'  (ชื่อ: '+x[1]+')');
+    lines.push('norm(เป้าหมาย x[0]) = "'+norm(x[0])+'"');
+    lines.push('คำที่ยอมรับได้ (x[3]) = '+JSON.stringify(x[3]));
+    lines.push('  → หลัง norm = '+JSON.stringify(x[3].map(norm)));
+    lines.push('');
+    lines.push('👂 ระบบได้ยิน (ทุก alternatives):');
+    items.forEach((it,n)=>{lines.push(`  [${n}] "${it}"  → norm="${norm(it)}"  includes(target)=${norm(it).includes(norm(x[0]))}  sim(best acc)=${Math.max(...x[3].map(a=>simRatio(it,a))).toFixed(2)}`)});
+    lines.push('');
+    lines.push('📊 ผลคำนวณ:');
+    lines.push('  best(similarity) = '+g.best.toFixed(3));
+    lines.push('  hasTargetConsonant = '+g.hasTargetConsonant);
+    lines.push('  ⭐ stars = '+g.stars+'/10');
+    lines.push('  ✅ ผ่านไหม (>=6) = '+(g.stars>=6?'ผ่าน':'ไม่ผ่าน'));
+    out.textContent=lines.join('\n');
+  };
+  return r;
+}
+mic.onclick=()=>{if(!rec)rec=setup();if(!rec)return;if(listening){try{rec.stop()}catch(e){}return}out.textContent='🎧 กำลังฟัง...';try{rec.start()}catch(e){out.textContent='start error: '+e}};
+</script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V32</title>
 <style>
 :root{--p:#4b20d8;--p2:#6330e5;--ink:#18254a;--g:#28c978;--line:#e4ddff;--soft:#f8f7ff}
@@ -194,11 +195,13 @@ function decidePair(target,transcriptPair,acoustic,transcriptScores={}){
   const other=Math.max(...group.filter(ch=>ch!==target).map(ch=>transcriptScores[ch]??0),0);
   if(!acoustic?.available)return {ok:transcriptPair===target,mode:'stt',t,other};
   const a=acoustic.scores?.[target]??.5;
-  // Audio is a supporting signal; do not let a weak heuristic overrule clear STT.
-  if(t>=.67&&a>=.42)return {ok:true,mode:'dual',aScore:a,other,t};
-  if(t<=.33&&other>=.5)return {ok:false,mode:'dual',aScore:a,other,t};
-  if(t>=.5&&a>=.5)return {ok:true,mode:'mixed',aScore:a,other,t};
-  return {ok:false,mode:'mixed',aScore:a,other,t};
+  // STT (what the system actually heard) is the primary signal and must decide
+  // clear cases on its own. The raw-audio heuristic is unreliable (and often
+  // broken on mobile), so it only breaks ties in the ambiguous middle band.
+  if(transcriptPair===target||t>=.5)return {ok:true,mode:'stt',aScore:a,other,t};
+  if(other>=.5&&t<other)return {ok:false,mode:'stt',aScore:a,other,t};
+  // Genuinely ambiguous: let the acoustic hint help, but lean permissive.
+  return {ok:a>=.45,mode:'mixed',aScore:a,other,t};
 }
 
 const guidance={

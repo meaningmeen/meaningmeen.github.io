@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V40</title>
+<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V41</title>
 <style>
 :root{--p:#4b20d8;--p2:#6330e5;--ink:#18254a;--g:#28c978;--line:#e4ddff;--soft:#f8f7ff}
 *{box-sizing:border-box}
@@ -40,7 +40,10 @@ main.wrap{padding:0 0 12px}
 .heardBox{background:#f5f2ff;border:2px solid #e2dafd;border-radius:18px;padding:8px;max-width:430px;margin:8px auto}
 .heardLabel{font-size:13px;color:#7657c9;font-weight:900}.heard{font-family:"Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;direction:rtl;font-size:31px;font-weight:900;min-height:38px}
 .status{min-height:26px;font-weight:950;font-size:16px;margin:6px}.ok{color:#159365}.bad{color:#d95772}.info{color:#7657c9}
-.actions{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:8px;margin-top:8px}
+.actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
+.navtop{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 4px}
+.navtop .back[hidden]{display:none}
+.navtop .back[hidden]+.next{grid-column:1 / -1}
 .action{border-radius:17px;padding:12px 8px;font-weight:950;cursor:pointer;border:2px solid transparent}
 .back{background:#eef6ff;color:#2874c7;border-color:#c7ddfb}.next{background:#28c978;color:#fff}.reset{background:#ffeaf0;color:#c84569;border-color:#ffd2dd}
 .support{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 28px}
@@ -84,6 +87,7 @@ main.wrap{padding:0 0 12px}
 <main class="wrap">
 <section class="stats"><div class="stat score"><span class="ico">🏆</span> <b id="score">0</b><span>คะแนน</span></div><div class="stat streak"><span class="ico">🔥</span> <b id="streak">0</b><span>ต่อเนื่อง</span></div><div class="stat done"><span class="ico">🗂️</span> <b id="done">0/28</b><span>ตัวอักษร</span></div></section>
 <section class="card"><div class="counter" id="counter">ตัวที่ 1 / 28</div><div class="progress"><i id="bar" style="width:3.57%"></i></div>
+<div class="navtop"><button class="action back" id="back" hidden>← ย้อนกลับ</button><button class="action next" id="next">ถัดไป →</button></div>
 <div class="grid"><div class="box meaning"><div class="smalltitle">🔊 ชื่ออักษร</div><div class="arabicSmall" id="meaning">ألف</div><div class="thaiSmall" id="leftThai">อาลิฟ</div></div><div class="center"><div class="arabic" id="letter">ا</div><div class="name" id="name">ألف</div><div class="thai" id="thai">อาลิฟ</div></div><div class="box target"><div class="smalltitle">🎯 เป้าหมาย</div><div class="arabicSmall" id="target">ألف</div><div class="thaiSmall" id="rightThai">อาลิฟ</div></div></div>
 <button class="action example" id="example">🔊 ฟังตัวอย่าง</button><br><button class="mic" id="mic">🎙️</button><div class="prompt">แตะไมค์ แล้วพูดว่า “<span id="prompt">ألف</span>”</div><div class="heardBox"><div class="heardLabel">ระบบได้ยิน</div><div class="heard" id="heard">—</div></div><div class="audioProbe" id="audioProbe">🎙️ แตะไมค์แล้วออกเสียงตามตัวอักษร</div><section class="guide" id="guide">
 <div class="guideHead"><div class="guideTitle">👄 วิธีออกเสียงให้ถูก</div><div class="guideBadge" id="guideZone">ตำแหน่งออกเสียง</div></div>
@@ -93,10 +97,10 @@ main.wrap{padding:0 0 12px}
 <circle id="zoneThroat" cx="63" cy="126" r="15" fill="#9d57ff" opacity="0"/><circle id="zoneBack" cx="190" cy="103" r="15" fill="#9d57ff" opacity="0"/><circle id="zoneTongue" cx="163" cy="145" r="15" fill="#9d57ff" opacity="0"/><circle id="zoneTeeth" cx="285" cy="104" r="15" fill="#9d57ff" opacity="0"/><circle id="zoneLips" cx="348" cy="105" r="15" fill="#9d57ff" opacity="0"/>
 <path id="air1" d="M360 104 Q285 108 224 126 Q177 139 116 134" fill="none" stroke="#36a8ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 8" opacity=".9"/><path id="air2" d="M112 134 Q75 134 50 130" fill="none" stroke="#36a8ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 8" opacity=".45"/></svg><div class="mouthCaption" id="guideCaption">ภาพเป็นแผนผังช่วยจำตำแหน่ง ไม่ใช่ภาพกายวิภาคจริง</div></div>
 </div></section><div class="status info" id="status">พร้อมฟังภาษาอาหรับ</div>
-<div class="actions"><button class="action back" id="back" hidden>← ย้อนกลับ</button><button class="action next" id="next">ถัดไป →</button><button class="action reset" id="reset">↻ เริ่มใหม่</button></div></section>
+<div class="actions"><button class="action reset" id="reset">↻ เริ่มใหม่</button></div></section>
 <section class="complete" id="complete"><h2>🌟 MashaAllah! 🌟</h2><p>ฝึกครบทั้ง 28 ตัวอักษรแล้ว</p><button class="action reset" id="again">ฝึกใหม่อีกครั้ง</button></section>
 <section class="support"><div class="supportCard"><div class="supportTitle">สนับสนุนกิจกรรม</div><div class="scb"><b>ไทยพาณิชย์ (SCB)</b><strong>431-122-9294</strong><span>มูลนิธิ อิสลามทอล์ค</span></div></div><div class="supportCard"><div class="supportTitle">ช่องทางติดต่อ</div><div class="contact">🔵 IslamTalk<br>🟢 @islamtalk<br>📞 098-273-5074 (ครูอามานี)</div></div></section>
-<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V40</div></main>
+<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V41</div></main>
 <script>
 const letters=[
 ['ا','ألف','อาลิฟ',['ألف','الف','الالف','أليف','اليف','ا']],['ب','باء','บาอ์',['باء','با','الباء','ب']],['ت','تاء','ตาอ์',['تاء','تا','التاء','ت']],['ث','ثاء','ษาอ์',['ثاء','ثا','الثاء','ث']],['ج','جيم','ญีม',['جيم','الجيم','ج']],['ح','حاء','หาอ์',['حاء','حا','الحاء','ح']],['خ','خاء','คออ์',['خاء','خا','الخاء','خ']],['د','دال','ดาล',['دال','الدال','د']],['ذ','ذال','ซาล',['ذال','الذال','ذ']],['ر','راء','ราอ์',['راء','را','الراء','ر']],['ز','زاي','ซาย',['زاي','الزاي','ز']],['س','سين','ซีน',['سين','السين','س']],['ش','شين','ชีน',['شين','الشين','ش']],['ص','صاد','ศอด',['صاد','صا','الصاد','ص']],['ض','ضاد','ฎอด',['ضاد','ضا','الضاد','ض']],['ط','طاء','ฏออ์',['طاء','طا','الطاء','ط']],['ظ','ظاء','ซออ์',['ظاء','ظا','الظاء','ظ']],['ع','عين','อัยน์',['عين','العين','ع']],['غ','غين','ฆ็อยน์',['غين','الغين','غ']],['ف','فاء','ฟาอ์',['فاء','فا','الفاء','ف']],['ق','قاف','กอฟ',['قاف','قا','القاف','ق']],['ك','كاف','กาฟ',['كاف','كا','الكاف','ك']],['ل','لام','ลาม',['لام','لا','اللام','ل']],['م','ميم','มีม',['ميم','الميم','م']],['ن','نون','นูน',['نون','النون','ن']],['ه','هاء','ฮาอ์',['هاء','ها','الهاء','ه']],['و','واو','วาว',['واو','الواو','و']],['ي','ياء','ยาอ์',['ياء','يا','الياء','ي']]];
@@ -265,8 +269,10 @@ function setup(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition
 r.onresult=e=>{
   for(let n=0;n<e.results.length;n++){let res=e.results[n];for(let k=0;k<res.length;k++){const t=res[k]?.transcript;if(t&&!collected.includes(t))collected.push(t)}}
   const live=collected[collected.length-1]||'';if(live)$('heard').textContent=live.trim();
-  // ถ้ามีผล final ที่ชัดเจน ตัดสินทันที (เดสก์ท็อป)
-  if([...e.results].some(r=>r.isFinal))judge();
+  // ตัดสินทันทีถ้า: มีผล final แล้ว หรือ interim ชัดเจนพอ (คล้ายชื่อ ≥7/10) — ไม่ต้องรอ timeout
+  const final=[...e.results].some(r=>r.isFinal);
+  const g=gradeSpoken(collected,letters[i]);
+  if(final||g.stars>=7){judge();try{rec.stop()}catch(_){}}
 };
 function judge(){
   if(judged)return;if(!collected.length)return;judged=true;

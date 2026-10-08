@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V41</title>
+<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V42</title>
 <style>
 :root{--p:#4b20d8;--p2:#6330e5;--ink:#18254a;--g:#28c978;--line:#e4ddff;--soft:#f8f7ff}
 *{box-sizing:border-box}
@@ -100,7 +100,7 @@ main.wrap{padding:0 0 12px}
 <div class="actions"><button class="action reset" id="reset">↻ เริ่มใหม่</button></div></section>
 <section class="complete" id="complete"><h2>🌟 MashaAllah! 🌟</h2><p>ฝึกครบทั้ง 28 ตัวอักษรแล้ว</p><button class="action reset" id="again">ฝึกใหม่อีกครั้ง</button></section>
 <section class="support"><div class="supportCard"><div class="supportTitle">สนับสนุนกิจกรรม</div><div class="scb"><b>ไทยพาณิชย์ (SCB)</b><strong>431-122-9294</strong><span>มูลนิธิ อิสลามทอล์ค</span></div></div><div class="supportCard"><div class="supportTitle">ช่องทางติดต่อ</div><div class="contact">🔵 IslamTalk<br>🟢 @islamtalk<br>📞 098-273-5074 (ครูอามานี)</div></div></section>
-<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V41</div></main>
+<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V42</div></main>
 <script>
 const letters=[
 ['ا','ألف','อาลิฟ',['ألف','الف','الالف','أليف','اليف','ا']],['ب','باء','บาอ์',['باء','با','الباء','ب']],['ت','تاء','ตาอ์',['تاء','تا','التاء','ت']],['ث','ثاء','ษาอ์',['ثاء','ثا','الثاء','ث']],['ج','جيم','ญีม',['جيم','الجيم','ج']],['ح','حاء','หาอ์',['حاء','حا','الحاء','ح']],['خ','خاء','คออ์',['خاء','خا','الخاء','خ']],['د','دال','ดาล',['دال','الدال','د']],['ذ','ذال','ซาล',['ذال','الذال','ذ']],['ر','راء','ราอ์',['راء','را','الراء','ر']],['ز','زاي','ซาย',['زاي','الزاي','ز']],['س','سين','ซีน',['سين','السين','س']],['ش','شين','ชีน',['شين','الشين','ش']],['ص','صاد','ศอด',['صاد','صا','الصاد','ص']],['ض','ضاد','ฎอด',['ضاد','ضا','الضاد','ض']],['ط','طاء','ฏออ์',['طاء','طا','الطاء','ط']],['ظ','ظاء','ซออ์',['ظاء','ظا','الظاء','ظ']],['ع','عين','อัยน์',['عين','العين','ع']],['غ','غين','ฆ็อยน์',['غين','الغين','غ']],['ف','فاء','ฟาอ์',['فاء','فا','الفاء','ف']],['ق','قاف','กอฟ',['قاف','قا','القاف','ق']],['ك','كاف','กาฟ',['كاف','كا','الكاف','ك']],['ل','لام','ลาม',['لام','لا','اللام','ل']],['م','ميم','มีม',['ميم','الميم','م']],['ن','نون','นูน',['نون','النون','ن']],['ه','هاء','ฮาอ์',['هاء','ها','الهاء','ه']],['و','واو','วาว',['واو','الواو','و']],['ي','ياء','ยาอ์',['ياء','يا','الياء','ي']]];
@@ -265,14 +265,16 @@ const guidance={
 const pairLabels={'ح':['ه'],'ه':['ح'],'ع':['ء','ا'],'ء':['ع','ا'],'ص':['س'],'س':['ص'],'ض':['د'],'د':['ض'],'ط':['ت'],'ت':['ط'],'ظ':['ذ'],'ذ':['ظ','ز'],'ز':['ذ'],'ق':['ك'],'ك':['ق'],'خ':['غ'],'غ':['خ'],'ث':['س','ت'],'س':['ص','ث'],'ت':['ط','ث'],'د':['ض'],'ف':['ث']};
 function zoneFor(ch){const z=guidance[ch]?.zone||'';if(z.includes('ริมฝีปาก'))return 'lips';if(z.includes('ระหว่างฟัน')||z.includes('ฟัน'))return 'teeth';if(z.includes('ลิ้น'))return 'tongue';if(z.includes('คอ'))return z.includes('คอหอย')?'throat':'back';return 'back'}
 function renderGuide(ch){const g=guidance[ch]||guidance['ا'];$('guideZone').textContent=g.zone;$('guideHow').textContent=`${ch} — ${g.how}`;$('guidePlace').innerHTML=`📍 <b>ตำแหน่ง:</b> ${g.place}`;$('guideAction').innerHTML=`🗣️ <b>ทำแบบนี้:</b> ${g.action}`;$('guideAvoid').innerHTML=`⚠️ <b>ระวัง:</b> ${g.avoid}`;$('guideTip').textContent='💡 '+g.tip;const ps=[ch,...(contrastGroups[ch]||pairLabels[ch]||[])].filter((v,n,a)=>a.indexOf(v)===n);$('guidePairs').innerHTML=ps.slice(0,4).map(x=>`<span class="pair ${x===ch?'targetPair':''}">${x}</span>`).join('');['zoneThroat','zoneBack','zoneTongue','zoneTeeth','zoneLips'].forEach(id=>$(id).style.opacity='0');const z=zoneFor(ch);const id={throat:'zoneThroat',back:'zoneBack',tongue:'zoneTongue',teeth:'zoneTeeth',lips:'zoneLips'}[z];$(id).style.opacity='1';$('guideCaption').textContent=z==='throat'?'เน้นตำแหน่งคอ/คอหอย':z==='tongue'?'เน้นตำแหน่งลิ้น':z==='teeth'?'เน้นฟันและปลายลิ้น':'เน้นตำแหน่งริมฝีปาก/ด้านหลังช่องปาก'}
-function setup(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('status').className='status bad';$('status').textContent='เบราว์เซอร์นี้ไม่รองรับการจับเสียง';return null}let r=new SR();r.lang='ar-SA';r.continuous=false;r.interimResults=true;r.maxAlternatives=8;r.onstart=()=>{listening=true;collected=[];judged=false;$('mic').classList.add('listening');$('status').className='status info';$('status').textContent='🎧 กำลังฟังภาษาอาหรับ…'};
+function setup(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('status').className='status bad';$('status').textContent='เบราว์เซอร์นี้ไม่รองรับการจับเสียง';return null}let r=new SR();r.lang='ar-SA';r.continuous=false;r.interimResults=true;r.maxAlternatives=8;r.onstart=()=>{listening=true;collected=[];judged=false;$('heard').textContent='…';$('mic').classList.add('listening');$('status').className='status info';$('status').textContent='🎧 กำลังฟังภาษาอาหรับ…'};
 r.onresult=e=>{
-  for(let n=0;n<e.results.length;n++){let res=e.results[n];for(let k=0;k<res.length;k++){const t=res[k]?.transcript;if(t&&!collected.includes(t))collected.push(t)}}
-  const live=collected[collected.length-1]||'';if(live)$('heard').textContent=live.trim();
-  // ตัดสินทันทีถ้า: มีผล final แล้ว หรือ interim ชัดเจนพอ (คล้ายชื่อ ≥7/10) — ไม่ต้องรอ timeout
-  const final=[...e.results].some(r=>r.isFinal);
-  const g=gradeSpoken(collected,letters[i]);
-  if(final||g.stars>=7){judge();try{rec.stop()}catch(_){}}
+  // ใช้เฉพาะ "ผลล่าสุด" ไม่สะสมคำเก่า — เอาเฉพาะที่กำลังพูดอยู่ตอนนี้
+  const lastRes=e.results[e.results.length-1];if(!lastRes)return;
+  const items=[];for(let k=0;k<lastRes.length;k++){const t=lastRes[k]?.transcript;if(t)items.push(t)}
+  collected=items;   // เก็บไว้ให้ onend ใช้ตัดสิน (เฉพาะคำล่าสุด)
+  const live=(items[0]||'').trim();if(live)$('heard').textContent=live;
+  // ตัดสินทันทีถ้า: ได้ผล final แล้ว หรือได้ยินชัดเจนพอ (คล้ายชื่อ ≥7/10)
+  const g=gradeSpoken(items,letters[i]);
+  if(lastRes.isFinal||g.stars>=7){judge();try{rec.stop()}catch(_){}}
 };
 function judge(){
   if(judged)return;if(!collected.length)return;judged=true;

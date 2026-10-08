@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V42</title>
+<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V43</title>
 <style>
 :root{--p:#4b20d8;--p2:#6330e5;--ink:#18254a;--g:#28c978;--line:#e4ddff;--soft:#f8f7ff}
 *{box-sizing:border-box}
@@ -100,7 +100,7 @@ main.wrap{padding:0 0 12px}
 <div class="actions"><button class="action reset" id="reset">↻ เริ่มใหม่</button></div></section>
 <section class="complete" id="complete"><h2>🌟 MashaAllah! 🌟</h2><p>ฝึกครบทั้ง 28 ตัวอักษรแล้ว</p><button class="action reset" id="again">ฝึกใหม่อีกครั้ง</button></section>
 <section class="support"><div class="supportCard"><div class="supportTitle">สนับสนุนกิจกรรม</div><div class="scb"><b>ไทยพาณิชย์ (SCB)</b><strong>431-122-9294</strong><span>มูลนิธิ อิสลามทอล์ค</span></div></div><div class="supportCard"><div class="supportTitle">ช่องทางติดต่อ</div><div class="contact">🔵 IslamTalk<br>🟢 @islamtalk<br>📞 098-273-5074 (ครูอามานี)</div></div></section>
-<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V42</div></main>
+<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V43</div></main>
 <script>
 const letters=[
 ['ا','ألف','อาลิฟ',['ألف','الف','الالف','أليف','اليف','ا']],['ب','باء','บาอ์',['باء','با','الباء','ب']],['ت','تاء','ตาอ์',['تاء','تا','التاء','ت']],['ث','ثاء','ษาอ์',['ثاء','ثا','الثاء','ث']],['ج','جيم','ญีม',['جيم','الجيم','ج']],['ح','حاء','หาอ์',['حاء','حا','الحاء','ح']],['خ','خاء','คออ์',['خاء','خا','الخاء','خ']],['د','دال','ดาล',['دال','الدال','د']],['ذ','ذال','ซาล',['ذال','الذال','ذ']],['ر','راء','ราอ์',['راء','را','الراء','ر']],['ز','زاي','ซาย',['زاي','الزاي','ز']],['س','سين','ซีน',['سين','السين','س']],['ش','شين','ชีน',['شين','الشين','ش']],['ص','صاد','ศอด',['صاد','صا','الصاد','ص']],['ض','ضاد','ฎอด',['ضاد','ضا','الضاد','ض']],['ط','طاء','ฏออ์',['طاء','طا','الطاء','ط']],['ظ','ظاء','ซออ์',['ظاء','ظا','الظاء','ظ']],['ع','عين','อัยน์',['عين','العين','ع']],['غ','غين','ฆ็อยน์',['غين','الغين','غ']],['ف','فاء','ฟาอ์',['فاء','فا','الفاء','ف']],['ق','قاف','กอฟ',['قاف','قا','القاف','ق']],['ك','كاف','กาฟ',['كاف','كا','الكاف','ك']],['ل','لام','ลาม',['لام','لا','اللام','ل']],['م','ميم','มีม',['ميم','الميم','م']],['ن','نون','นูน',['نون','النون','ن']],['ه','هاء','ฮาอ์',['هاء','ها','الهاء','ه']],['و','واو','วาว',['واو','الواو','و']],['ي','ياء','ยาอ์',['ياء','يا','الياء','ي']]];
@@ -133,6 +133,11 @@ function gradeSpoken(items,x){
   else stars=4;                                    // ตัวแรกตรงแต่สระ/ท้ายต่าง (เช่น "บา" อ่าน "บี") = ยังไม่ผ่าน
   return {best,stars:Math.max(0,Math.min(10,stars)),hasTargetConsonant:startsRight};
 }
+// คู่ที่ตัวจับเสียงของเบราว์เซอร์ "แยกไม่ออก" (ถอดเสียงออกมาเหมือนกัน)
+// เช่น ح(ฮาใหญ่)/ه(ฮาเล็ก), ت/ط, ด/ض, ذ/ظ, ص/س, ق/ك
+const hardPairs={'ح':'ه','ه':'ح','ت':'ط','ط':'ت','د':'ض','ض':'د','ذ':'ظ','ظ':'ذ','ص':'س','س':'ص','ق':'ك','ك':'ق'};
+// ชื่อไทยเรียกคู่ให้ผู้เรียนเข้าใจ
+const pairNameTH={'ح':'ฮาใหญ่','ه':'ฮาเล็ก','ت':'ตา','ط':'ฏอ','د':'ดาล','ض':'ฎอด','ذ':'ซาล','ظ':'ซออ์','ص':'ศอด','س':'ซีน','ق':'กอฟ','ك':'กาฟ'};
 const contrastGroups={
   'ح':['ه'], 'ه':['ح'],
   'ع':['ء','ا'], 'ء':['ع','ا'], 'ا':['ع','ء'],
@@ -280,14 +285,29 @@ function judge(){
   if(judged)return;if(!collected.length)return;judged=true;
   let x=letters[i],items=collected.slice();
   let ans=evaluateAlternatives(items,x);$('heard').textContent=(ans.heard||items[0]||'').trim()||'—';
-  // ใช้ gradeSpoken อย่างเดียว ไม่หักคะแนนจาก contrast
   let g=gradeSpoken(items,x);let stars=g.stars;
   let ok=stars>=5;   // ผ่านที่ 5/10 (ใจดีกับการสะกดเพี้ยนของตัวจับเสียง)
-  handleOutcome(ok,x,ans,stars);
-  // การวิเคราะห์เสียงเป็นงานเสริมแบบ best-effort — หุ้มกันพัง
-  stopAudioCapture().then(blob=>analyzeRecordedAudio(blob,x[0]).then(ac=>{
-    if(ac?.available&&contrastGroups[x[0]]){const group=[x[0],...contrastGroups[x[0]]];const parts=group.map(ch=>{const t=Math.round((ans.transcriptScores?.[ch]||0)*100);const a=ac.scores?.[ch]!=null?Math.round(ac.scores[ch]*100):null;return `${ch} ${t}%${a!=null?`/${a}%`:''}`});setProbe(`🎙️ ${parts.join(' • ')}`,ok?'good':'warn')}
-  }).catch(()=>{})).catch(()=>{});
+  const twin=hardPairs[x[0]];   // ตัวที่เป็นคู่แยกยากของตัวนี้ (ถ้ามี)
+  if(ok&&twin){
+    // คู่แยกยาก (เช่น ฮาใหญ่/ฮาเล็ก): ลองใช้ acoustic ช่วยแยกก่อน ถ้าไม่ได้ → ผ่าน+เตือน
+    handleOutcome(true,x,ans,stars);
+    stopAudioCapture().then(blob=>analyzeRecordedAudio(blob,x[0]).then(ac=>{
+      const a=ac?.available?ac.scores?.[x[0]]:null;      // คะแนน acoustic ของตัวเป้าหมาย 0..1
+      const aTwin=ac?.available?ac.scores?.[twin]:null;  // ของตัวคู่
+      if(a!=null&&aTwin!=null&&Math.abs(a-aTwin)>=0.2){
+        // acoustic แยกได้ชัดพอ
+        if(a>=aTwin){$('status').className='status ok';$('status').textContent=`✅ ${stars}/10 — เสียงเข้ากับ ${pairNameTH[x[0]]||x[0]} ✔`;}
+        else{$('status').className='status info';$('status').textContent=`🔎 ระบบว่าเสียงใกล้ "${pairNameTH[twin]||twin}" ลองเน้นให้เป็น ${pairNameTH[x[0]]||x[0]} • (ผ่านให้แล้ว)`;}
+      }else{
+        // acoustic แยกไม่ได้ → บอกตรง ๆ กับผู้เรียน
+        $('status').className='status info';
+        $('status').textContent=`✅ ${stars}/10 • ⚠️ ระบบแยกเสียง ${pairNameTH[x[0]]||x[0]} กับ ${pairNameTH[twin]||twin} ไม่ได้ กด 🔊 ฟังตัวอย่างแล้วฝึกออกเสียงให้ถูกเอง`;
+      }
+    }).catch(()=>{})).catch(()=>{});
+  }else{
+    handleOutcome(ok,x,ans,stars);
+    stopAudioCapture().then(()=>{}).catch(()=>{});
+  }
 }
 function handleOutcome(ok,x,ans,stars){
   stars=(stars==null?(ok?10:0):stars);

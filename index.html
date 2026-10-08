@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V43</title>
+<meta name="theme-color" content="#4b20d8"><title>ฝึกอ่านกุรอาน • ISLAMTALK • V44</title>
 <style>
 :root{--p:#4b20d8;--p2:#6330e5;--ink:#18254a;--g:#28c978;--line:#e4ddff;--soft:#f8f7ff}
 *{box-sizing:border-box}
@@ -100,7 +100,7 @@ main.wrap{padding:0 0 12px}
 <div class="actions"><button class="action reset" id="reset">↻ เริ่มใหม่</button></div></section>
 <section class="complete" id="complete"><h2>🌟 MashaAllah! 🌟</h2><p>ฝึกครบทั้ง 28 ตัวอักษรแล้ว</p><button class="action reset" id="again">ฝึกใหม่อีกครั้ง</button></section>
 <section class="support"><div class="supportCard"><div class="supportTitle">สนับสนุนกิจกรรม</div><div class="scb"><b>ไทยพาณิชย์ (SCB)</b><strong>431-122-9294</strong><span>มูลนิธิ อิสลามทอล์ค</span></div></div><div class="supportCard"><div class="supportTitle">ช่องทางติดต่อ</div><div class="contact">🔵 IslamTalk<br>🟢 @islamtalk<br>📞 098-273-5074 (ครูอามานี)</div></div></section>
-<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V43</div></main>
+<div class="footer">♥ เรียนรู้อย่างมีความสุข　|　IslamTalk Learn &amp; Share　|　بسم الله الرحمن الرحيم</div><div class="version">Arabic Quran Practice • V44</div></main>
 <script>
 const letters=[
 ['ا','ألف','อาลิฟ',['ألف','الف','الالف','أليف','اليف','ا']],['ب','باء','บาอ์',['باء','با','الباء','ب']],['ت','تاء','ตาอ์',['تاء','تا','التاء','ت']],['ث','ثاء','ษาอ์',['ثاء','ثا','الثاء','ث']],['ج','جيم','ญีม',['جيم','الجيم','ج']],['ح','حاء','หาอ์',['حاء','حا','الحاء','ح']],['خ','خاء','คออ์',['خاء','خا','الخاء','خ']],['د','دال','ดาล',['دال','الدال','د']],['ذ','ذال','ซาล',['ذال','الذال','ذ']],['ر','راء','ราอ์',['راء','را','الراء','ر']],['ز','زاي','ซาย',['زاي','الزاي','ز']],['س','سين','ซีน',['سين','السين','س']],['ش','شين','ชีน',['شين','الشين','ش']],['ص','صاد','ศอด',['صاد','صا','الصاد','ص']],['ض','ضاد','ฎอด',['ضاد','ضا','الضاد','ض']],['ط','طاء','ฏออ์',['طاء','طا','الطاء','ط']],['ظ','ظاء','ซออ์',['ظاء','ظا','الظاء','ظ']],['ع','عين','อัยน์',['عين','العين','ع']],['غ','غين','ฆ็อยน์',['غين','الغين','غ']],['ف','فاء','ฟาอ์',['فاء','فا','الفاء','ف']],['ق','قاف','กอฟ',['قاف','قا','القاف','ق']],['ك','كاف','กาฟ',['كاف','كا','الكاف','ك']],['ل','لام','ลาม',['لام','لا','اللام','ل']],['م','ميم','มีม',['ميم','الميم','م']],['ن','نون','นูน',['نون','النون','ن']],['ه','هاء','ฮาอ์',['هاء','ها','الهاء','ه']],['و','واو','วาว',['واو','الواو','و']],['ي','ياء','ยาอ์',['ياء','يا','الياء','ي']]];
@@ -112,26 +112,27 @@ function norm(s){return(s||'').normalize('NFKD').replace(/[\u064B-\u065F\u0670\u
 function good(spoken,x){let s=norm(spoken);const list=Array.isArray(x)?(Array.isArray(x[3])?x[3]:x):[];return !!s&&list.map(norm).some(v=>v&&s===v)}
 // ความคล้ายระดับตัวอักษร 0..1 (Levenshtein)
 function simRatio(a,b){a=norm(a);b=norm(b);if(!a&&!b)return 1;if(!a||!b)return 0;const m=a.length,n=b.length;let prev=Array.from({length:n+1},(_,j)=>j);for(let r=1;r<=m;r++){let cur=[r];for(let c=1;c<=n;c++){const cost=a[r-1]===b[c-1]?0:1;cur[c]=Math.min(prev[c]+1,cur[c-1]+1,prev[c-1]+cost)}prev=cur}return 1-prev[n]/Math.max(m,n)}
-// คะแนน 0..10 — สมดุล: ชื่อที่ได้ยินต้องใกล้ "ชื่อตัวอักษร" จริง และขึ้นต้นด้วยพยัญชนะหลัก
+// คะแนน 0..10 — ตัวจับเสียงมักเติมตัวอักษรหน้า/หลัง (เช่น "ตา"→بتاع) จึงเช็ค
+// ว่า "ชื่อตัวอักษร" ปรากฏเป็นส่วนหนึ่งของคำที่ได้ยินไหม ไม่ยึดแค่ตัวแรก
 function gradeSpoken(items,x){
-  const target=norm(x[0]);                         // พยัญชนะหลัก เช่น ب, ا, ع, د
-  const accepted=x[3].map(norm).filter(Boolean);   // ชื่อที่ยอมรับได้ เช่น دال, دا, الدال, د
-  let best=0, exact=false, startsRight=false;
+  const target=norm(x[0]);                         // พยัญชนะหลัก เช่น ب, ا, ع, د, ت
+  const accepted=x[3].map(norm).filter(Boolean);   // ชื่อที่ยอมรับได้ เช่น تاء, تا, التاء, ت
+  // แกนชื่อสั้นสุดที่สื่อถึงตัวอักษรนี้ (เช่น "تا" / "با") ใช้ตรวจว่าปรากฏในคำไหม
+  const stems=accepted.filter(a=>a.length>=2&&a.length<=3);
+  let best=0, exact=false, containsName=false;
   for(const raw of items){
     const it=norm(raw);if(!it)continue;
     if(accepted.includes(it))exact=true;
-    // ความคล้ายทั้งคำกับชื่อที่ยอมรับได้ (ตามลำดับตัวอักษร)
     for(const acc of accepted){const s=simRatio(it,acc);if(s>best)best=s}
-    // ขึ้นต้นด้วยพยัญชนะหลักของตัวนี้ (หัวใจของชื่อตัวอักษร เช่น ชื่อ "ดาล" ต้องขึ้นด้วย د)
-    if(target&&it[0]===target)startsRight=true;
+    // คำที่ได้ยินมี "ชื่อตัวอักษร" เป็นส่วนประกอบ (เช่น بتاع มี "تا") → ถือว่าตรงตัวนี้
+    if(stems.some(st=>it.includes(st)))containsName=true;
   }
   let stars;
   if(exact)stars=10;                               // ตรงเป๊ะกับชื่อ → เต็ม
-  else if(!startsRight)stars=Math.min(3,Math.round(best*10));  // ตัวแรกผิด = ตก (เช่น เป้า ت แต่อ่าน ด)
-  else if(best>=0.8)stars=9;                       // ตัวแรกตรง + คล้ายชื่อมาก
-  else if(best>=0.65)stars=7;                      // ตัวแรกตรง + คล้ายชื่อพอผ่าน
-  else stars=4;                                    // ตัวแรกตรงแต่สระ/ท้ายต่าง (เช่น "บา" อ่าน "บี") = ยังไม่ผ่าน
-  return {best,stars:Math.max(0,Math.min(10,stars)),hasTargetConsonant:startsRight};
+  else if(best>=0.8)stars=9;                        // คล้ายชื่อมาก
+  else if(containsName||best>=0.65)stars=7;         // มีชื่อตัวอักษรอยู่ในคำ หรือคล้ายพอผ่าน
+  else stars=3;                                     // ไม่มีชื่อตัวนี้เลย = ตก (อ่านผิดตัว)
+  return {best,stars:Math.max(0,Math.min(10,stars)),hasTargetConsonant:containsName||best>=0.65};
 }
 // คู่ที่ตัวจับเสียงของเบราว์เซอร์ "แยกไม่ออก" (ถอดเสียงออกมาเหมือนกัน)
 // เช่น ح(ฮาใหญ่)/ه(ฮาเล็ก), ت/ط, ด/ض, ذ/ظ, ص/س, ق/ك
